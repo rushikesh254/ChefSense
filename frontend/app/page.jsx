@@ -1,30 +1,31 @@
+import React from "react";
 import Image from "next/image";
-import { Button } from "../components/ui/button";
-import { Badge } from "../components/ui/badge";
-import { Flame } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Cookie, Refrigerator, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { Card } from "../components/ui/card";
-import { CardContent } from "../components/ui/card";
-import { Star } from "lucide-react";
-import { Clock } from "lucide-react";
-import { Users } from "lucide-react";
-import { SITE_STATS } from "../lib/data"; 
+import { Badge } from "@/components/ui/badge";
+import { ArrowRight, Star, Flame, Clock, Users } from "lucide-react"; // Icons
+import { Card, CardContent } from "@/components/ui/card"; // Reusable Card
+import { FEATURES } from "../lib/data"; // Text content
+import { HOW_IT_WORKS_STEPS } from "../lib/data"; // Text content
 
+import { SITE_STATS } from "../lib/data"; // Text content
 
-
-
-export default function Home() {
+export default function LandingPage() {
   return (
-
     <div className="min-h-screen bg-stone-50 text-stone-900">
+
+
+
+
+
+      
+      {/* hero section  */}
       <section className="pt-32 pb-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20">
-
-
-
             {/* 1. LEFT SIDE: Messaging */}
+
             <div className="flex-1 text-center md:text-left">
               <Badge
                 variant="outline"
@@ -65,8 +66,7 @@ export default function Home() {
             </div>
 
             {/* 2. RIGHT SIDE: Visual/Image */}
-
-            <Card className="relative aspect-square md:aspect-4/5 border-4 border-stone-900 bg-stone-200 overflow-hidden py-0">
+            <Card className="relative aspect-square md:aspect-4/5 border-4 border-stone-900 bg-stone-200 overflow-hidden   py-0">
               <Image
                 src="/pasta-dish.png"
                 alt="Delicious pasta dish"
@@ -74,7 +74,6 @@ export default function Home() {
                 height={500}
                 className="w-full h-full object-cover"
               />
-
               {/* Floating "AI Recommendation" Card inside the image */}
               <Card className="absolute bottom-8 left-8 right-8 bg-white/95 backdrop-blur-sm border-2 border-stone-900 py-0">
                 <CardContent className="p-4">
@@ -110,6 +109,11 @@ export default function Home() {
                 </CardContent>
               </Card>
             </Card>
+          </div>
+        </div>
+      </section>
+
+
 
 
 
@@ -140,10 +144,110 @@ export default function Home() {
 
 
 
+      {/* 
+        FEATURES SECTION 
+        Explaining What the App actually DOES.
+      */}
+      <section className="py-24 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-16">
+            <h2 className="text-5xl md:text-6xl font-bold mb-4">
+              Your Smart Kitchen
+            </h2>
+            <p className="text-stone-600 text-xl font-light">
+              Everything you need to master your meal prep.
+            </p>
+          </div>
 
+          <div className="grid md:grid-cols-2 gap-6">
+            {FEATURES.map((feature, index) => {
+              const IconComponent = feature.icon;
+              return (
+                <Card
+                  key={index}
+                  className="border-2 border-stone-200 bg-white hover:border-orange-600 hover:shadow-lg transition-all group py-0"
+                >
+                  <CardContent className="p-8">
+                    <div className="flex justify-between items-start mb-6">
+                      <div className="border-2 border-stone-200 bg-orange-50 p-3 group-hover:border-orange-600 group-hover:bg-orange-100 transition-colors">
+                        <IconComponent className="w-6 h-6" />
+                      </div>
+                      <Badge
+                        variant="secondary"
+                        className="text-xs font-mono bg-stone-100 text-stone-600 uppercase tracking-wide border border-stone-200"
+                      >
+                        {feature.limit}
+                      </Badge>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-3">{feature.title}</h3>
+                    <p className="text-stone-600 text-lg font-light">
+                      {feature.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
+
+
+
+
+
+      {/* 
+        HOW IT WORKS 
+        A step-by-step guide for new users.
+      */}
+      <section className="py-24 px-4 border-y-2 border-stone-200 bg-stone-900 text-stone-50">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-5xl md:text-6xl font-bold mb-16">
+            Cook in 3 Steps
+          </h2>
+
+          <div className="space-y-12">
+            {HOW_IT_WORKS_STEPS.map((item, i) => (
+              <div key={i}>
+                <div className="flex gap-6 items-start">
+                  <Badge
+                    variant="outline"
+                    className="text-6xl font-bold text-orange-500 border-none bg-transparent p-0 h-auto"
+                  >
+                    {item.step}
+                  </Badge>
+                  <div>
+                    <h3 className="text-2xl font-bold mb-3">{item.title}</h3>
+                    <p className="text-lg text-stone-400 font-light">
+                      {item.desc}
+                    </p>
+                  </div>
+                </div>
+                {i < HOW_IT_WORKS_STEPS.length - 1 && (
+                  <hr className="my-8 bg-stone-700" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+
+
+
+      {/* 
+        PRICING SECTION 
+        Where we convince people to upgrade to PRO.
+      */}
+      {/* remianing */}
+
+
+      pricing section here
+
+
+
+
+
     </div>
   );
 }

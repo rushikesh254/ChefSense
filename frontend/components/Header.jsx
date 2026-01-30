@@ -28,10 +28,6 @@ const Header = () => {
   return (
     <header className="fixed top-0 w-full border-b border-stone-200 bg-stone-50/80 backdrop-blur-md z-50 supports-backdrop-filter:bg-stone-50/60">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
-
-
-
-        
         {/* LOGO: Clicking this takes you Home (or Dashboard if logged in) */}
         <Link
           href={user ? "/dashboard" : "/"}
@@ -71,9 +67,8 @@ const Header = () => {
           {isSignedIn && user ? (
             // IF LOGGED IN: Show Subscription Badge + User Avatar
             <>{/* Pricing Modal with Built-in Trigger */}</>
-
-            // after login 
           ) : (
+            // after login
             // IF NOT LOGGED IN: Show Sign In / Get Started buttons
             <>
               <Link href="/sign-in">
