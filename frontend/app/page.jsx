@@ -14,12 +14,6 @@ import { SITE_STATS } from "../lib/data"; // Text content
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-stone-50 text-stone-900">
-
-
-
-
-
-      
       {/* hero section  */}
       <section className="pt-32 pb-20 px-4">
         <div className="max-w-6xl mx-auto">
@@ -112,11 +106,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
-
-
-
-
       {/* 
         STATS BAR 
         A dark strip that shows users we are a real, popular app.
@@ -138,12 +127,6 @@ export default function LandingPage() {
           ))}
         </div>
       </section>
-
-
-
-
-
-
       {/* 
         FEATURES SECTION 
         Explaining What the App actually DOES.
@@ -190,11 +173,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
-
-
-
-
       {/* 
         HOW IT WORKS 
         A step-by-step guide for new users.
@@ -230,24 +208,12 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
-
-
-
-
       {/* 
         PRICING SECTION 
         Where we convince people to upgrade to PRO.
       */}
       {/* remianing */}
-
-
       pricing section here
-
-
-
-
-
     </div>
   );
 }

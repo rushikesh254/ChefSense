@@ -24,6 +24,11 @@ export async function getRecipeOfTheDay() {
   }
 }
 
+
+
+
+
+
 // Get all categories
 export async function getCategories() {
   try {
@@ -45,6 +50,12 @@ export async function getCategories() {
     throw new Error(error.message || "Failed to load categories");
   }
 }
+
+
+
+
+
+
 
 // Get all areas/cuisines
 export async function getAreas() {
@@ -68,6 +79,11 @@ export async function getAreas() {
   }
 }
 
+
+
+
+
+
 // Get meals by category
 export async function getMealsByCategory(category) {
   try {
@@ -90,6 +106,11 @@ export async function getMealsByCategory(category) {
     throw new Error(error.message || "Failed to load meals");
   }
 }
+
+
+
+
+
 
 // Get meals by area
 export async function getMealsByArea(area) {

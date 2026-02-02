@@ -1,24 +1,11 @@
 import { Camera, BookOpen, ChefHat, Search } from "lucide-react";
 
-
-
-
-
-
-
-
 export const SITE_STATS = [
   { label: "Free Scans", val: "10/mo" },
   { label: "Recipes Generated", val: "1M+" },
   { label: "Cost to Start", val: "$0" },
   { label: "App Store Rating", val: "4.9" },
 ];
-
-
-
-
-
-
 
 export const FEATURES = [
   {
@@ -50,11 +37,6 @@ export const FEATURES = [
   },
 ];
 
-
-
-
-
-
 export const HOW_IT_WORKS_STEPS = [
   {
     step: "01",
@@ -73,3 +55,68 @@ export const HOW_IT_WORKS_STEPS = [
   },
 ];
 
+// Helper function for category emojis
+export function getCategoryEmoji(category) {
+  const emojiMap = {
+    Beef: "🥩",
+    Chicken: "🍗",
+    Dessert: "🍰",
+    Lamb: "🍖",
+    Miscellaneous: "🍴",
+    Pasta: "🍝",
+    Pork: "🥓",
+    Seafood: "🦐",
+    Side: "🥗",
+    Starter: "🥟",
+    Vegan: "🥬",
+    Vegetarian: "🥕",
+    Breakfast: "🍳",
+    Goat: "🐐",
+  };
+  return emojiMap[category] || "🍽️";
+}
+
+// Helper function for country flags
+export function getCountryFlag(country) {
+  const emojiMap = {
+    American: "🗽",
+    British: "👑",
+    Canadian: "🍁",
+    Chinese: "🐉",
+    Croatian: "⚽",
+    Dutch: "🌷",
+    Egyptian: "🐫",
+    Filipino: "🌴",
+    French: "🥐",
+    Greek: "🏛️",
+    Indian: "🪷",
+    Irish: "☘️",
+    Italian: "🍕",
+    Jamaican: "🌴",
+    Japanese: "🗾",
+    Kenyan: "🦒",
+    Malaysian: "🌺",
+    Mexican: "🌮",
+    Moroccan: "🕌",
+    Polish: "🦅",
+    Portuguese: "🚢",
+    Russian: "❄️",
+    Spanish: "💃",
+    Thai: "🛕",
+    Tunisian: "🏜️",
+    Turkish: "🧿",
+    Ukrainian: "🌻",
+    Vietnamese: "🍜",
+    Algerian: "🏜️",
+    Argentinian: "⚽",
+    Australian: "🦘",
+    Norwegian: "❄️",
+    "Saudi Arabian": "🕋",
+    Slovakian: "🏔️",
+    Syrian: "🏛️",
+    Uruguayan: "⚽",
+    Venezuelan: "🌞",
+  };
+
+  return emojiMap[country] ?? "🌍";
+}
