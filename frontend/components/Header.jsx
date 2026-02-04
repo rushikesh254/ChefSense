@@ -3,8 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
 
-import { Cookie } from "lucide-react";
-import { Refrigerator } from "lucide-react";
+import { Cookie, Refrigerator, LayoutDashboard } from "lucide-react";
 
 const Header = () => {
   const user = false;
@@ -38,12 +37,21 @@ const Header = () => {
             alt="ChefSense Logo"
             width={66}
             height={66}
-            className="w-20"
+            className="w-14 sm:w-20"
           />
         </Link>
 
         {/* MAIN NAV: Only visible on Tablets and Desktops (hidden on Mobile) */}
         <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-stone-600">
+          {isSignedIn && (
+            <Link
+              href="/dashboard"
+              className="hover:text-orange-600 transition-colors flex gap-1.5 items-center"
+            >
+              <LayoutDashboard className="w-4 h-4" />
+              Explore
+            </Link>
+          )}
           <Link
             href="/recipes"
             className="hover:text-orange-600 transition-colors flex gap-1.5 items-center"
@@ -61,7 +69,7 @@ const Header = () => {
         </div>
 
         {/* RIGHT SIDE: Action Buttons (Login/Signup or User Profile) */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 sm:space-x-4">
           {/* <HowToCookModal /> */}
 
           {isSignedIn && user ? (
@@ -74,13 +82,16 @@ const Header = () => {
               <Link href="/sign-in">
                 <Button
                   variant="ghost"
-                  className="text-stone-600 hover:text-orange-600 hover:bg-orange-50 font-medium"
+                  className="text-stone-600 hover:text-orange-600 hover:bg-orange-50 font-medium text-sm sm:text-base px-2 sm:px-4"
                 >
                   Sign In
                 </Button>
               </Link>
               <Link href="/sign-up">
-                <Button variant="primary" className="rounded-full px-6">
+                <Button
+                  variant="primary"
+                  className="rounded-full px-3 sm:px-6 text-sm sm:text-base"
+                >
                   Get Started
                 </Button>
               </Link>
