@@ -7,16 +7,10 @@ import TiltedCard from "@/components/ReactBits/TiltedCard";
 import { Card, CardContent } from "@/components/ui/card";
 import { Star, Clock, Users } from "lucide-react";
 import { SITE_STATS } from "@/lib/data";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-
 import { motion as Motion } from "motion/react";
-import Popular from "@/components/ReactBits/Popular";
+import Popular from "@/components/Popular";
+
+import { FEATURES } from "@/lib/data";
 
 const LandingPage = () => {
   return (
@@ -151,7 +145,6 @@ const LandingPage = () => {
         STATS BAR 
         A dark strip that shows users we are a real, popular app.
       */}
-      {/* <section className="py-12 border-y-2 border-stone-900 bg-stone-900"> */}
       <section className="py-16 bg-stone-900">
         <div className="max-w-5xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-4 text-center px-4">
           {SITE_STATS.map((stat, i) => (
@@ -161,8 +154,7 @@ const LandingPage = () => {
               </div>
               <Badge
                 variant="secondary"
-                // className="bg-transparent text-brand-500 text-sm uppercase tracking-wider font-medium border-none"
-                className="bg-transparent text-brand-400 text-xs uppercase tracking-wider font-medium border-none"
+                className="bg-transparent hover:text-brand-500 text-brand-400 text-xs uppercase tracking-wider font-medium border-none"
               >
                 {stat.label}
               </Badge>
@@ -172,7 +164,53 @@ const LandingPage = () => {
       </section>
       {/* POPULAR RECIPES SECTION  */}
       <Popular />
-      <div className="text-8xl mt-20">main page</div>;
+      {/* 
+        FEATURES SECTION 
+        Explaining What the App actually DOES.
+      */}
+      <section className="py-16 sm:py-24 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-16">
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-4">
+              Your Smart Kitchen
+            </h2>
+            <p className="text-stone-600 text-xl font-light">
+              Everything you need to master your meal prep.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {FEATURES.map((feature, index) => {
+              const IconComponent = feature.icon;
+              return (
+                <Card
+                  key={index}
+                  className="border-2 border-stone-200 bg-white hover:border-brand-600  hover:-translate-y-1 transition-all duration-300 group "
+                >
+                  <CardContent className="p-8">
+                    <div className="flex justify-between items-start mb-6">
+                      <div className="rounded-xl border-2 border-stone-200 bg-linear-to-br from-brand-50 to-brand-100 p-3">
+                        <IconComponent className="w-6 h-6" />
+                      </div>
+                      <Badge
+                        variant="secondary"
+                        className="text-xs font-mono bg-stone-100 text-stone-600 uppercase tracking-wide border border-stone-200"
+                      >
+                        {feature.limit}
+                      </Badge>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-3">{feature.title}</h3>
+                    <p className="text-stone-600 text-lg font-light">
+                      {feature.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+      <div className="text-8xl mt-20 bg-pink-700">main page</div>;
     </div>
   );
 };
