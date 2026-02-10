@@ -6,8 +6,18 @@ import { Link } from "react-router-dom";
 import TiltedCard from "@/components/ReactBits/TiltedCard";
 import { Card, CardContent } from "@/components/ui/card";
 import { Star, Clock, Users } from "lucide-react";
+import { SITE_STATS } from "@/lib/data";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 import { motion as Motion } from "motion/react";
+import Popular from "@/components/ReactBits/Popular";
+
 const LandingPage = () => {
   return (
     <div
@@ -25,18 +35,17 @@ const LandingPage = () => {
       <section className="pt-24 sm:pt-32 pb-12 sm:pb-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20">
-            {/* 1. LEFT SIDE: Messaging */}
+            {/*  LEFT SIDE: Messaging */}
 
-            {/* <div className="flex-1 text-center md:text-left"> */}
             <Motion.div
-              className="flex-1 text-center md:text-left"
+              className="flex-1 text-center md:text-left w-full"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
               <Badge
                 variant="outline"
-                className="border-2 border-orange-600 text-orange-700 bg-orange-50 text-sm font-bold mb-6 uppercase tracking-wide"
+                className="border-2 border-brand-600 text-brand-700 bg-brand-50 text-sm font-bold mb-6 uppercase tracking-wide"
               >
                 <Flame className="mr-1 w-4 h-4" />
                 #1 AI Cooking Assistant
@@ -44,7 +53,7 @@ const LandingPage = () => {
 
               <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold mb-6 leading-[0.95] tracking-tight">
                 Turn your{" "}
-                <span className="italic underline decoration-4 decoration-orange-600">
+                <span className="italic underline decoration-4 decoration-brand-600">
                   leftovers
                 </span>{" "}
                 into <br />
@@ -56,21 +65,21 @@ const LandingPage = () => {
                 Save money, reduce waste, and eat better tonight.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 items-center">
-                <Link to="/dashboard">
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 items-center justify-center md:justify-start">
+                <Link to="/dashboard" className="w-full sm:w-auto">
                   <Button
                     size="xl"
                     variant="primary"
-                    className="px-8 py-6 text-lg"
+                    className="w-full px-8 py-4 md:py-6 text-base md:text-lg"
                   >
                     Start Cooking Free <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
                 </Link>
-                <Link to="/demo">
+                <Link to="/demo" className="w-full sm:w-auto">
                   <Button
                     size="xl"
                     variant="outline"
-                    className="px-8 py-6 text-lg border-2"
+                    className="w-full px-8 py-4 md:py-6 text-base md:text-lg border-2"
                   >
                     Watch Demo
                   </Button>
@@ -81,13 +90,9 @@ const LandingPage = () => {
                 <span className="font-bold text-stone-900">10k+ cooks</span>{" "}
                 joined last month
               </p>
-              {/* </div> */}
             </Motion.div>
 
-
-
-
-             {/* 2. RIGHT SIDE: Visual/Image - Hidden on mobile, shown on md+ */}
+            {/* RIGHT SIDE: Visual/Image - Hidden on mobile, shown on md+ */}
             <div className="hidden md:flex justify-center items-center w-full md:w-auto">
               <TiltedCard
                 imageSrc="/pasta-dish.png"
@@ -103,7 +108,7 @@ const LandingPage = () => {
                 showTooltip={false}
                 displayOverlayContent={true}
                 overlayContent={
-                  <Card className="mx-8 mb-8 bg-white/95 backdrop-blur-sm border-2 border-stone-900 shadow-xl">
+                  <Card className="mx-8 mb-8 bg-white/95 backdrop-blur-sm border border-stone-900 shadow-xl ">
                     <CardContent className="p-4">
                       <div className="flex justify-between items-start mb-2">
                         <div>
@@ -111,10 +116,10 @@ const LandingPage = () => {
                             Rustic Tomato Basil Pasta
                           </h3>
                           <div className="flex gap-0.5 mt-1">
-                            {[...Array(5)].map((_, i) => (
+                            {[...Array(5)].map((e, i) => (
                               <Star
                                 key={i}
-                                className="w-3 h-3 fill-orange-500 text-orange-500"
+                                className="w-3 h-3 fill-brand-500 text-brand-500"
                               />
                             ))}
                           </div>
@@ -140,10 +145,33 @@ const LandingPage = () => {
               />
             </div>
           </div>
-        
-          
         </div>
       </section>
+      {/* 
+        STATS BAR 
+        A dark strip that shows users we are a real, popular app.
+      */}
+      {/* <section className="py-12 border-y-2 border-stone-900 bg-stone-900"> */}
+      <section className="py-16 bg-stone-900">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-4 text-center px-4">
+          {SITE_STATS.map((stat, i) => (
+            <div key={i}>
+              <div className="text-2xl sm:text-4xl font-bold mb-1 text-stone-50">
+                {stat.val}
+              </div>
+              <Badge
+                variant="secondary"
+                // className="bg-transparent text-brand-500 text-sm uppercase tracking-wider font-medium border-none"
+                className="bg-transparent text-brand-400 text-xs uppercase tracking-wider font-medium border-none"
+              >
+                {stat.label}
+              </Badge>
+            </div>
+          ))}
+        </div>
+      </section>
+      {/* POPULAR RECIPES SECTION  */}
+      <Popular />
       <div className="text-8xl mt-20">main page</div>;
     </div>
   );
