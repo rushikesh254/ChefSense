@@ -1,12 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Img as Image } from "@/components/ui/img";
-// import { useState } from "react";
 import { LayoutDashboard, Cookie, Refrigerator } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 function Header() {
-  //   const [isSignedIn, setIsSignedIn] = useState(false);
 
   const isSignedIn = false; // Placeholder for authentication state
 
@@ -57,6 +55,8 @@ function Header() {
 
         {/* RIGHT SIDE: Action Buttons (Login/Signup or User Profile) */}
         <div className="flex items-center space-x-4">
+
+          
           {/* IF NOT LOGGED IN: Show Sign In / Get Started buttons */}
           <>
             <Link to="/sign-in">

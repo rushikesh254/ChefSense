@@ -1,16 +1,18 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Img as Image } from "@/components/ui/img";
 import { ArrowRight, Flame } from "lucide-react";
 import { Link } from "react-router-dom";
 import TiltedCard from "@/components/ReactBits/TiltedCard";
 import { Card, CardContent } from "@/components/ui/card";
 import { Star, Clock, Users } from "lucide-react";
 import { SITE_STATS } from "@/lib/data";
-import { motion as Motion } from "motion/react";
 import Popular from "@/components/Popular";
 
 import { FEATURES } from "@/lib/data";
+
+import HowItWorks from "@/components/HowItWorks";
 
 const LandingPage = () => {
   return (
@@ -31,12 +33,7 @@ const LandingPage = () => {
           <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20">
             {/*  LEFT SIDE: Messaging */}
 
-            <Motion.div
-              className="flex-1 text-center md:text-left w-full"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
+            <div className="flex-1 text-center md:text-left w-full">
               <Badge
                 variant="outline"
                 className="border-2 border-brand-600 text-brand-700 bg-brand-50 text-sm font-bold mb-6 uppercase tracking-wide"
@@ -84,7 +81,7 @@ const LandingPage = () => {
                 <span className="font-bold text-stone-900">10k+ cooks</span>{" "}
                 joined last month
               </p>
-            </Motion.div>
+            </div>
 
             {/* RIGHT SIDE: Visual/Image - Hidden on mobile, shown on md+ */}
             <div className="hidden md:flex justify-center items-center w-full md:w-auto">
@@ -154,7 +151,7 @@ const LandingPage = () => {
               </div>
               <Badge
                 variant="secondary"
-                className="bg-transparent hover:text-brand-500 text-brand-400 text-xs uppercase tracking-wider font-medium border-none"
+                className="bg-transparent hover:text-brand-500 hover:bg-slate-0 text-brand-400 text-xs uppercase tracking-wider font-medium border-none  transition"
               >
                 {stat.label}
               </Badge>
@@ -168,39 +165,80 @@ const LandingPage = () => {
         FEATURES SECTION 
         Explaining What the App actually DOES.
       */}
-      <section className="py-16 sm:py-24 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-16">
-            <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-4">
+      <section className="relative py-20 sm:py-28 px-4 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-brand-50/30 to-white pointer-events-none" />
+
+        <div className="relative z-10 max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="mb-16 md:mb-20 max-w-2xl">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-6 leading-[1.05]">
               Your Smart Kitchen
             </h2>
-            <p className="text-stone-600 text-xl font-light">
+
+            <p className="text-lg sm:text-xl text-stone-600 font-light">
               Everything you need to master your meal prep.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          {/* Grid */}
+          <div className="grid md:grid-cols-2 gap-8">
             {FEATURES.map((feature, index) => {
               const IconComponent = feature.icon;
+
               return (
                 <Card
                   key={index}
-                  className="border-2 border-stone-200 bg-white hover:border-brand-600  hover:-translate-y-1 transition-all duration-300 group "
+                  className="
+              border border-stone-200/60
+              bg-white/80
+              backdrop-blur-sm
+              rounded-2xl
+              shadow-sm
+              hover:shadow-lg
+              transition-all duration-300
+              hover:-translate-y-1
+              group
+            "
                 >
                   <CardContent className="p-8">
                     <div className="flex justify-between items-start mb-6">
-                      <div className="rounded-xl border-2 border-stone-200 bg-linear-to-br from-brand-50 to-brand-100 p-3">
-                        <IconComponent className="w-6 h-6" />
+                      {/* Icon */}
+                      <div
+                        className="
+                  rounded-xl
+                  bg-gradient-to-br
+                  from-brand-50
+                  to-brand-100
+                  p-3
+                  border border-brand-100
+                  group-hover:scale-105
+                  transition
+                "
+                      >
+                        <IconComponent className="w-6 h-6 text-brand-600" />
                       </div>
+
+                      {/* Limit Badge */}
                       <Badge
                         variant="secondary"
-                        className="text-xs font-mono bg-stone-100 text-stone-600 uppercase tracking-wide border border-stone-200"
+                        className="
+                    text-xs
+                    bg-stone-100
+                    text-stone-600
+                    uppercase
+                    tracking-wide
+                    border border-stone-200
+                  "
                       >
                         {feature.limit}
                       </Badge>
                     </div>
-                    <h3 className="text-2xl font-bold mb-3">{feature.title}</h3>
-                    <p className="text-stone-600 text-lg font-light">
+
+                    <h3 className="text-xl font-semibold mb-3">
+                      {feature.title}
+                    </h3>
+
+                    <p className="text-stone-600 font-light leading-relaxed">
                       {feature.description}
                     </p>
                   </CardContent>
@@ -210,7 +248,88 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-      <div className="text-8xl mt-20 bg-pink-700">main page</div>;
+      {/* 
+        HOW IT WORKS 
+        A step-by-step guide for new users.
+      */}
+      <HowItWorks />
+      {/* CTA section
+      tells users to get started, with a link to the dashboard and demo video. */}
+      <section className="relative py-28 px-4 ">
+        {/* Very subtle ambient glow (matches page bg) */}
+
+        <div className="relative max-w-6xl mx-auto">
+          <div
+            className="
+        rounded-3xl
+        border border-stone-200
+        bg-linear-to-b from-stone-50/80 to-stone-100/60
+        backdrop-blur-sm
+        shadow-[0_30px_80px_rgba(0,0,0,0.06)]
+        px-8 sm:px-16 py-16
+        text-center
+      "
+          >
+            {/* Badge */}
+            <Badge
+              variant="outline"
+              className="mb-6 border-brand-600 text-brand-700 bg-brand-50 font-bold uppercase tracking-wide"
+            >
+              Start Cooking Smarter
+            </Badge>
+
+            {/* Heading */}
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-6 leading-tight">
+              Your next great meal
+              <br />
+              <span className="italic underline decoration-4 decoration-brand-600">
+                is already in your fridge.
+              </span>
+            </h2>
+
+            {/* Subheading */}
+            <p className="text-lg sm:text-xl text-stone-600 max-w-2xl mx-auto mb-10 font-light">
+              Scan your pantry, let AI do the thinking, and cook something
+              amazing tonight — without wasting food or money.
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+              <Link to="/dashboard">
+                <Button
+                  size="xl"
+                  variant="primary"
+                  className="px-10 py-6 text-lg shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-transform"
+                  aria-label="Scan pantry for recipes"
+                >
+                  Scan My Pantry Free <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
+              <Link to="/how-it-works">
+                <Button
+                  size="xl"
+                  variant="outline"
+                  className="px-10 py-6 text-lg border-2 hover:bg-stone-100 transition-colors"
+                >
+                  See How It Works
+                </Button>
+              </Link>
+            </div>
+
+            {/* Trust Line */}
+            <p className="mt-8 text-sm text-stone-500">
+              No credit card required · Takes less than 30 seconds
+            </p>
+          </div>
+        </div>
+      </section>
+      {/* 
+        PRICING SECTION 
+        Where we convince people to upgrade to PRO.
+      */}
+      {/* remianing */}
+
+      <div className="bg-pink-400">pricing section here</div>
     </div>
   );
 };
