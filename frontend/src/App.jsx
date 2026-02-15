@@ -12,13 +12,24 @@ import PrivacyPage from "./pages/legal/PrivacyPage";
 import TermsPage from "./pages/legal/TermsPage";
 import { Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
+import Dashboard from "./pages/dashboard/Dashboard";
 
 function App() {
   return (
     <>
       <Header />
 
-      <main className="min-h-screen ">
+      <main
+        className="min-h-screen text-stone-900"
+        style={{
+          background: `linear-gradient(
+  180deg,
+  #faf7f4 0%,
+  #f5efe8 50%,
+  #faf7f4 100%
+)`,
+        }}
+      >
         <Routes>
           {/* public routes */}
           <Route path="/" element={<LandingPage />} />
@@ -30,6 +41,8 @@ function App() {
           <Route path="/how-it-works" element={<HowItWorksPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          
         </Routes>
       </main>
 

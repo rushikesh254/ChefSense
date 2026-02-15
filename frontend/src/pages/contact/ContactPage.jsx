@@ -7,17 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 const ContactPage = () => {
   return (
-    <div
-      className="min-h-screen pt-20 px-4 text-stone-900"
-      style={{
-        background: `linear-gradient(
-      180deg,
-      #fff 0%,
-      #fff7f2 40%,
-      #ffffff 100%
-    )`,
-      }}
-    >
+    <div className="min-h-screen pt-20 px-4">
       <div className="max-w-4xl mx-auto ">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-stone-900 mb-4">
@@ -31,7 +21,7 @@ const ContactPage = () => {
         <div className="grid md:grid-cols-2 gap-12">
           {/* Info */}
 
-          <Card className="bg-gradient-to-b from-stone-50/80 to-stone-100/60 backdrop-blur-sm border-stone-200">
+          <Card className="bg-white/80 backdrop-blur-sm border-stone-200">
             <CardContent className="p-8">
               <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
 
