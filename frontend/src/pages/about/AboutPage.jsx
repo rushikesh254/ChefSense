@@ -6,17 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const AboutPage = () => {
   return (
-    <div
-      className="min-h-screen py-20 px-4 text-stone-900"
-      style={{
-        background: `linear-gradient(
-      180deg,
-      #fff 0%,
-      #fff7f2 40%,
-      #ffffff 100%
-    )`,
-      }}
-    >
+    <div className="min-h-screen py-20 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight tracking-tight">
@@ -31,7 +21,7 @@ const AboutPage = () => {
 
         <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
           <div
-            className="relative aspect-square rounded-2xl overflow-hidden shadow-lg rotate-[0.75deg]
+            className="relative aspect-square rounded-2xl overflow-hidden shadow-sm rotate-[0.75deg]
 "
           >
             <Image
@@ -57,7 +47,7 @@ const AboutPage = () => {
           </div>
         </div>
         <div>
-          <Card className="bg-gradient-to-b from-stone-50/80 to-stone-100/60 backdrop-blur-sm border-stone-200 shadow-lg mx-auto max-w-md ">
+          <Card className="bg-white/80 backdrop-blur-sm border-stone-200 shadow-sm mx-auto max-w-md ">
             <CardContent className="p-12 text-center">
               <h2 className="text-3xl font-bold mb-6">
                 Join thousands of cooks

@@ -5,7 +5,6 @@ import { LayoutDashboard, Cookie, Refrigerator } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 function Header() {
-
   const isSignedIn = false; // Placeholder for authentication state
 
   return (
@@ -55,8 +54,6 @@ function Header() {
 
         {/* RIGHT SIDE: Action Buttons (Login/Signup or User Profile) */}
         <div className="flex items-center space-x-4">
-
-          
           {/* IF NOT LOGGED IN: Show Sign In / Get Started buttons */}
           <>
             <Link to="/sign-in">

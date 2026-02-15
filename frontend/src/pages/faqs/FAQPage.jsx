@@ -32,17 +32,7 @@ const FAQPage = () => {
   ];
 
   return (
-    <div
-      className="min-h-screen py-20 px-4 text-stone-900"
-      style={{
-        background: `linear-gradient(
-          180deg,
-          #fff 0%,
-          #fff7f2 40%,
-          #ffffff 100%
-        )`,
-      }}
-    >
+    <div className="min-h-screen py-20 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
@@ -55,7 +45,7 @@ const FAQPage = () => {
         </div>
 
         {/* FAQ Card */}
-        <Card className="bg-gradient-to-b from-stone-50/80 to-stone-100/60 backdrop-blur-sm border-stone-200 shadow-[0_30px_80px_rgba(0,0,0,0.06)]">
+        <Card className="bg-white/80 backdrop-blur-sm border-stone-200 shadow-sm">
           <CardContent className="p-8">
             <Accordion type="single" collapsible className="space-y-2">
               {faqs.map((faq, index) => (

@@ -7,6 +7,11 @@ export const SITE_STATS = [
   { label: "App Store Rating", val: "4.9" },
 ];
 
+export const SOCIAL_PROOF = {
+  count: "10k+ cooks",
+  label: "joined last month",
+};
+
 export const FEATURES = [
   {
     title: "Scan Your Pantry",
@@ -42,7 +47,7 @@ export const popularRecipes = [
   {
     id: 1,
     title: "Creamy Tuscan Garlic Chicken",
-    image: "./dosa.jpg",
+    image: "https://plus.unsplash.com/premium_photo-1712678280695-7525b7bf50d0?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     rating: 4.9,
     time: "30 min",
     match: 97,
@@ -52,7 +57,7 @@ export const popularRecipes = [
   {
     id: 2,
     title: "Spicy Korean Gochujang Noodles",
-    image: "./dosa.jpg",
+    image: "https://plus.unsplash.com/premium_photo-1712678280695-7525b7bf50d0?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     rating: 4.8,
     time: "20 min",
     match: 95,
@@ -62,7 +67,7 @@ export const popularRecipes = [
   {
     id: 3,
     title: "Mediterranean Chickpea Bowl",
-    image: "./dosa.jpg",
+    image: "https://plus.unsplash.com/premium_photo-1712678280695-7525b7bf50d0?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     rating: 4.7,
     time: "25 min",
     match: 93,
@@ -72,7 +77,7 @@ export const popularRecipes = [
   {
     id: 4,
     title: "BBQ Pulled Chicken Sliders",
-    image: "./dosa.jpg",
+    image: "https://plus.unsplash.com/premium_photo-1712678280695-7525b7bf50d0?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     rating: 4.6,
     time: "35 min",
     match: 90,
@@ -82,7 +87,7 @@ export const popularRecipes = [
   {
     id: 5,
     title: "Pesto Burrata Flatbread",
-    image: "./dosa.jpg",
+    image: "https://plus.unsplash.com/premium_photo-1712678280695-7525b7bf50d0?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     rating: 4.9,
     time: "18 min",
     match: 96,
@@ -92,7 +97,7 @@ export const popularRecipes = [
   {
     id: 6,
     title: "Thai Coconut Curry Shrimp",
-    image: "./dosa.jpg",
+    image: "https://plus.unsplash.com/premium_photo-1712678280695-7525b7bf50d0?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     rating: 4.8,
 
     time: "22 min",
@@ -103,22 +108,6 @@ export const popularRecipes = [
   {
     id: 7,
     title: "Avocado Toast with Poached Egg",
-    image: "./dosa.jpg",
-
-    rating: 4.5,
-    time: "10 min",
-    match: 88,
-    servings: 1,
-    tags: ["Breakfast", "Quick"],
-  },
-  {
-    id: 8,
-    title: "Chocolate Lava Mug Cake",
-    image: "./dosa.jpg",
-    rating: 4.9,
-    time: "8 min",
-    match: 99,
-    servings: 1,
-    tags: ["Dessert", "Sweet"],
+    image: "https://plus.unsplash.com/premium_photo-1712678280695-7525b7bf50d0?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
 ];
