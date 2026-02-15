@@ -5,7 +5,6 @@ import { ArrowRight, Flame, Star, Clock, Users, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import TiltedCard from "@/components/ReactBits/TiltedCard";
 import { Card, CardContent } from "@/components/ui/card";
-import { SOCIAL_PROOF } from "@/lib/data";
 
 export default function HeroSection() {
   return (
@@ -67,10 +66,8 @@ export default function HeroSection() {
                 ))}
               </div>
               <p className="text-sm text-stone-500">
-                <span className="font-semibold text-stone-800">
-                  {SOCIAL_PROOF.count}
-                </span>{" "}
-                {SOCIAL_PROOF.label}
+                <span className="font-semibold text-stone-800">10k+ cooks</span>{" "}
+                joined last month
               </p>
             </div>
           </div>
