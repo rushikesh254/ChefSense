@@ -156,3 +156,25 @@ export const popularRecipes = [
     reviews: 113,
   },
 ];
+
+
+
+
+
+
+
+
+const categoryEmojiMap = {
+  breakfast: "🥞",
+  lunch: "🥗",
+  dinner: "🍖",
+  dessert: "🍰",
+  snacks: "🍿",
+  appetizer: "🧆",
+  beverage: "🥤",
+  soup: "🍜",
+};
+
+export function getCategoryEmoji(name) {
+  return categoryEmojiMap[name.toLowerCase()] || "🍽️";
+}
