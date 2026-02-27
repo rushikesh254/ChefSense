@@ -10,10 +10,10 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen">
       <HeroSection />
-      <StatsSection />
-      <PopularSection />
-      <FeaturesSection />
       <StepsSection />
+      <FeaturesSection />
+      <PopularSection />
+      <StatsSection />
       <CTASection />
     </div>
   );
