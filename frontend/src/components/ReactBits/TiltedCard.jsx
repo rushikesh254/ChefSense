@@ -1,27 +1,27 @@
-import { useRef, useState } from 'react';
-import {  motion, useMotionValue, useSpring } from 'motion/react';
-
+import { useRef, useState } from "react";
+// eslint-disable-next-line no-unused-vars
+import { motion, useMotionValue, useSpring } from "motion/react";
 
 const springValues = {
   damping: 30,
   stiffness: 100,
-  mass: 2
+  mass: 2,
 };
 
 export default function TiltedCard({
   imageSrc,
-  altText = 'Tilted card image',
-  captionText = '',
-  containerHeight = '300px',
-  containerWidth = '100%',
-  imageHeight = '300px',
-  imageWidth = '300px',
+  altText = "Tilted card image",
+  captionText = "",
+  containerHeight = "100%",
+  containerWidth = "100%",
+  imageHeight = "100%",
+  imageWidth = "100%",
   scaleOnHover = 1.1,
   rotateAmplitude = 14,
   showMobileWarning = true,
   showTooltip = true,
   overlayContent = null,
-  displayOverlayContent = false
+  displayOverlayContent = false,
 }) {
   const ref = useRef(null);
   const x = useMotionValue(0);
@@ -33,7 +33,7 @@ export default function TiltedCard({
   const rotateFigcaption = useSpring(0, {
     stiffness: 350,
     damping: 30,
-    mass: 1
+    mass: 1,
   });
 
   const [lastY, setLastY] = useState(0);
@@ -78,37 +78,35 @@ export default function TiltedCard({
       className="relative w-full h-full [perspective:800px] flex flex-col items-center justify-center"
       style={{
         height: containerHeight,
-        width: containerWidth
+        width: containerWidth,
       }}
       onMouseMove={handleMouse}
       onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}>
+      onMouseLeave={handleMouseLeave}
+    >
       {showMobileWarning && (
         <div className="absolute top-4 text-center text-sm block sm:hidden">
           This effect is not optimized for mobile. Check on desktop.
         </div>
       )}
       <motion.div
-        className="relative [transform-style:preserve-3d]"
+        className="relative [transform-style:preserve-3d] w-full aspect-square"
         style={{
-          width: imageWidth,
-          height: imageHeight,
+          maxWidth: imageWidth,
+          maxHeight: imageHeight,
           rotateX,
           rotateY,
-          scale
-        }}>
+          scale,
+        }}
+      >
         <motion.img
           src={imageSrc}
           alt={altText}
-          className="absolute top-0 left-0 object-cover rounded-[15px] will-change-transform [transform:translateZ(0)]"
-          style={{
-            width: imageWidth,
-            height: imageHeight
-          }} />
+          className="absolute inset-0 w-full h-full object-cover rounded-[15px] will-change-transform [transform:translateZ(0)]"
+        />
 
         {displayOverlayContent && overlayContent && (
-          <motion.div
-            className="absolute bottom-0 left-0 z-[2] will-change-transform [transform:translateZ(30px)]">
+          <motion.div className="absolute bottom-0 left-0 z-[2] will-change-transform [transform:translateZ(30px)]">
             {overlayContent}
           </motion.div>
         )}
@@ -120,8 +118,9 @@ export default function TiltedCard({
             x,
             y,
             opacity,
-            rotate: rotateFigcaption
-          }}>
+            rotate: rotateFigcaption,
+          }}
+        >
           {captionText}
         </motion.figcaption>
       )}

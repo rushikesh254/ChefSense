@@ -19,17 +19,7 @@ function App() {
     <>
       <Header />
 
-      <main
-        className="min-h-screen text-stone-900"
-        style={{
-          background: `linear-gradient(
-  180deg,
-  #faf7f4 0%,
-  #f5efe8 50%,
-  #faf7f4 100%
-)`,
-        }}
-      >
+      <main className="min-h-screen bg-[#F9F7F7] text-stone-900">
         <Routes>
           {/* public routes */}
           <Route path="/" element={<LandingPage />} />
@@ -42,7 +32,6 @@ function App() {
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          
         </Routes>
       </main>
 

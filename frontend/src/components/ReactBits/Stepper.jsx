@@ -52,7 +52,7 @@ export default function Stepper({
 
   return (
     <div
-      className="flex min-h-full flex-1 flex-col items-center justify-center p-4 sm:aspect-[4/3] md:aspect-[2/1]"
+      className="flex w-full flex-col items-center justify-center p-2 sm:p-4"
       {...rest}
     >
       <div
@@ -69,7 +69,7 @@ export default function Stepper({
   `}
       >
         <div
-          className={`${stepContainerClassName} flex w-full items-center p-8`}
+          className={`${stepContainerClassName} flex w-full items-center p-4 sm:p-6 md:p-8`}
         >
           {stepsArray.map((_, index) => {
             const stepNumber = index + 1;
@@ -107,12 +107,14 @@ export default function Stepper({
           isCompleted={isCompleted}
           currentStep={currentStep}
           direction={direction}
-          className={`space-y-2 px-8 ${contentClassName}`}
+          className={`space-y-2 px-4 sm:px-6 md:px-8 ${contentClassName}`}
         >
           {stepsArray[currentStep - 1]}
         </StepContentWrapper>
         {!isCompleted && (
-          <div className={`px-8 pb-8 ${footerClassName}`}>
+          <div
+            className={`px-4 sm:px-6 md:px-8 pb-6 sm:pb-8 ${footerClassName}`}
+          >
             <div
               className={`mt-10 flex ${currentStep !== 1 ? "justify-between" : "justify-end"}`}
             >
@@ -131,14 +133,7 @@ export default function Stepper({
               )}
               <button
                 onClick={isLastStep ? handleComplete : handleNext}
-                className="duration-350 flex items-center justify-center  tracking-tight rounded-full
-  bg-brand-600
-  hover:bg-brand-700
-  py-2 px-4
-  text-white
-  font-medium
-  transition
-  shadow-md "
+                className="duration-300 flex items-center justify-center tracking-tight rounded-full bg-brand-600 hover:bg-brand-700 py-2.5 px-6 text-white font-semibold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
                 {...nextButtonProps}
               >
                 {isLastStep ? "Complete" : nextButtonText}
@@ -221,7 +216,7 @@ const stepVariants = {
 };
 
 export function Step({ children }) {
-  return <div className="px-8">{children}</div>;
+  return <div className="px-2 sm:px-4 md:px-8">{children}</div>;
 }
 
 function StepIndicator({
