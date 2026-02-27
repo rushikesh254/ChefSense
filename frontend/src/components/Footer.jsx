@@ -1,99 +1,81 @@
 import React from "react";
-import { Img as Image } from "@/components/ui/img";
 import { Link } from "react-router-dom";
 
-function FooterColumn({ title, links }) {
-  return (
-    <div>
-      <h4 className="text-sm font-semibold uppercase tracking-wide text-stone-900">
-        {title}
-      </h4>
-      <ul className="mt-4 space-y-2">
-        {links.map((link) => (
-          <li key={link.name}>
-            <Link
-              to={link.to}
-              className="text-sm text-stone-600 hover:text-brand-600 transition-colors"
-            >
-              {link.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+const footerLinks = {
+  Product: [
+    { name: "Scan Pantry", to: "/dashboard" },
+    { name: "AI Recipes", to: "/dashboard" },
+    { name: "My Pantry", to: "/pantry" },
+  ],
+  Resources: [
+    { name: "How it works", to: "/how-it-works" },
+    { name: "FAQs", to: "/faqs" },
+    { name: "Contact", to: "/contact" },
+  ],
+  Company: [
+    { name: "About", to: "/about" },
+    { name: "Privacy Policy", to: "/privacy" },
+    { name: "Terms of Service", to: "/terms" },
+  ],
+};
 
 function Footer() {
   return (
-    <footer className="border-t border-stone-200 bg-gradient-to-b from-stone-50 to-white">
-      <div className="mx-auto max-w-7xl px-5 py-10 md:py-14">
-        <div className="grid gap-12 md:grid-cols-4">
+    <footer className="border-t border-stone-200 bg-stone-50">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="grid grid-cols-2 gap-8 sm:gap-10 md:grid-cols-4">
           {/* Brand */}
-          <div className="flex flex-col items-start">
-            <Link to="/" className="flex items-center gap-2 group">
-              <div className="relative w-20 h-20">
-                <Image
-                  src="/logo.png"
-                  alt="ChefSense logo"
-                  fill
-                  className="object-contain group-hover:scale-105 transition-transform"
-                />
-              </div>
-              <span className="text-lg font-semibold text-stone-900 group-hover:text-brand-600 transition-colors">
+          <div className="col-span-2 md:col-span-1">
+            <Link to="/" className="flex items-center gap-2">
+              <img
+                src="/logo.png"
+                alt="ChefSense logo"
+                className="w-16 h-16 sm:w-20 sm:h-20 object-contain"
+              />
+              <span className="text-lg font-semibold text-stone-900">
                 ChefSense
               </span>
             </Link>
-
-            <p className="mt-4 text-sm text-stone-600 max-w-xs ">
-              Smart cooking powered by AI.
-              <br />
-              Reduce waste. Eat better.
+            <p className="mt-4 text-sm text-stone-600 max-w-xs leading-relaxed">
+              Smart cooking powered by AI. Reduce waste. Eat better.
             </p>
           </div>
 
-          {/* Product */}
-          <FooterColumn
-            title="Product"
-            links={[
-              { name: "Scan Pantry", to: "/dashboard" },
-              { name: "AI Recipes", to: "/dashboard" },
-              { name: "My Pantry", to: "/pantry" },
-              { name: "Pricing", to: "/pricing" },
-            ]}
-          />
-
-          {/* Resources */}
-          <FooterColumn
-            title="Resources"
-            links={[
-              { name: "How it works", to: "/how-it-works" },
-              { name: "Help Center", to: "/contact" },
-              { name: "FAQs", to: "/faqs" },
-              { name: "Contact", to: "/contact" },
-            ]}
-          />
-
-          {/* Company */}
-          <FooterColumn
-            title="Company"
-            links={[
-              { name: "About", to: "/about" },
-              { name: "Privacy Policy", to: "/privacy" },
-              { name: "Terms of Service", to: "/terms" },
-            ]}
-          />
+          {/* Link Columns */}
+          {Object.entries(footerLinks).map(([title, links]) => (
+            <div key={title}>
+              <h4 className="text-sm font-semibold uppercase tracking-wide text-stone-900">
+                {title}
+              </h4>
+              <ul className="mt-4 space-y-3">
+                {links.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      to={link.to}
+                      className="text-sm text-stone-600 hover:text-brand-600 transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-stone-200 pt-8 text-sm text-stone-500 md:flex-row">
-          <span>© 2026 ChefSense. All rights reserved.</span>
-
+        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-stone-200 pt-6 text-sm text-stone-500 sm:flex-row">
+          <span>&copy; 2026 ChefSense. All rights reserved.</span>
           <span className="flex items-center gap-1">
-            Made with <span>💗</span> by{" "}
-            <span className="font-semibold hover:text-brand-600 transition-colors cursor-pointer">
+            Made with 💗 by{" "}
+            <a
+              href="https://github.com/rushikesh"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold hover:text-brand-600 transition-colors"
+            >
               Rushikesh
-            </span>
+            </a>
           </span>
         </div>
       </div>

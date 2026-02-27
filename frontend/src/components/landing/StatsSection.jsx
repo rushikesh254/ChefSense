@@ -3,20 +3,16 @@ import { SITE_STATS } from "@/lib/data";
 
 export default function StatsSection() {
   return (
-    <section className="py-12 sm:py-14">
-      <div className="max-w-5xl mx-auto px-4">
-        <div className="rounded-2xl border border-stone-200/60 bg-white/60 backdrop-blur-sm px-8 py-10 sm:py-12">
+    <section className="py-10 sm:py-14 px-5 sm:px-6">
+      <div className="max-w-5xl mx-auto">
+        <div className="rounded-2xl border border-stone-200/60 bg-white px-6 sm:px-8 py-8 sm:py-10 shadow-sm">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-4">
-            {SITE_STATS.map((stat, i) => (
-              <div key={i} className="text-center relative">
-                {/* Subtle divider between items on desktop */}
-                {i !== 0 && (
-                  <div className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-10 bg-stone-200" />
-                )}
-                <div className="text-3xl sm:text-4xl font-bold mb-1 text-stone-900 tracking-tight">
+            {SITE_STATS.map((stat) => (
+              <div key={stat.label} className="text-center">
+                <div className="text-4xl sm:text-5xl font-bold tracking-tight text-stone-700 mb-1">
                   {stat.val}
                 </div>
-                <span className="text-stone-500 text-xs uppercase tracking-wider font-medium">
+                <span className="text-stone-500 text-xs sm:text-sm uppercase tracking-widest font-semibold">
                   {stat.label}
                 </span>
               </div>
