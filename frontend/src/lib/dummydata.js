@@ -87,4 +87,62 @@ export const DUMMY_DATA = {
       readyInMinutes: 30,
     },
   ],
+    quickMeals: [
+    {
+      id: 201,
+      title: "Egg Fried Rice",
+      image:
+        "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d",
+      readyInMinutes: 20,
+    },
+    {
+      id: 202,
+      title: "Grilled Cheese Sandwich",
+      image:
+        "https://images.unsplash.com/photo-1528735602780-2552fd46c7af",
+      readyInMinutes: 10,
+    },
+    {
+      id: 203,
+      title: "Pasta Alfredo",
+      image:
+        "https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642",
+      readyInMinutes: 25,
+    },
+    {
+      id: 204,
+      title: "Veggie Wrap",
+      image:
+        "https://images.unsplash.com/photo-1562967916-eb82221dfb36",
+      readyInMinutes: 15,
+    },
+    {
+      id: 205,
+      title: "Veggie Omelette",
+      image:
+        "https://images.unsplash.com/photo-1510693206972-df098062cb71?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8b21lbGV0dGV8ZW58MHx8MHx8fDA%3D",
+      readyInMinutes: 10,
+    },
+    {
+      id: 206,
+      title: "Bean Burrito",
+      image:
+        "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YnVycml0b3xlbnwwfHwwfHx8MA%3D%3D",
+      readyInMinutes: 12,
+    },
+    {
+      id: 207,
+      title: "Cheese Quesadilla",
+      image:
+        "https://images.unsplash.com/photo-1599321955726-9048b5b930dc?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cXVlc2FkaWxsYXxlbnwwfHwwfHx8MA%3D%3D",
+      readyInMinutes: 8,
+    },
+    {
+      id: 208,
+      title: "Acai Bowl",
+      image:
+        "https://images.unsplash.com/photo-1590301157890-4810ed352733?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c21vb3RoaWUlMjBib3dsfGVufDB8fDB8fHww",
+      readyInMinutes: 5,
+    },
+  ],
 };
