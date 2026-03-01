@@ -18,7 +18,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { getCategoryEmoji, slugify } from "@/lib/data";
 
 const Dashboard = () => {
-  const { recipeOfTheDay, categories, trending } = DUMMY_DATA;
+  const { recipeOfTheDay, categories, trending, quickMeals } = DUMMY_DATA;
 
   const heroSummary = (() => {
     if (!recipeOfTheDay?.summary) return "";
@@ -157,6 +157,60 @@ const Dashboard = () => {
             ))}
           </div>
         </section>
+
+
+
+            {/* Quick Meals */}
+        {quickMeals?.length > 0 && (
+          <section className="bg-stone-50 rounded-2xl p-5 sm:p-8">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <p className="text-xs text-stone-500 mb-1 font-semibold uppercase tracking-wider">
+                  Quick Recipes
+                </p>
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-stone-900 text-balance">
+                  Ready in 15 Minutes
+                </h2>
+              </div>
+              <Button variant="outline" size="sm" className="rounded-full">
+                View All
+              </Button>
+            </div>
+
+            <Carousel opts={{ align: "start" }} className="w-full">
+              <CarouselContent className="-ml-4">
+                {quickMeals.map((meal) => (
+                  <CarouselItem
+                    key={meal.id}
+                    className="pl-4 basis-[70%] sm:basis-[45%] md:basis-[30%] lg:basis-[22%]"
+                  >
+                    <Link to={`/recipe?cook=${encodeURIComponent(meal.title)}`}>
+                      <Card className="overflow-hidden rounded-2xl border-stone-200/60 shadow-sm hover:shadow-md transition-shadow">
+                        <AspectRatio ratio={1}>
+                          <img
+                            src={meal.image}
+                            alt={meal.title}
+                            loading="lazy"
+                            className="w-full h-full object-cover"
+                          />
+                        </AspectRatio>
+                        <CardContent className="p-4">
+                          <h4 className="font-bold text-base text-stone-900 line-clamp-1">
+                            {meal.title}
+                          </h4>
+                          <p className="text-xs font-medium text-stone-500 mt-1">
+                            {meal.readyInMinutes || 15} min
+                          </p>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+          </section>
+        )}
+
       </div>
     </div>
   );
