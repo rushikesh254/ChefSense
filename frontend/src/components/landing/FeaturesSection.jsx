@@ -29,8 +29,8 @@ export default function FeaturesSection() {
             >
               <CardContent className="p-6 sm:p-8">
                 <div className="flex items-start gap-5">
-                  {/* Removed the border, made it rounded-2xl, and added slight padding */}
-                  <div className="shrink-0 rounded-2xl bg-brand-50 p-3.5 group-hover:scale-105 transition-transform">
+             
+                  <div className="shrink-0 rounded-2xl bg-brand-50 p-3.5 group-hover:border-orange-600 group-hover:border-2   group-hover:scale-105 transition-transform">
                     <feature.icon className="w-6 h-6 text-brand-600" />
                   </div>
                   <div className="pt-1">

@@ -4,20 +4,12 @@ export const DUMMY_DATA = {
   recipeOfTheDay: {
     id: 1,
     title: "Creamy Garlic Butter Chicken",
-    image:
-      "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d",
+    image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d",
     summary:
       "A rich and creamy garlic butter chicken recipe made with fresh herbs and pan-seared perfection. Perfect for dinner nights and family gatherings.",
     rating: 4.8,
     readyInMinutes: 35,
     servings: 4,
-  },
-
-  wasteStats: {
-    totalWeightSaved: 1250,
-    estimatedMoneySaved: 540,
-    expiringSoonCount: 3,
-    expiredCount: 1,
   },
 
   categories: [
@@ -28,40 +20,15 @@ export const DUMMY_DATA = {
     { name: "Snacks" },
     { name: "Brunch" },
     { name: "Smoothies" },
-    { name: "Soul Food" },
+    { name: "SoulFood" },
     { name: "BBQ" },
-  ],
-
-  cuisines: [
-    { name: "Italian" },
-    { name: "Indian" },
-    { name: "Mexican" },
-    { name: "Japanese" },
-    { name: "Thai" },
-    { name: "Spanish" },
-    { name: "French" },
-    { name: "Chinese" },
-    { name: "Greek" },
-    { name: "Korean" },
-    { name: "American" },
-  ],
-
-  diets: [
-    { name: "Vegetarian" },
-    { name: "Vegan" },
-    { name: "Keto" },
-    { name: "Gluten Free" },
-    { name: "Paleo" },
-    { name: "Low Carb" },
-    { name: "Pescatarian" },
   ],
 
   trending: [
     {
       id: 101,
       title: "Spicy Korean Ramen",
-      image:
-        "https://images.unsplash.com/photo-1585032226651-759b368d7246",
+      image: "https://images.unsplash.com/photo-1585032226651-759b368d7246",
       rating: 4.6,
       readyInMinutes: 25,
     },
@@ -69,23 +36,21 @@ export const DUMMY_DATA = {
       id: 102,
       title: "Classic Margherita Pizza",
       image:
-        "https://images.unsplash.com/photo-1548365328-9f547fb0953d",
+        "https://plus.unsplash.com/premium_photo-1733259709671-9dbf22bf02cc?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       rating: 4.9,
       readyInMinutes: 40,
     },
     {
       id: 103,
       title: "Healthy Avocado Salad",
-      image:
-        "https://images.unsplash.com/photo-1546069901-ba9599a7e63c",
+      image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c",
       rating: 4.5,
       readyInMinutes: 15,
     },
     {
       id: 104,
       title: "Chocolate Lava Cake",
-      image:
-        "https://images.unsplash.com/photo-1606312619344-4c4c7c65d2db",
+      image: "https://images.unsplash.com/photo-1606312619344-4c4c7c65d2db",
       rating: 4.7,
       readyInMinutes: 30,
     },
@@ -121,128 +86,5 @@ export const DUMMY_DATA = {
       rating: 4.8,
       readyInMinutes: 30,
     },
-  ],
-
-  quickMeals: [
-    {
-      id: 201,
-      title: "Egg Fried Rice",
-      image:
-        "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d",
-      readyInMinutes: 20,
-    },
-    {
-      id: 202,
-      title: "Grilled Cheese Sandwich",
-      image:
-        "https://images.unsplash.com/photo-1528735602780-2552fd46c7af",
-      readyInMinutes: 10,
-    },
-    {
-      id: 203,
-      title: "Pasta Alfredo",
-      image:
-        "https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642",
-      readyInMinutes: 25,
-    },
-    {
-      id: 204,
-      title: "Veggie Wrap",
-      image:
-        "https://images.unsplash.com/photo-1562967916-eb82221dfb36",
-      readyInMinutes: 15,
-    },
-    {
-      id: 205,
-      title: "Veggie Omelette",
-      image:
-        "https://images.unsplash.com/photo-1510693206972-df098062cb71?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8b21lbGV0dGV8ZW58MHx8MHx8fDA%3D",
-      readyInMinutes: 10,
-    },
-    {
-      id: 206,
-      title: "Bean Burrito",
-      image:
-        "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YnVycml0b3xlbnwwfHwwfHx8MA%3D%3D",
-      readyInMinutes: 12,
-    },
-    {
-      id: 207,
-      title: "Cheese Quesadilla",
-      image:
-        "https://images.unsplash.com/photo-1599321955726-9048b5b930dc?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cXVlc2FkaWxsYXxlbnwwfHwwfHx8MA%3D%3D",
-      readyInMinutes: 8,
-    },
-    {
-      id: 208,
-      title: "Acai Bowl",
-      image:
-        "https://images.unsplash.com/photo-1590301157890-4810ed352733?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c21vb3RoaWUlMjBib3dsfGVufDB8fDB8fHww",
-      readyInMinutes: 5,
-    },
-  ],
-
-  recentlyViewed: [
-    {
-      id: 301,
-      title: "Garlic Butter Chicken",
-      image:
-        "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d",
-    },
-    {
-      id: 302,
-      title: "Veggie Buddha Bowl",
-      image:
-        "https://images.unsplash.com/photo-1546069901-ba9599a7e63c",
-    },
-    {
-      id: 303,
-      title: "Mushroom Risotto",
-      image:
-        "https://images.unsplash.com/photo-1476124369491-e7addf5db371",
-    },
-    {
-      id: 304,
-      title: "Berry Smoothie Bowl",
-      image:
-        "https://images.unsplash.com/photo-1590301157890-4810ed352733",
-    },
-    {
-      id: 305,
-      title: "Caesar Salad",
-      image:
-        "https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2Flc2FyJTIwc2FsYWR8ZW58MHx8MHx8fDA%3D",
-    },
-    {
-      id: 306,
-      title: "Beef Stir Fry",
-      image:
-        "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3RpciUyMGZyeXxlbnwwfHwwfHx8MA%3D%3D",
-    },
-    {
-      id: 307,
-      title: "Hummus Platter",
-      image:
-        "https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtbXVzfGVufDB8fDB8fHww",
-    },
-    {
-      id: 308,
-      title: "Chicken Fajitas",
-      image:
-        "https://images.unsplash.com/photo-1534939561126-855f8665ed09?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmFqaXRhc3xlbnwwfHwwfHx8MA%3D%3D",
-    },
-  ],
-
-  cookingTips: [
-    "Always salt your pasta water generously — it should taste like the sea.",
-    "Let meat rest after cooking for 5 minutes to retain all the juices.",
-    "Add a squeeze of lemon at the end for brighter, livelier flavor.",
-    "Use fresh herbs as garnish — they add color and fragrance instantly.",
-    "Preheat your pan before adding oil for a better sear.",
-    "Taste as you cook — seasoning is an ongoing process, not a one-time step.",
-    "Bake cookies at a slightly lower temp for a chewier texture.",
-    "Use a microplane to zest citrus directly over the dish for maximum aroma.",
-    "Keep raw chicken separate to avoid cross-contamination — safety first!",
-    "Sharpen your knives regularly — a dull knife is more dangerous than a sharp one.",
   ],
 };

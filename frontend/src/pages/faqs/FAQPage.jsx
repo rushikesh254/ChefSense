@@ -7,44 +7,42 @@ import {
 } from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
 
-const faqs = [
-  {
-    question: "How accurate is the ingredient recognition?",
-    answer:
-      "Our AI is trained on millions of food images and is highly accurate. Lighting and camera angle can affect results, but you can always edit ingredients manually.",
-  },
-  {
-    question: "Is ChefSense free to use?",
-    answer:
-      "Yes. You can scan ingredients and get recipes for free. We also offer a Pro plan with unlimited scans and advanced features.",
-  },
-  {
-    question: "Can I save my favorite recipes?",
-    answer:
-      "Yes. Click the heart icon on any recipe to save it to your personal cookbook.",
-  },
-  {
-    question: "Does it support dietary restrictions?",
-    answer:
-      "Yes. You can filter recipes by Vegetarian, Vegan, Gluten-Free, Keto, and more.",
-  },
-];
+export default function FAQPage() {
+  const faqs = [
+    {
+      question: "What is ChefSense?",
+      answer:
+        "ChefSense is an AI-powered recipe platform that helps you cook amazing meals using ingredients you already have. Simply scan your pantry and get personalized recipe suggestions.",
+    },
+    {
+      question: "How does the AI scanning work?",
+      answer:
+        "Our platform uses Google Gemini AI Vision to analyze photos of your ingredients. Just take a picture of your fridge or pantry, and the AI will identify the items automatically.",
+    },
+    {
+      question: "Is ChefSense free to use?",
+      answer:
+        "Yes! ChefSense is completely free to use. You can scan your pantry, generate recipes, and save your favorites at no cost.",
+    },
+    {
+      question: "What features does ChefSense offer?",
+      answer:
+        "ChefSense includes AI pantry scanning, personalized recipe suggestions, nutrition info, chef's tips, ingredient substitutions, and PDF recipe downloads.",
+    },
+  ];
 
-const FAQPage = () => {
   return (
-    <div className="min-h-screen py-20 px-5 sm:px-6">
-      <div className="max-w-3xl mx-auto">
-        {/* Header */}
+    <div className="min-h-screen bg-stone-50 pt-20">
+      <div className="container mx-auto px-4 py-16 max-w-3xl">
         <div className="text-center mb-12">
-          <h1 className="text-3xl sm:text-5xl font-bold mb-3">
+          <h1 className="text-4xl font-bold text-stone-900 mb-4">
             Frequently Asked Questions
           </h1>
-          <p className="text-stone-600">
+          <p className="text-lg text-stone-600">
             Everything you need to know about ChefSense.
           </p>
         </div>
 
-        {/* FAQ */}
         <Card className="border-stone-200">
           <CardContent className="p-5 sm:p-8">
             <Accordion type="single" collapsible className="space-y-1">
@@ -54,7 +52,7 @@ const FAQPage = () => {
                   value={`item-${i}`}
                   className="border-b border-stone-200 last:border-b-0"
                 >
-                  <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
+                  <AccordionTrigger className="text-left font-bold hover:no-underline py-4">
                     {faq.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-stone-600 leading-relaxed pb-4">
@@ -68,6 +66,4 @@ const FAQPage = () => {
       </div>
     </div>
   );
-};
-
-export default FAQPage;
+}

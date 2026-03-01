@@ -13,13 +13,6 @@ export default function HeroSection() {
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
           {/* Left Side */}
           <div className="flex-1 text-center lg:text-left">
-            {/* <Badge
-              variant="outline"
-              className="border-brand-200 text-brand-600 bg-brand-50 text-xs font-semibold mb-5 uppercase tracking-wider"
-            >
-              <Sparkles className="mr-1.5 w-3.5 h-3.5" />
-              #1 AI Cooking Assistant
-            </Badge> */}
             <Badge
               variant="outline"
               className="border-orange-200 text-orange-500 bg-orange-50/50 text-sm font-semibold mb-6 uppercase tracking-wide px-3 py-1 rounded-md"
@@ -27,13 +20,6 @@ export default function HeroSection() {
               <Sparkles className="mr-1.5 w-4 h-4" />
               #1 AI Cooking Assistant
             </Badge>
-            {/* 
-            <h1 className="text-4xl sm:text-5xl md:text-8xl font-extrabold mb-5 leading-tight text-balance">
-              Turn your{" "}
-              <span className="capitalize text-brand-600">leftovers</span> into{" "}
-              <br className="hidden sm:block" />
-              masterpieces.
-            </h1> */}
 
             <h1 className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight text-stone-900 mb-6 leading-[1.1]">
               Turn your <br className="hidden lg:block" />
@@ -46,27 +32,6 @@ export default function HeroSection() {
               Snap a photo of your fridge. We'll tell you what to cook. Save
               money, reduce waste, and eat better tonight.
             </p>
-
-            {/* <div className="flex flex-col sm:flex-row gap-3 items-center justify-center lg:justify-start">
-              <Button
-                asChild
-                variant="primary"
-                size="lg"
-                className="w-full sm:w-auto"
-              >
-                <Link to="/dashboard">
-                  Start Cooking Free <ArrowRight className="ml-2 w-4 h-4" />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="w-full sm:w-auto"
-              >
-                <Link to="/how-it-works">See How It Works</Link>
-              </Button>
-            </div> */}
 
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-center md:justify-start">
               <Link
@@ -85,13 +50,17 @@ export default function HeroSection() {
 
             <div className="mt-8 flex items-center gap-3 justify-center lg:justify-start">
               <div className="flex -space-x-2">
-                {["🧑‍🍳", "👨‍🍳", "👩‍🍳"].map((emoji, i) => (
-                  <div
+                {[
+                  "https://i.pravatar.cc/150?u=admin@example.com",
+                  "https://i.pravatar.cc/150?u=chef@example.com",
+                  "https://i.pravatar.cc/150?u=cook@example.com",
+                ].map((url, i) => (
+                  <img
                     key={i}
-                    className="w-10 h-10 rounded-full bg-brand-50 border-[3px] border-white flex items-center justify-center text-base shadow-sm"
-                  >
-                    {emoji}
-                  </div>
+                    src={url}
+                    alt={`Cook avatar ${i + 1}`}
+                    className="w-10 h-10 rounded-full border-[3px] border-white object-cover shadow-sm bg-brand-50"
+                  />
                 ))}
               </div>
               <p className="text-base text-stone-500">

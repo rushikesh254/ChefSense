@@ -3,17 +3,9 @@ import { Link, NavLink } from "react-router-dom";
 import { LayoutDashboard, Cookie, Refrigerator, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const navLinks = [
-  { to: "/dashboard", label: "Explore", icon: LayoutDashboard, authOnly: true },
-  { to: "/recipes", label: "My Recipes", icon: Cookie },
-  { to: "/pantry", label: "My Pantry", icon: Refrigerator },
-];
-
 function Header() {
   const isSignedIn = false;
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  const visibleLinks = navLinks.filter((link) => !link.authOnly || isSignedIn);
 
   return (
     <header className="fixed top-0 w-full border-b border-stone-200 bg-white/90 backdrop-blur-md z-50">
@@ -29,20 +21,41 @@ function Header() {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-6 text-sm font-medium text-stone-600">
-          {visibleLinks.map((link) => (
+          {isSignedIn && (
             <NavLink
-              key={link.to}
-              to={link.to}
+              to="/dashboard"
               className={({ isActive }) =>
                 `flex items-center gap-1.5 transition-colors ${
                   isActive ? "text-brand-600" : "hover:text-brand-600"
                 }`
               }
             >
-              <link.icon className="w-4 h-4" />
-              {link.label}
+              <LayoutDashboard className="w-4 h-4" />
+              Explore
             </NavLink>
-          ))}
+          )}
+          <NavLink
+            to="/recipes"
+            className={({ isActive }) =>
+              `flex items-center gap-1.5 transition-colors ${
+                isActive ? "text-brand-600" : "hover:text-brand-600"
+              }`
+            }
+          >
+            <Cookie className="w-4 h-4" />
+            My Recipes
+          </NavLink>
+          <NavLink
+            to="/pantry"
+            className={({ isActive }) =>
+              `flex items-center gap-1.5 transition-colors ${
+                isActive ? "text-brand-600" : "hover:text-brand-600"
+              }`
+            }
+          >
+            <Refrigerator className="w-4 h-4" />
+            My Pantry
+          </NavLink>
         </div>
 
         {/* Right Side */}
@@ -83,10 +96,9 @@ function Header() {
       {mobileOpen && (
         <div className="md:hidden border-t border-stone-200 bg-white">
           <div className="px-5 py-3 space-y-1">
-            {visibleLinks.map((link) => (
+            {isSignedIn && (
               <NavLink
-                key={link.to}
-                to={link.to}
+                to="/dashboard"
                 onClick={() => setMobileOpen(false)}
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors ${
@@ -96,10 +108,38 @@ function Header() {
                   }`
                 }
               >
-                <link.icon className="w-4 h-4" />
-                {link.label}
+                <LayoutDashboard className="w-4 h-4" />
+                Explore
               </NavLink>
-            ))}
+            )}
+            <NavLink
+              to="/recipes"
+              onClick={() => setMobileOpen(false)}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors ${
+                  isActive
+                    ? "text-brand-600 bg-brand-50"
+                    : "text-stone-700 hover:bg-stone-100"
+                }`
+              }
+            >
+              <Cookie className="w-4 h-4" />
+              My Recipes
+            </NavLink>
+            <NavLink
+              to="/pantry"
+              onClick={() => setMobileOpen(false)}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors ${
+                  isActive
+                    ? "text-brand-600 bg-brand-50"
+                    : "text-stone-700 hover:bg-stone-100"
+                }`
+              }
+            >
+              <Refrigerator className="w-4 h-4" />
+              My Pantry
+            </NavLink>
 
             {/* Mobile auth buttons */}
             <div className="pt-3 mt-2 border-t border-stone-200 flex flex-col gap-2">
