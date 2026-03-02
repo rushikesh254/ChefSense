@@ -171,5 +171,70 @@ export const DUMMY_DATA = {
   ],
 
   
+  recentlyViewed: [
+    {
+      id: 301,
+      title: "Garlic Butter Chicken",
+      image:
+        "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d",
+    },
+    {
+      id: 302,
+      title: "Veggie Buddha Bowl",
+      image:
+        "https://images.unsplash.com/photo-1546069901-ba9599a7e63c",
+    },
+    {
+      id: 303,
+      title: "Mushroom Risotto",
+      image:
+        "https://images.unsplash.com/photo-1476124369491-e7addf5db371",
+    },
+    {
+      id: 304,
+      title: "Berry Smoothie Bowl",
+      image:
+        "https://images.unsplash.com/photo-1590301157890-4810ed352733",
+    },
+    {
+      id: 305,
+      title: "Caesar Salad",
+      image:
+        "https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2Flc2FyJTIwc2FsYWR8ZW58MHx8MHx8fDA%3D",
+    },
+    {
+      id: 306,
+      title: "Beef Stir Fry",
+      image:
+        "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3RpciUyMGZyeXxlbnwwfHwwfHx8MA%3D%3D",
+    },
+    {
+      id: 307,
+      title: "Hummus Platter",
+      image:
+        "https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtbXVzfGVufDB8fDB8fHww",
+    },
+    {
+      id: 308,
+      title: "Chicken Fajitas",
+      image:
+        "https://images.unsplash.com/photo-1534939561126-855f8665ed09?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmFqaXRhc3xlbnwwfHwwfHx8MA%3D%3D",
+    },
+  ],
+
+  cookingTips: [
+    "Always salt your pasta water generously — it should taste like the sea.",
+    "Let meat rest after cooking for 5 minutes to retain all the juices.",
+    "Add a squeeze of lemon at the end for brighter, livelier flavor.",
+    "Use fresh herbs as garnish — they add color and fragrance instantly.",
+    "Preheat your pan before adding oil for a better sear.",
+    "Taste as you cook — seasoning is an ongoing process, not a one-time step.",
+    "Bake cookies at a slightly lower temp for a chewier texture.",
+    "Use a microplane to zest citrus directly over the dish for maximum aroma.",
+    "Keep raw chicken separate to avoid cross-contamination — safety first!",
+    "Sharpen your knives regularly — a dull knife is more dangerous than a sharp one.",
+  ],
+
+  
 
 };

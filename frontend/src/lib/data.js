@@ -172,6 +172,8 @@ const categoryEmojiMap = {
   bbq: "🔥",
 };
 
+
+
 export function getCategoryEmoji(name) {
   return categoryEmojiMap[name.toLowerCase()] || "🍽️";
 }
@@ -238,6 +240,8 @@ export const dietColors = {
   pescatarian: "bg-cyan-50 border-cyan-200 text-cyan-700 hover:bg-cyan-100",
   "dairy free": "bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100",
 };
+
+
 
 
 
