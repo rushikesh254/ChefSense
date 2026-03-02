@@ -145,4 +145,31 @@ export const DUMMY_DATA = {
       readyInMinutes: 5,
     },
   ],
+
+   cuisines: [
+    { name: "Italian" },
+    { name: "Indian" },
+    { name: "Mexican" },
+    { name: "Japanese" },
+    { name: "Thai" },
+    { name: "Spanish" },
+    { name: "French" },
+    { name: "Chinese" },
+    { name: "Greek" },
+    { name: "Korean" },
+    { name: "American" },
+  ],
+
+  diets: [
+    { name: "Vegetarian" },
+    { name: "Vegan" },
+    { name: "Keto" },
+    { name: "Gluten Free" },
+    { name: "Paleo" },
+    { name: "Low Carb" },
+    { name: "Pescatarian" },
+  ],
+
+  
+
 };

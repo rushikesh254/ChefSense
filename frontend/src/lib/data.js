@@ -186,3 +186,59 @@ export function slugify(text) {
     .replace(/\s+/g, "-")
     .replace(/[^\w-]+/g, "");
 }
+
+
+
+const countryFlagMap = {
+  italian: "https://flagcdn.com/w80/it.png",
+  indian: "https://flagcdn.com/w80/in.png",
+  mexican: "https://flagcdn.com/w80/mx.png",
+  japanese: "https://flagcdn.com/w80/jp.png",
+  thai: "https://flagcdn.com/w80/th.png",
+  chinese: "https://flagcdn.com/w80/cn.png",
+  french: "https://flagcdn.com/w80/fr.png",
+  american: "https://flagcdn.com/w80/us.png",
+  korean: "https://flagcdn.com/w80/kr.png",
+  greek: "https://flagcdn.com/w80/gr.png",
+  spanish: "https://flagcdn.com/w80/es.png",
+  
+};
+
+export function getCountryFlag(name) {
+  return countryFlagMap[name.toLowerCase()] || null;
+}
+
+
+
+
+const dietEmojiMap = {
+  vegetarian: "🥬",
+  vegan: "🌱",
+  keto: "🥑",
+  "gluten free": "🌾",
+  paleo: "🥩",
+  "dairy free": "🥛",
+};
+
+export function getDietEmoji(name) {
+  return dietEmojiMap[name.toLowerCase()] || "🍽️";
+}
+
+
+
+export const dietColors = {
+  vegetarian:
+    "bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100",
+  vegan: "bg-lime-50 border-lime-200 text-green-700 hover:bg-lime-100",
+  keto: "bg-violet-50 border-violet-200 text-violet-700 hover:bg-violet-100",
+  "gluten free": "bg-sky-50 border-sky-200 text-sky-700 hover:bg-sky-100",
+  paleo: "bg-amber-50 border-amber-200 text-amber-700 hover:bg-amber-100",
+  "low carb":
+    "bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100",
+  pescatarian: "bg-cyan-50 border-cyan-200 text-cyan-700 hover:bg-cyan-100",
+  "dairy free": "bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100",
+};
+
+
+
+
