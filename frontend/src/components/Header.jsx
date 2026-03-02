@@ -8,7 +8,7 @@ function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 w-full border-b border-stone-200 bg-white/90 backdrop-blur-md z-50">
+    <header className="fixed top-0 w-full border-b border-stone-200 bg-white/80 backdrop-blur-md z-50">
       <nav className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to={isSignedIn ? "/dashboard" : "/"} className="shrink-0">
@@ -58,6 +58,7 @@ function Header() {
           </NavLink>
         </div>
 
+
         {/* Right Side */}
         <div className="flex items-center gap-2">
           {/* Desktop auth buttons */}
@@ -94,7 +95,10 @@ function Header() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-stone-200 bg-white">
+        <div
+          className="md:hidden border-t border-b border-stone-200 
+        bg-white/90 backdrop-blur-md z-50 fixed  w-full"
+        >
           <div className="px-5 py-3 space-y-1">
             {isSignedIn && (
               <NavLink
