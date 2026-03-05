@@ -59,7 +59,7 @@ export default function HeroSection() {
                     key={i}
                     src={url}
                     alt={`Cook avatar ${i + 1}`}
-                    className="w-10 h-10 rounded-full border-[3px] border-white object-cover shadow-sm bg-brand-50"
+                    className="w-10 h-10 rounded-full border-[3px] border-white object-cover shadow-xs bg-brand-50"
                   />
                 ))}
               </div>
@@ -82,7 +82,7 @@ export default function HeroSection() {
               showTooltip={false}
               displayOverlayContent={true}
               overlayContent={
-                <Card className="mx-8 mb-8 bg-white/95 backdrop-blur-sm border border-stone-200 shadow-sm">
+                <Card className="mx-8 mb-8 bg-white/95 backdrop-blur-xs border border-stone-200 shadow-xs">
                   <CardContent className="p-4">
                     <div className="flex justify-between items-start mb-2">
                       <div>

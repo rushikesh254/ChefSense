@@ -96,7 +96,7 @@ const Dashboard = () => {
             alt={recipeOfTheDay.title}
             className="absolute inset-0 h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-black/10" />
 
           <div className="relative z-10 mx-auto h-full max-w-7xl px-5 sm:px-6 lg:px-8 flex flex-col justify-end pb-16 sm:pb-20">
             <div className="max-w-xl space-y-4">
@@ -175,7 +175,7 @@ const Dashboard = () => {
                 <Link
                   key={cat.name}
                   to={`/recipes/category/${slugify(cat.name)}`}
-                  className="group px-5 py-3 bg-white hover:bg-brand-50 border border-stone-200 rounded-full flex items-center gap-2.5 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-brand-200/50 hover:border-brand-500"
+                  className="group px-5 py-3 bg-white hover:bg-brand-50 border border-stone-200 rounded-full flex items-center gap-2.5 transition-all duration-300 hover:scale-105 shadow-xs hover:shadow-brand-200/50 hover:border-brand-500"
                 >
                   <span className="text-xl group-hover:scale-125 transition-transform duration-300">
                     {getCategoryEmoji(cat.name)}
@@ -207,7 +207,7 @@ const Dashboard = () => {
                   to={`/recipe/${recipe.id}`}
                   className="group"
                 >
-                  <div className="relative overflow-hidden rounded-2xl bg-stone-100 shadow-sm transition-shadow hover:shadow-md">
+                  <div className="relative overflow-hidden rounded-2xl bg-stone-100 shadow-xs transition-shadow hover:shadow-md">
                     <AspectRatio ratio={3 / 4}>
                       <img
                         src={recipe.image}
@@ -216,7 +216,7 @@ const Dashboard = () => {
                         className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </AspectRatio>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
                     <div className="absolute bottom-4 left-4 right-4 space-y-1">
                       <span className="text-xs text-stone-300 flex items-center gap-1">
                         <Clock3 className="w-3 h-3" />
@@ -258,7 +258,7 @@ const Dashboard = () => {
                     className="pl-4 basis-[70%] sm:basis-[45%] md:basis-[30%] lg:basis-[22%]"
                   >
                     <Link to={`/recipe?cook=${encodeURIComponent(meal.title)}`}>
-                      <Card className="overflow-hidden rounded-2xl border-stone-200/60 shadow-sm hover:shadow-md transition-shadow">
+                      <Card className="overflow-hidden rounded-2xl border-stone-200/60 shadow-xs hover:shadow-md transition-shadow">
                         <AspectRatio ratio={1}>
                           <img
                             src={meal.image}
@@ -309,7 +309,7 @@ const Dashboard = () => {
                     to={`/recipes/cuisine/${slugify(cuisine.name)}`}
                     className="group flex flex-col items-center gap-2.5"
                   >
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white shadow-sm border border-stone-100 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg group-hover:ring-2 group-hover:ring-brand-200 transition-all duration-300">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white shadow-xs border border-stone-100 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg group-hover:ring-2 group-hover:ring-brand-200 transition-all duration-300">
                       {flagUrl ? (
                         <img
                           src={flagUrl}
@@ -357,7 +357,7 @@ const Dashboard = () => {
                     className="group"
                   >
                     <Card
-                      className={`${colors} rounded-2xl shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300`}
+                      className={`${colors} rounded-2xl shadow-xs hover:-translate-y-1 hover:shadow-md transition-all duration-300`}
                     >
                       <CardContent className="p-4 flex items-center gap-3">
                         <span className="text-xl group-hover:scale-110 transition-transform duration-300">
@@ -394,7 +394,7 @@ const Dashboard = () => {
                       to={`/recipe?cook=${encodeURIComponent(recipe.title)}`}
                       className="group block"
                     >
-                      <Card className="overflow-hidden rounded-2xl border-stone-200/60 shadow-sm hover:shadow-md transition-shadow">
+                      <Card className="overflow-hidden rounded-2xl border-stone-200/60 shadow-xs hover:shadow-md transition-shadow">
                         <AspectRatio ratio={4 / 3}>
                           <img
                             src={recipe.image}
@@ -428,7 +428,7 @@ const Dashboard = () => {
         {/* Cooking Tip */}
         {randomTip && (
           <section>
-            <Card className="bg-brand-50/80 border-brand-200 rounded-3xl shadow-sm overflow-hidden relative">
+            <Card className="bg-brand-50/80 border-brand-200 rounded-3xl shadow-xs overflow-hidden relative">
               <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
                 <Lightbulb className="w-32 h-32 text-brand-900" />
               </div>

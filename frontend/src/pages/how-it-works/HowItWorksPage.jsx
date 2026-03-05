@@ -54,7 +54,7 @@ export default function HowItWorksPage() {
             return (
               <div
                 key={i}
-                className="bg-white rounded-2xl p-8 border border-stone-200 shadow-sm"
+                className="bg-white rounded-2xl p-8 border border-stone-200 shadow-xs"
               >
                 <div
                   className={`w-16 h-16 rounded-2xl ${step.color} flex items-center justify-center mb-4`}

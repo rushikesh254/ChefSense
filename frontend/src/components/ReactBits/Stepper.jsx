@@ -63,7 +63,7 @@ export default function Stepper({
     rounded-3xl
     border border-stone-200/60
     bg-white/80
-    backdrop-blur-sm
+    backdrop-blur-xs
     shadow-[0_30px_80px_rgba(0,0,0,0.06)]
     ${stepCircleContainerClassName}
   `}
@@ -239,7 +239,7 @@ function StepIndicator({
   return (
     <motion.div
       onClick={handleClick}
-      className="relative cursor-pointer outline-none focus:outline-none"
+      className="relative cursor-pointer outline-hidden focus:outline-hidden"
       animate={status}
       initial={false}
     >
@@ -266,7 +266,7 @@ function StepIndicator({
   rounded-full
   font-semibold
   text-sm
-  shadow-sm"
+  shadow-xs"
       >
         {status === "complete" ? (
           <CheckIcon className="h-4 w-4 text-black" />
