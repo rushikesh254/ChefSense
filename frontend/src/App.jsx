@@ -13,6 +13,8 @@ import TermsPage from "./pages/legal/TermsPage";
 import { Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import Dashboard from "./pages/dashboard/Dashboard";
+import RecipesPage from "./pages/recipes/RecipesPage";
+import FilterResultsPage from "./pages/recipes/FilterResultsPage";
 
 function App() {
   return (
@@ -32,6 +34,23 @@ function App() {
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/recipes" element={<RecipesPage />} />
+          <Route
+            path="/recipes/quick/:quick"
+            element={<FilterResultsPage type="quick" />}
+          />
+          <Route
+            path="/recipes/cuisine/:cuisine"
+            element={<FilterResultsPage type="cuisine" />}
+          />
+          <Route
+            path="/recipes/category/:category"
+            element={<FilterResultsPage type="category" />}
+          />
+          <Route
+            path="/recipes/diet/:diet"
+            element={<FilterResultsPage type="diet" />}
+          />
         </Routes>
       </main>
 
