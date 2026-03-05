@@ -161,26 +161,31 @@ const Dashboard = () => {
         {/* Categories */}
 
         {categories?.length > 0 && (
-          <section className="bg-stone-100/50 rounded-[2.5rem] p-8 sm:p-10">
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-stone-900 text-balance mb-6 flex items-center gap-2">
-              Explore Styles{" "}
-              <ChevronRight
-                className="w-4 h-4 text-brand-500"
-                aria-hidden="true"
-              />
-            </h2>
+          <section className="bg-stone-100/50 rounded-4xl p-8 sm:p-12">
+            <div className="mb-8">
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-stone-900 text-balance flex items-center gap-2">
+                Explore Styles{" "}
+                <ChevronRight
+                  className="w-5 h-5 text-brand-500"
+                  aria-hidden="true"
+                />
+              </h2>
+              <p className="text-stone-500 text-sm sm:text-base font-medium mt-2">
+                Browse recipes by your favorite style.
+              </p>
+            </div>
 
-            <div className="flex flex-wrap gap-3.5">
+            <div className="flex flex-wrap gap-4">
               {categories.map((cat) => (
                 <Link
                   key={cat.name}
                   to={`/recipes/category/${slugify(cat.name)}`}
-                  className="group px-5 py-3 bg-white hover:bg-brand-50 border border-stone-200 rounded-full flex items-center gap-2.5 transition-all duration-300 hover:scale-105 shadow-xs hover:shadow-brand-200/50 hover:border-brand-500"
+                  className="group px-6 py-3.5 bg-white hover:bg-brand-50 border border-stone-200 rounded-full flex items-center gap-3 transition-all duration-300 hover:scale-105 shadow-xs hover:shadow-brand-200/50 hover:border-brand-500"
                 >
-                  <span className="text-xl group-hover:scale-125 transition-transform duration-300">
+                  <span className="text-2xl inline-block group-hover:scale-[1.4] transition-transform duration-300 origin-center">
                     {getCategoryEmoji(cat.name)}
                   </span>
-                  <span className="text-sm font-bold text-stone-700 group-hover:text-brand-500 transition-colors duration-300">
+                  <span className="text-sm sm:text-base font-bold text-stone-700 group-hover:text-brand-500 transition-colors duration-300">
                     {cat.name}
                   </span>
                 </Link>
@@ -245,8 +250,13 @@ const Dashboard = () => {
                   Ready in 15 Minutes
                 </h2>
               </div>
-              <Button variant="outline" size="sm" className="rounded-full">
-                View All
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="rounded-full"
+              >
+                <Link to="/recipes/quick/all">View All</Link>
               </Button>
             </div>
 
@@ -290,7 +300,7 @@ const Dashboard = () => {
 
         {/* Cuisines */}
         {cuisines?.length > 0 && (
-          <section>
+          <section className="bg-stone-50 rounded-4xl p-8 sm:p-12">
             <div className="text-center mb-10">
               <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-stone-900 text-balance">
                 Explore Cuisines
@@ -300,27 +310,27 @@ const Dashboard = () => {
               </p>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
+            <div className="flex flex-wrap justify-center gap-8 sm:gap-10">
               {cuisines.map((cuisine) => {
                 const flagUrl = getCountryFlag(cuisine.name);
                 return (
                   <Link
                     key={cuisine.name}
                     to={`/recipes/cuisine/${slugify(cuisine.name)}`}
-                    className="group flex flex-col items-center gap-2.5"
+                    className="group flex flex-col items-center gap-3"
                   >
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white shadow-xs border border-stone-100 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg group-hover:ring-2 group-hover:ring-brand-200 transition-all duration-300">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white shadow-sm border border-stone-100 flex items-center justify-center group-hover:scale-[1.15] group-hover:shadow-xl group-hover:ring-3 group-hover:ring-brand-300 transition-all duration-300">
                       {flagUrl ? (
                         <img
                           src={flagUrl}
                           alt={`${cuisine.name} flag`}
-                          className="w-10 h-7 sm:w-12 sm:h-8 object-cover rounded-sm"
+                          className="w-11 h-8 sm:w-14 sm:h-10 object-cover rounded-sm"
                         />
                       ) : (
-                        <span className="text-2xl">🌍</span>
+                        <span className="text-3xl">🌍</span>
                       )}
                     </div>
-                    <span className="text-xs sm:text-sm font-bold text-stone-700 group-hover:text-brand-600 transition-colors">
+                    <span className="text-sm sm:text-base font-bold text-stone-700 group-hover:text-brand-600 transition-colors duration-300">
                       {cuisine.name}
                     </span>
                   </Link>
@@ -332,20 +342,23 @@ const Dashboard = () => {
 
         {/* Diets */}
         {diets?.length > 0 && (
-          <section className="bg-stone-50 rounded-2xl p-5 sm:p-8">
-            <div className="mb-8">
-              <div className="flex items-center gap-1.5 mb-2">
-                <Leaf className="w-4 h-4 text-brand-600" />
-                <p className="text-xs text-brand-600 font-bold uppercase tracking-wider">
+          <section className="bg-stone-50 rounded-4xl p-6 sm:p-10">
+            <div className="mb-10">
+              <div className="flex items-center gap-2 mb-3">
+                <Leaf className="w-5 h-5 text-brand-600" />
+                <p className="text-xs text-brand-600 font-bold uppercase tracking-widest">
                   Lifestyle
                 </p>
               </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-stone-900 text-balance">
                 Dietary Preferences
               </h2>
+              <p className="text-stone-500 text-sm sm:text-base font-medium mt-2">
+                Choose a lifestyle that fits your taste.
+              </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
               {diets.map((diet) => {
                 const colors =
                   dietColors[diet.name.toLowerCase()] ||
@@ -357,13 +370,15 @@ const Dashboard = () => {
                     className="group"
                   >
                     <Card
-                      className={`${colors} rounded-2xl shadow-xs hover:-translate-y-1 hover:shadow-md transition-all duration-300`}
+                      className={`${colors} rounded-2xl shadow-xs hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300`}
                     >
-                      <CardContent className="p-4 flex items-center gap-3">
-                        <span className="text-xl group-hover:scale-110 transition-transform duration-300">
+                      <CardContent className="p-5 sm:p-6 flex items-center gap-4">
+                        <span className="text-2xl sm:text-3xl inline-block group-hover:scale-[1.4] transition-transform duration-300 origin-center">
                           {getDietEmoji(diet.name)}
                         </span>
-                        <span className="text-sm font-bold">{diet.name}</span>
+                        <span className="text-sm sm:text-base font-bold">
+                          {diet.name}
+                        </span>
                       </CardContent>
                     </Card>
                   </Link>
