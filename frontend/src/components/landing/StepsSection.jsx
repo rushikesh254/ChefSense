@@ -19,7 +19,7 @@ export default function StepsSection() {
           </p>
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 mb-4 text-balance">
             From Photo to Feast in{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-orange-400">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-brand-500 to-orange-400">
               3 Steps
             </span>
           </h2>
@@ -29,7 +29,7 @@ export default function StepsSection() {
         </div>
 
         {/* Stepper Container */}
-        <div className="rounded-2xl border border-stone-200/60 bg-white px-5 sm:px-10 py-10 shadow-sm">
+        <div className="rounded-2xl border border-stone-200/60 bg-white px-5 sm:px-10 py-10 shadow-xs">
           <Stepper
             initialStep={1}
             onFinalStepCompleted={handleFinish}
@@ -49,7 +49,7 @@ export default function StepsSection() {
                   src="https://images.unsplash.com/photo-1542838132-92c53300491e"
                   alt="Ingredients"
                   loading="lazy"
-                  className="w-full max-w-md aspect-video object-cover rounded-xl mx-auto shadow-sm"
+                  className="w-full max-w-md aspect-video object-cover rounded-xl mx-auto shadow-xs"
                 />
               </div>
             </Step>
@@ -67,7 +67,7 @@ export default function StepsSection() {
                   src="https://images.unsplash.com/photo-1697577418970-95d99b5a55cf"
                   alt="AI Analysis"
                   loading="lazy"
-                  className="w-full max-w-md aspect-video object-cover rounded-xl mx-auto shadow-sm"
+                  className="w-full max-w-md aspect-video object-cover rounded-xl mx-auto shadow-xs"
                 />
               </div>
             </Step>
@@ -84,7 +84,7 @@ export default function StepsSection() {
                   src="https://images.unsplash.com/photo-1710091691780-c7eb0dc50cf8"
                   alt="Cook Food"
                   loading="lazy"
-                  className="w-full max-w-md aspect-video object-cover rounded-xl mx-auto shadow-sm"
+                  className="w-full max-w-md aspect-video object-cover rounded-xl mx-auto shadow-xs"
                 />
               </div>
             </Step>

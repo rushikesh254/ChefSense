@@ -25,7 +25,7 @@ export default function FeaturesSection() {
           {FEATURES.map((feature) => (
             <Card
               key={feature.title}
-              className="rounded-2xl border-stone-200/60 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group"
+              className="rounded-2xl border-stone-200/60 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 group"
             >
               <CardContent className="p-6 sm:p-8">
                 <div className="flex items-start gap-5">
