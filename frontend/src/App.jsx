@@ -52,6 +52,8 @@ function App() {
             element={<FilterResultsPage type="diet" />}
           />
         </Routes>
+
+        
       </main>
 
       <Footer />

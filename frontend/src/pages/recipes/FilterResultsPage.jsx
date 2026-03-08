@@ -1,15 +1,9 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React from 'react'
 
-function FilterResultsPage({ type }) {
-  const params = useParams();
-  const value = params[type];
-
+function FilterResultsPage() {
   return (
-    <div>
-      FilterResultsPage — {type}: {value}
-    </div>
-  );
+    <div className='text-8xl mt-20'>FilterResultsPage</div>
+  )
 }
 
-export default FilterResultsPage;
+export default FilterResultsPage
