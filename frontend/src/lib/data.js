@@ -172,15 +172,9 @@ const categoryEmojiMap = {
   bbq: "🔥",
 };
 
-
-
 export function getCategoryEmoji(name) {
   return categoryEmojiMap[name.toLowerCase()] || "🍽️";
 }
-
-
-
-
 
 export function slugify(text) {
   return text
@@ -188,8 +182,6 @@ export function slugify(text) {
     .replace(/\s+/g, "-")
     .replace(/[^\w-]+/g, "");
 }
-
-
 
 const countryFlagMap = {
   italian: "https://flagcdn.com/w80/it.png",
@@ -203,15 +195,11 @@ const countryFlagMap = {
   korean: "https://flagcdn.com/w80/kr.png",
   greek: "https://flagcdn.com/w80/gr.png",
   spanish: "https://flagcdn.com/w80/es.png",
-  
 };
 
 export function getCountryFlag(name) {
   return countryFlagMap[name.toLowerCase()] || null;
 }
-
-
-
 
 const dietEmojiMap = {
   vegetarian: "🥬",
@@ -226,8 +214,6 @@ export function getDietEmoji(name) {
   return dietEmojiMap[name.toLowerCase()] || "🍽️";
 }
 
-
-
 export const dietColors = {
   vegetarian:
     "bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100",
@@ -240,9 +226,3 @@ export const dietColors = {
   pescatarian: "bg-cyan-50 border-cyan-200 text-cyan-700 hover:bg-cyan-100",
   "dairy free": "bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100",
 };
-
-
-
-
-
-
