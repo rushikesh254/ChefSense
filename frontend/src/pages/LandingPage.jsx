@@ -9,8 +9,6 @@ import Stepper, { Step } from "@/components/ReactBits/Stepper";
 import { useNavigate } from "react-router-dom";
 import { FEATURES, SITE_STATS } from "@/lib/data";
 
-
-
 const LandingPage = () => {
   const navigate = useNavigate();
 
@@ -321,8 +319,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      
     </div>
   );
 };

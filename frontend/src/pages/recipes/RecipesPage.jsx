@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function RecipesPage() {
-  return (
-    <div className='text-8xl mt-20'>RecipesPage</div>
-  )
+  return <div className="text-8xl mt-20">RecipesPage</div>;
 }
 
-export default RecipesPage
+export default RecipesPage;
