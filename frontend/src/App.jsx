@@ -1,26 +1,25 @@
-import React from "react";
-import { Button } from "./components/ui/button";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import SignIn from "./pages/auth/SignIn";
-import SignUp from "./pages/auth/SignUp";
-import AboutPage from "./pages/about/AboutPage";
-import ContactPage from "./pages/contact/ContactPage";
-import FAQPage from "./pages/faqs/FAQPage";
-import HowItWorksPage from "./pages/how-it-works/HowItWorksPage";
-import PrivacyPage from "./pages/legal/PrivacyPage";
-import TermsPage from "./pages/legal/TermsPage";
-import { Routes, Route } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
-import Dashboard from "./pages/dashboard/Dashboard";
-import RecipesPage from "./pages/recipes/RecipesPage";
-import FilterResultsPage from "./pages/recipes/FilterResultsPage";
+import { Route, Routes } from 'react-router-dom'
+import { Toaster } from 'sonner'
+import Footer from './components/Footer'
+import Header from './components/Header'
+import LandingPage from './pages/LandingPage'
+import AboutPage from './pages/about/AboutPage'
+import SignIn from './pages/auth/SignIn'
+import SignUp from './pages/auth/SignUp'
+import ContactPage from './pages/contact/ContactPage'
+import Dashboard from './pages/dashboard/Dashboard'
+import FAQPage from './pages/faqs/FAQPage'
+import HowItWorksPage from './pages/how-it-works/HowItWorksPage'
+import PrivacyPage from './pages/legal/PrivacyPage'
+import TermsPage from './pages/legal/TermsPage'
+import PantryPage from './pages/pantry/PantryPage'
+import FilterResultsPage from './pages/recipes/FilterResultsPage'
+import RecipesPage from './pages/recipes/RecipesPage'
 
 function App() {
   return (
     <>
       <Header />
-
       <main className="min-h-screen bg-[#F9F7F7] text-stone-900">
         <Routes>
           {/* public routes */}
@@ -51,12 +50,13 @@ function App() {
             path="/recipes/diet/:diet"
             element={<FilterResultsPage type="diet" />}
           />
+          <Route path="/pantry" element={<PantryPage />} />
         </Routes>
+        <Toaster richColors position="bottom-right" />
       </main>
-
       <Footer />
     </>
-  );
+  )
 }
 
-export default App;
+export default App
