@@ -1,77 +1,82 @@
-import React from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Star, Clock, Users, Sparkles } from "lucide-react";
-import { Link } from "react-router-dom";
-import TiltedCard from "@/components/ReactBits/TiltedCard";
 import { Card, CardContent } from "@/components/ui/card";
-import Stepper, { Step } from "@/components/ReactBits/Stepper";
-import { useNavigate } from "react-router-dom";
-import { FEATURES, SITE_STATS } from "@/lib/data";
+import { Separator } from "@/components/ui/separator";
+import { FEATURES, STEPS, TESTIMONIALS } from "@/utils/data";
+import {
+  ArrowRight,
+  Clock,
+  Frown,
+  Smile,
+  Star,
+  Users,
+  Vegan,
+} from "lucide-react";
+import { Link } from "react-router-dom";
 
 const LandingPage = () => {
-  const navigate = useNavigate();
-
-  const handleFinish = () => {
-    navigate("/sign-in");
-  };
   return (
-    <div className="min-h-screen">
-      {/* hero section  */}
-      <section className="pt-24 sm:pt-32 pb-16 sm:pb-20 px-5 sm:px-6">
+    <div className=" min-h-screen">
+      {/* hero sectiom  */}
+      <section className=" pt-24 pb-20 px-5 sm:px-10 lg:px-16">
         <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
-            {/* Left Side */}
+          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+            {/* left */}
             <div className="flex-1 text-center lg:text-left">
               <Badge
                 variant="outline"
-                className="border-orange-200 text-orange-500 bg-orange-50/50 text-sm font-semibold mb-6 uppercase tracking-wide px-3 py-1 rounded-md"
+                className="border-brand-200 text-brand-500 bg-brand-50 text-xs font-bold uppercase tracking-widest mb-4"
               >
-                <Sparkles className="mr-1.5 w-4 h-4" />
                 #1 AI Cooking Assistant
               </Badge>
 
-              <h1 className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight text-stone-900 mb-6 leading-[1.1]">
-                Turn your <br className="hidden lg:block" />
-                <span className="italic text-brand-600">
-                  leftovers
-                </span> into <br className="hidden sm:block" />
+              <h1 className="text-5xl sm:text-6xl lg:text-8xl font-extrabold text-stone-900 mb-6 leading-[1.08] tracking-tight">
+                Turn your{" "}
+                <span className="italic text-brand-500">leftovers</span> into{" "}
+                <br />
                 masterpieces.
               </h1>
 
-              <p className="text-lg sm:text-xl text-stone-500 mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+              <p className="text-lg text-stone-500 mb-8 max-w-md mx-auto lg:mx-0 leading-relaxed">
                 Snap a photo of your fridge. We'll tell you what to cook. Save
                 money, reduce waste, and eat better tonight.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 items-center justify-center md:justify-start">
-                <Link
-                  to="/dashboard"
-                  className="flex w-full sm:w-auto items-center justify-center rounded-lg bg-brand-600 px-6 py-3.5 text-base font-bold text-white transition-colors hover:bg-brand-700"
-                >
-                  Start Cooking Free <ArrowRight className="ml-2 w-4 h-4" />
+              <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-center md:justify-start">
+                <Link to="/dashboard">
+                  <Button
+                    variant="primary"
+                    className="flex items-center gap-2 cursor-pointer hover:bg-brand-600 hover:text-white transition-all duration-300 ease-in-out hover:scale-105 h-12 w-full sm:w-auto text-base font-bold  "
+                  >
+                    Start Cooking Free <ArrowRight className="ml-2 w-4 h-4" />
+                  </Button>
                 </Link>
-                <Link
-                  to="/how-it-works"
-                  className="flex w-full sm:w-auto items-center justify-center rounded-lg border border-stone-200 bg-white px-6 py-3.5 text-base font-bold text-stone-900 transition-colors hover:bg-stone-50"
-                >
-                  See How It Works
+                <Link to="/how-it-works">
+                  <Button
+                    variant="outline"
+                    className="flex items-center gap-2 cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 h-12 w-full sm:w-auto text-base font-bold  "
+                  >
+                    See How It Works
+                  </Button>
                 </Link>
               </div>
 
-              <div className="mt-8 flex items-center gap-3 justify-center lg:justify-start">
+              {/* Social proof avatars */}
+              <div className="mt-10 flex items-center gap-3 justify-center lg:justify-start">
                 <div className="flex -space-x-2">
-                  {[
-                    "https://i.pravatar.cc/150?u=admin@example.com",
-                    "https://i.pravatar.cc/150?u=chef@example.com",
-                    "https://i.pravatar.cc/150?u=cook@example.com",
-                  ].map((url, i) => (
-                    <img
-                      key={i}
-                      src={url}
-                      alt={`Cook avatar ${i + 1}`}
-                      className="w-10 h-10 rounded-full border-[3px] border-white object-cover shadow-xs bg-brand-50"
-                    />
+                  {TESTIMONIALS.map((testimonial) => (
+                    <Avatar
+                      key={testimonial.avatar}
+                      className="w-10 h-10 border-2 border-white"
+                    >
+                      <AvatarImage
+                        src={testimonial.avatar}
+                        alt={testimonial.name}
+                        className="object-cover"
+                      />
+                      <AvatarFallback>{testimonial.fallback}</AvatarFallback>
+                    </Avatar>
                   ))}
                 </div>
                 <p className="text-base text-stone-500">
@@ -81,242 +86,321 @@ const LandingPage = () => {
               </div>
             </div>
 
-            {/* Right Side — TiltedCard */}
-            <div className="hidden lg:flex justify-center items-center w-full max-w-md xl:max-w-lg mx-auto aspect-square">
-              <TiltedCard
-                imageSrc="/pasta-dish.png"
-                altText="Delicious pasta dish"
-                captionText="Rustic Tomato Basil Pasta"
-                rotateAmplitude={4}
-                scaleOnHover={1.02}
-                showMobileWarning={false}
-                showTooltip={false}
-                displayOverlayContent={true}
-                overlayContent={
-                  <Card className="mx-8 mb-8 bg-white/95 backdrop-blur-xs border border-stone-200 shadow-xs">
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <h3 className="font-bold text-lg text-stone-800">
-                            Rustic Tomato Basil Pasta
-                          </h3>
-                          <div className="flex gap-0.5 mt-1">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                className="w-3 h-3 fill-brand-500 text-brand-500"
-                              />
-                            ))}
-                          </div>
-                        </div>
-                        <Badge
-                          variant="outline"
-                          className="border-green-200 bg-green-50 text-green-700 text-xs font-semibold ml-3 mt-1"
-                        >
-                          98% Match
-                        </Badge>
-                      </div>
-                      <div className="flex gap-4 text-xs text-stone-500 font-medium">
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" /> 25 mins
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Users className="w-3 h-3" /> 2 servings
-                        </span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                }
-              />
+            {/* Right — recipe card */}
+            <div className="flex flex-1 justify-center items-center hover:scale-105 transition-all duration-300 ease-in-out">
+              <div className="w-full max-w-[400px] lg:max-w-[460px] rounded-2xl overflow-hidden bg-white shadow-xl border border-stone-100">
+                <div className="relative">
+                  <img
+                    src="/pasta-dish.png"
+                    alt="Rustic Tomato Basil Pasta"
+                    className="w-full h-64 lg:h-80 object-cover"
+                  />
+                  <div className="absolute top-3 right-3 bg-green-700 hover:bg-green-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                    98% Match
+                  </div>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-stone-900 text-3xl font-bold mb-2 ">
+                    Rustic Tomato Basil Pasta
+                  </h3>
+                  <div className="flex items-center gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className="w-3.5 h-3.5 fill-amber-500 text-amber-500"
+                      />
+                    ))}
+                    <span className="text-stone-400 text-xs ml-1">
+                      5.0 · 124 reviews
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="flex items-center gap-1 text-stone-500 text-xs bg-stone-50 border border-stone-100 px-2.5 py-1 rounded-full">
+                      <Clock className="w-3 h-3" /> 25 mins
+                    </span>
+                    <span className="flex items-center gap-1 text-stone-500 text-xs bg-stone-50 border border-stone-100 px-2.5 py-1 rounded-full">
+                      <Users className="w-3 h-3" /> 2 servings
+                    </span>
+                    <span className="flex items-center gap-1 text-stone-500 text-xs bg-stone-50 border border-stone-100 px-2.5 py-1 rounded-full">
+                      <Vegan className="w-3 h-3" /> Vegetarian
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* steps section  */}
-      <section className="py-16 sm:py-20 px-5 sm:px-6">
-        <div className="max-w-6xl mx-auto">
-          {/* Header */}
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <p className="text-brand-600 text-sm font-semibold uppercase tracking-wider mb-3">
-              How It Works
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 mb-4 text-balance">
-              From Photo to Feast in{" "}
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-brand-500 to-orange-400">
-                3 Steps
-              </span>
+      {/* problem - solution section  */}
+      <section className="py-20 px-5 sm:px-10 lg:px-16">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12 lg:mb-14">
+            <h2 className="text-3xl sm:text-6xl font-extrabold text-stone-900">
+              Stop guessing. Start cooking.
             </h2>
-            <p className="text-stone-500 text-base sm:text-lg font-medium">
-              Just snap a photo — our AI handles the rest.
-            </p>
           </div>
 
-          {/* Stepper Container */}
-          <div className="rounded-2xl border border-stone-200/60 bg-white px-5 sm:px-10 py-10 shadow-xs">
-            <Stepper
-              initialStep={1}
-              onFinalStepCompleted={handleFinish}
-              backButtonText="Back"
-              nextButtonText="Next"
-              finishButtonText="Get Started"
-            >
-              <Step>
-                <div className="text-center space-y-4">
-                  <h3 className="text-xl sm:text-2xl font-bold text-stone-900">
-                    📸 Take a Photo
-                  </h3>
-                  <p className="text-stone-500 max-w-md mx-auto text-base font-medium">
-                    Snap a picture of the ingredients you already have at home.
-                  </p>
-                  <img
-                    src="https://images.unsplash.com/photo-1542838132-92c53300491e"
-                    alt="Ingredients"
-                    loading="lazy"
-                    className="w-full max-w-md aspect-video object-cover rounded-xl mx-auto shadow-xs"
-                  />
-                </div>
-              </Step>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
+            <Card className="border-red-100 bg-red-50 shadow-none hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-105 cursor-pointer">
+              <CardContent className="p-7 lg:p-8">
+                <h3 className="font-bold text-red-500 mb-5 flex items-center gap-2">
+                  <Frown />
+                  Without ChefSense
+                </h3>
+                <ul className="space-y-3">
+                  {[
+                    "Open fridge. Stare. Close fridge.",
+                    'Google "recipes with eggs and sad carrots"',
+                    "Scroll for 20 mins. Nothing fits.",
+                    "Order pizza. Again.",
+                    "Throw out ₹800 worth of groceries.",
+                  ].map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-start gap-2.5 text-stone-600 text-sm"
+                    >
+                      <span className="text-red-400 font-bold mt-0.5">✕</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
 
-              <Step>
-                <div className="text-center space-y-4">
-                  <h3 className="text-xl sm:text-2xl font-bold text-stone-900">
-                    🤖 AI Analysis
-                  </h3>
-                  <p className="text-stone-500 max-w-md mx-auto text-base font-medium">
-                    Our AI identifies ingredients and finds the best recipes for
-                    you.
-                  </p>
-                  <img
-                    src="https://images.unsplash.com/photo-1697577418970-95d99b5a55cf"
-                    alt="AI Analysis"
-                    loading="lazy"
-                    className="w-full max-w-md aspect-video object-cover rounded-xl mx-auto shadow-xs"
-                  />
-                </div>
-              </Step>
-
-              <Step>
-                <div className="text-center space-y-4">
-                  <h3 className="text-xl sm:text-2xl font-bold text-stone-900">
-                    🍽️ Cook & Enjoy
-                  </h3>
-                  <p className="text-stone-500 max-w-md mx-auto text-base font-medium">
-                    Pick a recipe and start cooking instantly.
-                  </p>
-                  <img
-                    src="https://images.unsplash.com/photo-1710091691780-c7eb0dc50cf8"
-                    alt="Cook Food"
-                    loading="lazy"
-                    className="w-full max-w-md aspect-video object-cover rounded-xl mx-auto shadow-xs"
-                  />
-                </div>
-              </Step>
-            </Stepper>
+            <Card className="border-green-100 bg-green-50 shadow-none hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-105 cursor-pointer">
+              <CardContent className="p-7 lg:p-8">
+                <h3 className="font-bold text-green-600 mb-5 flex items-center gap-2">
+                  <Smile />
+                  With ChefSense
+                </h3>
+                <ul className="space-y-3">
+                  {[
+                    "Snap a photo of your fridge.",
+                    "AI reads exactly what you have.",
+                    "Get 3 real recipes in seconds.",
+                    "Cook something great in 30 mins.",
+                    "Zero waste. Zero guilt.",
+                  ].map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-start gap-2.5 text-stone-600 text-sm"
+                    >
+                      <span className="text-green-500 font-bold mt-0.5">✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
-      {/* features section  */}
-      <section className="py-20 sm:py-24 px-5 sm:px-6">
-        <div className="max-w-6xl mx-auto">
-          {/* Header */}
+      {/* demo section  */}
+      <section className="py-20 px-5 sm:px-10 lg:px-16">
+        <div className="max-w-4xl mx-auto text-center">
+          <Badge
+            variant="outline"
+            className="border-brand-200 text-brand-500 bg-brand-50 text-xs font-bold uppercase tracking-widest mb-4"
+          >
+            See It In Action
+          </Badge>
 
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <p className="text-brand-600 text-sm font-semibold uppercase tracking-wider mb-3">
-              Features
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 mb-4 text-balance">
-              Your Smart Kitchen
+          <h2 className="text-3xl sm:text-6xl font-extrabold text-stone-900 mb-3">
+            Fridge photo to recipe <br />
+            <span className="text-brand-500">in seconds.</span>
+          </h2>
+          <p className="text-stone-500 text-lg mb-12 max-w-xl mx-auto">
+            No setup. No subscriptions. Just snap and cook.
+          </p>
+
+          <Card className="mx-auto max-w-3xl shadow-xl border-stone-200 overflow-hidden">
+            <div className="flex items-center gap-2 px-4 py-3 bg-stone-50 border-b border-stone-100">
+              <span className="w-3 h-3 rounded-full bg-red-400" />
+              <span className="w-3 h-3 rounded-full bg-yellow-400" />
+              <span className="w-3 h-3 rounded-full bg-green-400" />
+              <div className="flex-1 mx-3 bg-white border border-stone-200 rounded-md px-3 py-1 text-xs text-stone-400 text-left">
+                chefsense.app/dashboard
+              </div>
+            </div>
+            <CardContent className="p-0">
+              <div className="w-full h-80 sm:h-96 bg-white flex flex-col items-center justify-center gap-3">
+                <img src="/dashboard.png" alt="dashboard screenshot" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* steps section  */}
+      <section className="py-20 px-5 sm:px-10 lg:px-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12 lg:mb-14">
+            <Badge
+              variant="outline"
+              className="border-brand-200 text-brand-500 bg-brand-50 text-xs font-bold uppercase tracking-widest mb-4"
+            >
+              how it works
+            </Badge>
+            <h2 className="text-3xl sm:text-6xl font-extrabold text-stone-900">
+              From Photo to Feast in{" "}
+              <span className="text-brand-500">3 Steps</span>
             </h2>
-            <p className="text-stone-500 text-base sm:text-lg font-medium">
-              Everything you need to master your meal prep.
-            </p>
           </div>
 
-          {/* Grid */}
-          <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-            {FEATURES.map((feature) => (
-              <Card
-                key={feature.title}
-                className="rounded-2xl border-stone-200/60 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 group"
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {STEPS.map((step, i) => (
+              <div
+                key={i}
+                className="bg-white border border-stone-100 rounded-2xl overflow-hidden hover:-translate-y-1 transition-transform"
               >
-                <CardContent className="p-6 sm:p-8">
-                  <div className="flex items-start gap-5">
-                    <div className="shrink-0 rounded-2xl bg-brand-50 p-3.5 group-hover:border-orange-600 group-hover:border-2   group-hover:scale-105 transition-transform">
-                      <feature.icon className="w-6 h-6 text-brand-600" />
-                    </div>
-                    <div className="pt-1">
-                      <div className="flex items-baseline gap-3 mb-1.5">
-                        <h3 className="text-lg font-bold text-stone-900">
-                          {feature.title}
-                        </h3>
-                        <span className="text-sm text-stone-400">
-                          {feature.limit}
-                        </span>
-                      </div>
-                      <p className="text-base text-stone-500 leading-relaxed">
-                        {feature.description}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                <div
+                  className="h-1"
+                  style={{ background: ["#B5D4F4", "#9FE1CB", "#FAC775"][i] }}
+                />
+                <div className="flex flex-col items-center gap-3 p-6 text-center">
+                  <span className="text-xs uppercase tracking-widest text-stone-400">
+                    Step {i + 1}
+                  </span>
+                  <img
+                    src={step.img}
+                    alt={step.alt}
+                    className="w-24 h-24 rounded-full object-cover"
+                  />
+                  <h3 className="text-lg font-semibold text-stone-900">
+                    {step.title}
+                  </h3>
+                  <p className="text-sm text-stone-500 leading-relaxed">
+                    {step.desc}
+                  </p>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* stats section  */}
-      <section className="py-10 sm:py-14 px-5 sm:px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="rounded-2xl border border-stone-200/60 bg-white px-6 sm:px-8 py-8 sm:py-10 shadow-xs">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-4">
-              {SITE_STATS.map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <div className="text-4xl sm:text-5xl font-bold tracking-tight text-stone-700 mb-1">
-                    {stat.val}
-                  </div>
-                  <span className="text-stone-500 text-xs sm:text-sm uppercase tracking-widest font-semibold">
-                    {stat.label}
-                  </span>
+      {/* features section  */}
+      <section className="py-20 px-5 sm:px-10 lg:px-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-12 lg:mb-14">
+            <Badge
+              variant="outline"
+              className="border-brand-200 text-brand-500 bg-brand-50 text-xs font-bold uppercase tracking-widest mb-4"
+            >
+              features
+            </Badge>
+            <h2 className="text-3xl sm:text-6xl font-extrabold text-stone-900 mb-4">
+              Your <span className="text-brand-500">Smart </span>Kitchen
+            </h2>
+            <p className="text-stone-500 text-lg">
+              Everything you need to master your meal prep.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {FEATURES.map((feature) => (
+              <div
+                key={feature.title}
+                className="flex gap-4 p-6 bg-white border border-stone-100 rounded-2xl hover:-translate-y-0.5 transition-transform"
+              >
+                <div className="shrink-0 w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center">
+                  <feature.icon className="w-5 h-5 text-brand-600" />
                 </div>
-              ))}
-            </div>
+                <div>
+                  <div className="flex items-baseline gap-2 mb-1">
+                    <h3 className="font-semibold text-stone-900">
+                      {feature.title}
+                    </h3>
+                    <span className="text-xs text-stone-400">
+                      {feature.limit}
+                    </span>
+                  </div>
+                  <p className="text-sm text-stone-500 leading-relaxed">
+                    {feature.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* Testimonials  */}
+      <section className="py-20 px-5 sm:px-10 lg:px-16 bg-stone-50">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12 lg:mb-14">
+            <Badge
+              variant="outline"
+              className="border-brand-200 text-brand-500 bg-brand-50 text-xs font-bold uppercase tracking-widest mb-4"
+            >
+              Testimonials
+            </Badge>
+            <h2 className="text-3xl sm:text-6xl font-extrabold text-stone-900">
+              What our <span className="text-brand-500">chefs</span> say
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
+            {TESTIMONIALS.map((t) => (
+              <div
+                key={t.name}
+                className="rounded-xl border border-stone-200 bg-white p-6 shadow-sm"
+              >
+                <div className="flex gap-1 mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className="w-3.5 h-3.5 fill-amber-400 text-amber-400"
+                    />
+                  ))}
+                </div>
+                <p className="text-stone-600 text-sm mb-5 leading-relaxed">
+                  &ldquo;{t.text}&rdquo;
+                </p>
+                <Separator className="mb-5" />
+                <div className="flex items-center gap-2.5">
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage
+                      src={t.avatar}
+                      alt={t.name}
+                      className="object-cover"
+                    />
+                    <AvatarFallback>{t.name[0]}</AvatarFallback>
+                  </Avatar>
+                  <p className="text-stone-900 font-semibold text-sm">
+                    {t.name}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA section  */}
-      <section className="py-20 sm:py-28 px-5 sm:px-6">
-        <div className="max-w-3xl mx-auto">
-          <div className="rounded-2xl border border-stone-200 bg-white px-6 sm:px-12 py-12 sm:py-14 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4 leading-tight text-balance">
-              Your next great meal
-              <br />
-              <span className="text-brand-600">is already in your fridge.</span>
-            </h2>
 
-            <p className="text-stone-500 text-base sm:text-lg max-w-xl mx-auto mb-8">
-              Scan your pantry, let AI do the thinking, and cook something
-              amazing tonight — without wasting food or money.
-            </p>
-
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-3">
-              <Button asChild variant="primary" size="lg">
-                <Link to="/dashboard">
-                  Scan My Pantry Free <ArrowRight className="ml-2 w-4 h-4" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link to="/how-it-works">See How It Works</Link>
-              </Button>
-            </div>
-
-            <p className="mt-5 text-sm text-stone-400">
-              No credit card required · Takes less than 30 seconds
-            </p>
-          </div>
+      <section className="py-20 px-5 sm:px-10">
+        <div className="max-w-3xl mx-auto bg-white border border-stone-100 rounded-2xl px-8 sm:px-16 py-14 text-center">
+          <h2 className="text-3xl sm:text-5xl font-extrabold leading-tight mb-4">
+            Your next great meal is
+            <span className="text-brand-600"> already in your fridge.</span>
+          </h2>
+          <p className="text-stone-500 max-w-xl mx-auto mb-8 leading-relaxed">
+            Scan your pantry, let AI do the thinking, and cook something amazing
+            tonight — without wasting food or money.
+          </p>
+          <Link to="/dashboard">
+            <Button
+              variant="primary"
+              className="h-12 px-6 text-base font-semibold gap-2 hover:scale-105 transition-transform"
+            >
+              Scan Your Pantry Now <ArrowRight className="w-4 h-4" />
+            </Button>
+          </Link>
+          <p className="mt-5 text-sm text-stone-400">
+            No credit card required · Takes less than 30 seconds
+          </p>
         </div>
       </section>
     </div>

@@ -1,154 +1,246 @@
-import React from "react";
-import { useState, useCallback } from "react";
-import { DUMMY_DATA } from "@/lib/dummydata";
-
-import {
-  Flame,
-  Star,
-  ArrowRight,
-  Search,
-  Clock3,
-  TrendingUp,
-  Leaf,
-  Lightbulb,
-  History,
-  ChevronRight,
-} from "lucide-react";
-
-import { stripHtml } from "@/lib/utils";
-
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Link } from "react-router-dom";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-
-import {
-  getCategoryEmoji,
-  slugify,
-  getCountryFlag,
-  getDietEmoji,
-  dietColors,
-} from "@/lib/data";
-
+import { Button } from '@/components/ui/button'
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselPrevious,
   CarouselNext,
-} from "@/components/ui/carousel";
+  CarouselPrevious,
+} from '@/components/ui/carousel'
+import { Input } from '@/components/ui/input'
+import recentlyviewed from '@/Dummydata/recentrlyviewed'
+import {
+  DISCOVER_CATEGORIES,
+  DISCOVER_CUISINES,
+  DISCOVER_DIETS,
+} from '@/utils/data'
+import { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  ArrowRight,
+  ChevronRight,
+  Clock3,
+  Flame,
+  History,
+  Leaf,
+  Lightbulb,
+  Loader2,
+  Search,
+  Star,
+  TrendingUp,
+} from 'lucide-react'
+
+import {
+  dietColors,
+  getCategoryEmoji,
+  getCountryFlag,
+  getDietEmoji,
+  slugify,
+} from '@/utils/data'
+
+import cookingTips from '@/Dummydata/cookingTips'
+
+import { Card, CardContent } from '@/components/ui/card'
+import {
+  getCategories,
+  getCuisines,
+  getDiets,
+  getFeatured,
+  getQuickMeals,
+  getTrending,
+} from '@/services/dicover'
+import { toast } from 'sonner'
 
 const Dashboard = () => {
-  const {
-    recipeOfTheDay,
-    categories,
-    trending,
-    quickMeals,
-    cuisines,
-    diets,
-    recentlyViewed,
-    cookingTips,
-  } = DUMMY_DATA;
+  const [loading, setLoading] = useState(true)
 
-  const heroSummary = (() => {
-    if (!recipeOfTheDay?.summary) return "";
-    const cleaned = stripHtml(recipeOfTheDay.summary);
-    return cleaned.length > 160 ? cleaned.substring(0, 160) + "..." : cleaned;
-  })();
+  const [search, setSearch] = useState('')
+  const [featuredRecipe, setFeaturedRecipe] = useState(null)
+  const [trending, setTrending] = useState([])
+  const [quickMeals, setQuickMeals] = useState([])
+  const [categories, setCategories] = useState(DISCOVER_CATEGORIES)
+  const [cuisines, setCuisines] = useState(DISCOVER_CUISINES)
+  const [diets, setDiets] = useState(DISCOVER_DIETS)
 
-  const heroRating =
-    typeof recipeOfTheDay?.rating === "number" ? recipeOfTheDay.rating : 4.9;
+  const navigate = useNavigate()
 
-  // const [randomTip, setRandomTip] = React.useState(null);
+  const [recentlyViewed, setRecentlyViewed] = useState(
+    recentlyviewed.recipes || [],
+  )
 
-  // React.useEffect(() => {
-  //   if (cookingTips && cookingTips.length > 0) {
-  //     setRandomTip(cookingTips[Math.floor(Math.random() * cookingTips.length)]);
-  //   }
-  // }, [cookingTips]);
+  useEffect(() => {
+    async function LoadDashboard() {
+      setLoading(true)
 
-  const [tipIndex, setTipIndex] = useState(() =>
-    Math.floor(Math.random() * cookingTips.length),
-  );
+      try {
+        const featuredRecipe = await getFeatured()
+        setFeaturedRecipe(featuredRecipe.recipe || null)
 
-  const randomTip = cookingTips[tipIndex];
+        const trendingRecipes = await getTrending()
+        setTrending(trendingRecipes.recipes || [])
 
-  const refreshTip = useCallback(() => {
-    setTipIndex((prev) => {
-      let next = prev;
-      while (next === prev && cookingTips.length > 1) {
-        next = Math.floor(Math.random() * cookingTips.length);
+        const quickMealsData = await getQuickMeals()
+        setQuickMeals(quickMealsData.meals || [])
+
+        const categoryData = await getCategories()
+        setCategories(categoryData?.categories || DISCOVER_CATEGORIES)
+
+        const cuisineData = await getCuisines()
+        setCuisines(cuisineData?.cuisines || DISCOVER_CUISINES)
+
+        const dietData = await getDiets()
+        setDiets(dietData?.diets || DISCOVER_DIETS)
+      } catch (error) {
+        toast.error('Failed to load dashboard data. Please try again later.')
+        console.error('Error loading dashboard data:', error)
+      } finally {
+        setLoading(false)
       }
-      return next;
-    });
-  }, [cookingTips]);
+    }
+
+    LoadDashboard()
+  }, [])
+
+  // handle submit
+
+  function handleSearch(e) {
+    e.preventDefault()
+
+    const query = search.trim()
+
+    if (!query) return
+
+    navigate(`/recipe?cook=${encodeURIComponent(query)}`)
+  }
+
+  // click enter to search
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === 'Enter') {
+        handleSearch(e)
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [search])
+
+  //  cooking tipc logic
+
+  const [tipIndex, setTipIndex] = useState(
+    Math.floor(Math.random() * cookingTips.length),
+  )
+
+  const randomTip = cookingTips[tipIndex]
+
+  const refreshTip = () => {
+    const newIndex = Math.floor(Math.random() * cookingTips.length)
+    setTipIndex(newIndex)
+  }
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-stone-50">
+        <div className="inline-flex items-center border-2 border-stone-900 bg-white px-6 py-4 text-lg font-bold text-stone-900 shadow-[4px_4px_0px_0px_rgba(28,25,23,1)]">
+          <Loader2 className="mr-3 h-6 w-6 animate-spin text-orange-600" />
+          Loading dashboard...
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen pb-16 sm:pb-20">
       {/* Hero */}
-      {recipeOfTheDay && (
-        <section className="relative h-[70vh] sm:h-[75vh] w-full overflow-hidden">
+
+      {featuredRecipe && (
+        <section className="relative h-[65vh] sm:h-[70vh] w-full overflow-hidden">
+          {/* Background Image */}
           <img
-            src={recipeOfTheDay.image}
-            alt={recipeOfTheDay.title}
-            className="absolute inset-0 h-full w-full object-cover"
+            src={featuredRecipe.imageUrl}
+            alt={featuredRecipe.title}
+            className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-black/10" />
 
-          <div className="relative z-10 mx-auto h-full max-w-7xl px-5 sm:px-6 lg:px-8 flex flex-col justify-end pb-16 sm:pb-20">
-            <div className="max-w-xl space-y-4">
-              <Badge className="border border-brand-400/30 bg-brand-500/80 backdrop-blur-md text-white px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wide">
-                <Flame className="mr-1.5 w-3.5 h-3.5" />
-                Featured Today
-              </Badge>
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black/60" />
 
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
-                {recipeOfTheDay.title}
+          {/* Content */}
+          <div className="relative z-10 max-w-6xl mx-auto px-5 sm:px-6 h-full flex items-end pb-12 sm:pb-16">
+            <div className="max-w-lg space-y-4">
+              {/* Top Badge */}
+              <div className="inline-flex items-center gap-2 text-xs font-semibold bg-brand-500 text-white px-3 py-1 rounded-md">
+                <Flame className="w-3.5 h-3.5" />
+                Featured
+              </div>
+
+              {/* Title */}
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight">
+                {featuredRecipe.title}
               </h1>
 
-              <p className="text-sm sm:text-base text-stone-200 leading-relaxed max-w-md">
-                {heroSummary}
+              {/* Summary */}
+              <p className="text-sm sm:text-base text-stone-200">
+                {featuredRecipe.description}
               </p>
 
+              {/* Info Row */}
               <div className="flex flex-wrap items-center gap-4 text-sm text-stone-300">
                 <span className="flex items-center gap-1">
                   <Clock3 className="w-4 h-4" />
-                  {recipeOfTheDay.readyInMinutes || 35} min
+                  {featuredRecipe.cookTime || 35} min
                 </span>
+
                 <span className="flex items-center gap-1">
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  {heroRating.toFixed(1)}
+                  <Star className="w-4 h-4 text-yellow-400" />
+                  {featuredRecipe.rating?.toFixed(1) || '4.9'}
                 </span>
-                <span>{recipeOfTheDay.servings || 4} servings</span>
+
+                <span>{featuredRecipe.servings || 4} servings</span>
               </div>
 
-              <Button
-                asChild
-                variant="primary"
-                size="lg"
-                className="mt-2 rounded-lg shadow-lg shadow-brand-500/25 font-bold"
+              {/* NEW: Tags (Cuisine / Diet / Category) */}
+              <div className="flex flex-wrap gap-2 pt-1">
+                {featuredRecipe.cuisine && (
+                  <span className="text-xs bg-white/20 text-white px-3 py-1 rounded-full">
+                    {featuredRecipe.cuisine}
+                  </span>
+                )}
+
+                {featuredRecipe.diet && (
+                  <span className="text-xs bg-white/20 text-white px-3 py-1 rounded-full">
+                    {featuredRecipe.diet}
+                  </span>
+                )}
+
+                {featuredRecipe.category && (
+                  <span className="text-xs bg-white/20 text-white px-3 py-1 rounded-full">
+                    {featuredRecipe.category}
+                  </span>
+                )}
+              </div>
+
+              {/* CTA */}
+              <Link
+                to={`/recipe/${featuredRecipe.id}`}
+                className="inline-flex items-center gap-2 mt-2 bg-white text-black px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-stone-200 transition"
               >
-                <Link to={`/recipe/${recipeOfTheDay.id}`}>
-                  Start Cooking <ArrowRight className="ml-2 w-4 h-4" />
-                </Link>
-              </Button>
+                Start Cooking
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
         </section>
       )}
-
       {/* Search */}
       <div className="px-5 sm:px-6 lg:px-8 -mt-7 relative z-20">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          className="mx-auto max-w-3xl"
-        >
+        <form onSubmit={handleSearch} className="mx-auto max-w-3xl">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400" />
             <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               placeholder="Search recipes (e.g. Paneer tikka, Dal makhani)"
               className="h-14 sm:h-16 w-full rounded-2xl bg-white pl-12 pr-4 text-sm sm:text-base shadow-xl shadow-stone-200/50 border border-stone-200 placeholder:text-stone-400"
             />
@@ -164,7 +256,7 @@ const Dashboard = () => {
           <section className="bg-stone-100/50 rounded-4xl p-8 sm:p-12">
             <div className="mb-8">
               <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-stone-900 text-balance flex items-center gap-2">
-                Explore Styles{" "}
+                Explore Styles{' '}
                 <ChevronRight
                   className="w-5 h-5 text-brand-500"
                   aria-hidden="true"
@@ -213,14 +305,14 @@ const Dashboard = () => {
                   className="group"
                 >
                   <div className="relative overflow-hidden rounded-2xl bg-stone-100 shadow-xs transition-shadow hover:shadow-md">
-                    <AspectRatio ratio={3 / 4}>
+                    <div className="aspect-3/4">
                       <img
-                        src={recipe.image}
+                        src={recipe.imageUrl}
                         alt={recipe.title}
                         loading="lazy"
                         className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
-                    </AspectRatio>
+                    </div>
                     <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
                     <div className="absolute bottom-4 left-4 right-4 space-y-1">
                       <span className="text-xs text-stone-300 flex items-center gap-1">
@@ -260,7 +352,7 @@ const Dashboard = () => {
               </Button>
             </div>
 
-            <Carousel opts={{ align: "start" }} className="w-full">
+            <Carousel opts={{ align: 'start' }} className="w-full">
               <CarouselContent className="-ml-4">
                 {quickMeals.map((meal) => (
                   <CarouselItem
@@ -269,14 +361,14 @@ const Dashboard = () => {
                   >
                     <Link to={`/recipe?cook=${encodeURIComponent(meal.title)}`}>
                       <Card className="overflow-hidden rounded-2xl border-stone-200/60 shadow-xs hover:shadow-md transition-shadow">
-                        <AspectRatio ratio={1}>
+                        <div className="aspect-square">
                           <img
-                            src={meal.image}
+                            src={meal.imageUrl}
                             alt={meal.title}
                             loading="lazy"
                             className="w-full h-full object-cover"
                           />
-                        </AspectRatio>
+                        </div>
                         <CardContent className="p-4">
                           <h4 className="font-bold text-base text-stone-900 line-clamp-1">
                             {meal.title}
@@ -312,7 +404,7 @@ const Dashboard = () => {
 
             <div className="flex flex-wrap justify-center gap-8 sm:gap-10">
               {cuisines.map((cuisine) => {
-                const flagUrl = getCountryFlag(cuisine.name);
+                const flagUrl = getCountryFlag(cuisine.name)
                 return (
                   <Link
                     key={cuisine.name}
@@ -334,7 +426,7 @@ const Dashboard = () => {
                       {cuisine.name}
                     </span>
                   </Link>
-                );
+                )
               })}
             </div>
           </section>
@@ -361,8 +453,8 @@ const Dashboard = () => {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
               {diets.map((diet) => {
                 const colors =
-                  dietColors[diet.name.toLowerCase()] ||
-                  "bg-stone-50 border-stone-200 text-stone-700 hover:bg-stone-100";
+                  dietColors[diet.name] ||
+                  'bg-stone-50 border-stone-200 text-stone-700 hover:bg-stone-100'
                 return (
                   <Link
                     key={diet.name}
@@ -382,7 +474,7 @@ const Dashboard = () => {
                       </CardContent>
                     </Card>
                   </Link>
-                );
+                )
               })}
             </div>
           </section>
@@ -398,7 +490,7 @@ const Dashboard = () => {
               </h2>
             </div>
 
-            <Carousel opts={{ align: "start" }} className="w-full">
+            <Carousel opts={{ align: 'start' }} className="w-full">
               <CarouselContent className="-ml-4">
                 {recentlyViewed?.map((recipe) => (
                   <CarouselItem
@@ -410,14 +502,14 @@ const Dashboard = () => {
                       className="group block"
                     >
                       <Card className="overflow-hidden rounded-2xl border-stone-200/60 shadow-xs hover:shadow-md transition-shadow">
-                        <AspectRatio ratio={4 / 3}>
+                        <div className="aspect-[4/3]">
                           <img
-                            src={recipe.image}
+                            src={recipe.imageUrl}
                             alt={recipe.title}
                             loading="lazy"
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
-                        </AspectRatio>
+                        </div>
                         <CardContent className="p-4">
                           <p className="font-bold text-base text-stone-900 line-clamp-1">
                             {recipe.title}
@@ -440,41 +532,50 @@ const Dashboard = () => {
           </section>
         )}
 
-        {/* Cooking Tip */}
+        {/* Cooking Tip  */}
+
         {randomTip && (
           <section>
-            <Card className="bg-brand-50/80 border-brand-200 rounded-3xl shadow-xs overflow-hidden relative">
+            <div className="relative bg-brand-50/80 border border-brand-200 rounded-3xl overflow-hidden min-h-35 sm:min-h-40">
+              {/* Background Icon */}
               <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
                 <Lightbulb className="w-32 h-32 text-brand-900" />
               </div>
-              <CardContent className="p-6 sm:p-8 flex items-start gap-4 sm:gap-6 relative z-10">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-brand-100 flex items-center justify-center shrink-0 shadow-inner">
+
+              <div className="relative z-10 p-6 sm:p-8 flex items-start gap-4 sm:gap-6">
+                {/* Icon */}
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-brand-100 flex items-center justify-center shrink-0">
                   <Lightbulb className="w-6 h-6 sm:w-8 sm:h-8 text-brand-600" />
                 </div>
+
+                {/* Content */}
                 <div className="flex-1">
+                  {/* Header */}
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-xs sm:text-sm font-bold uppercase tracking-widest text-brand-600">
-                      💡 Cooking Tip of the Day
+                      💡 Cooking Tip
                     </p>
+
                     <button
                       onClick={refreshTip}
-                      className="text-xs sm:text-sm text-brand-600 hover:text-brand-800 font-bold transition-colors flex items-center gap-1.5 bg-brand-100/50 hover:bg-brand-100 px-3 py-1.5 rounded-full"
+                      className="text-xs sm:text-sm font-bold text-brand-600 hover:text-brand-800 transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-100/50 hover:bg-brand-100"
                     >
                       ↻ New Tip
                     </button>
                   </div>
 
+                  {/* Tip */}
                   <p className="text-base sm:text-lg font-medium text-stone-800 leading-relaxed pr-4">
                     {randomTip}
                   </p>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </section>
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard
