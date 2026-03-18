@@ -1,20 +1,20 @@
-import { Route, Routes } from 'react-router-dom'
-import { Toaster } from 'sonner'
-import Footer from './components/Footer'
-import Header from './components/Header'
-import LandingPage from './pages/LandingPage'
-import AboutPage from './pages/about/AboutPage'
-import SignIn from './pages/auth/SignIn'
-import SignUp from './pages/auth/SignUp'
-import ContactPage from './pages/contact/ContactPage'
-import Dashboard from './pages/dashboard/Dashboard'
-import FAQPage from './pages/faqs/FAQPage'
-import HowItWorksPage from './pages/how-it-works/HowItWorksPage'
-import PrivacyPage from './pages/legal/PrivacyPage'
-import TermsPage from './pages/legal/TermsPage'
-import PantryPage from './pages/pantry/PantryPage'
-import FilterResultsPage from './pages/recipes/FilterResultsPage'
-import RecipesPage from './pages/recipes/RecipesPage'
+import { Route, Routes } from "react-router-dom";
+import { Toaster } from "sonner";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import LandingPage from "./pages/LandingPage";
+import AboutPage from "./pages/about/AboutPage";
+import SignIn from "./pages/auth/SignIn";
+import SignUp from "./pages/auth/SignUp";
+import ContactPage from "./pages/contact/ContactPage";
+import Dashboard from "./pages/dashboard/Dashboard";
+import FAQPage from "./pages/faqs/FAQPage";
+import HowItWorksPage from "./pages/how-it-works/HowItWorksPage";
+import PrivacyPage from "./pages/legal/PrivacyPage";
+import TermsPage from "./pages/legal/TermsPage";
+import PantryPage from "./pages/pantry/PantryPage";
+import FilterResultsPage from "./pages/recipes/FilterResultsPage";
+import RecipesPage from "./pages/recipes/RecipesPage";
 
 function App() {
   return (
@@ -56,7 +56,7 @@ function App() {
       </main>
       <Footer />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
