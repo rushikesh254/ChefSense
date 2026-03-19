@@ -26,7 +26,7 @@ const LandingPage = () => {
             <div className="flex-1 text-center lg:text-left">
               <Badge
                 variant="outline"
-                className="border-brand-200 text-brand-500 bg-brand-50 text-xs font-bold uppercase tracking-widest mb-4"
+                className="border-green-200 text-green-500 bg-green-50 text-xs font-bold uppercase tracking-widest mb-4"
               >
                 #1 AI Cooking Assistant
               </Badge>
@@ -87,55 +87,76 @@ const LandingPage = () => {
             </div>
 
             {/* Right — recipe card */}
-            <div className="flex flex-1 justify-center items-center hover:scale-105 transition-all duration-300 ease-in-out">
-              <div className="w-full max-w-100 lg:max-w-115 rounded-2xl overflow-hidden bg-white shadow-xl border border-stone-100">
-                <div className="relative">
-                  <img
-                    src="/pasta-dish.png"
-                    alt="Rustic Tomato Basil Pasta"
-                    className="w-full h-64 lg:h-80 object-cover"
-                  />
-                  <div className="absolute top-3 right-3 bg-green-700 hover:bg-green-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
-                    98% Match
+            <div className="flex flex-1 justify-center items-center ">
+              <Card className="p-0 hover:scale-105 transition-all duration-300 ease-in-out">
+                <CardContent className="p-0">
+                  <div className="relative h-full w-full">
+                    <img
+                      src="/pasta-dish.png"
+                      alt="Rustic Tomato Basil Pasta"
+                      className="w-full h-64 lg:h-80 object-cover"
+                    />
+                    <Badge className="absolute top-3 right-3 bg-green-500 hover:bg-green-600 text-white">
+                      98% Match
+                    </Badge>
                   </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-stone-900 text-3xl font-bold mb-2 ">
-                    Rustic Tomato Basil Pasta
-                  </h3>
-                  <div className="flex items-center gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className="w-3.5 h-3.5 fill-amber-500 text-amber-500"
-                      />
-                    ))}
-                    <span className="text-stone-400 text-xs ml-1">
-                      5.0 · 124 reviews
-                    </span>
+                  <div className="p-6">
+                    <h3 className="text-stone-900 text-3xl font-bold mb-2 ">
+                      Rustic Tomato Basil Pasta
+                    </h3>
+                    <div className="flex items-center gap-1 mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className="w-3.5 h-3.5 fill-amber-500 text-amber-500"
+                        />
+                      ))}
+                      <span className="text-stone-400 text-xs ml-1">
+                        5.0 · 124 reviews
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <Badge
+                        variant="outline "
+                        className="gap-1 border border-stone-500 bg-stone-50"
+                      >
+                        <Clock className="w-3 h-3" /> 25 mins
+                      </Badge>
+
+                      <Badge
+                        variant="outline "
+                        className="gap-1 border border-stone-500 bg-stone-50"
+                      >
+                        <Users className="w-3 h-3" /> 2 servings
+                      </Badge>
+
+                      <Badge
+                        variant="outline "
+                        className="gap-1 border border-stone-500 bg-stone-50"
+                      >
+                        <Vegan className="w-3 h-3" /> Vegetarian
+                      </Badge>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="flex items-center gap-1 text-stone-500 text-xs bg-stone-50 border border-stone-100 px-2.5 py-1 rounded-full">
-                      <Clock className="w-3 h-3" /> 25 mins
-                    </span>
-                    <span className="flex items-center gap-1 text-stone-500 text-xs bg-stone-50 border border-stone-100 px-2.5 py-1 rounded-full">
-                      <Users className="w-3 h-3" /> 2 servings
-                    </span>
-                    <span className="flex items-center gap-1 text-stone-500 text-xs bg-stone-50 border border-stone-100 px-2.5 py-1 rounded-full">
-                      <Vegan className="w-3 h-3" /> Vegetarian
-                    </span>
-                  </div>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
       </section>
 
+      <Separator />
+
       {/* problem - solution section  */}
       <section className="py-20 px-5 sm:px-10 lg:px-16">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12 lg:mb-14">
+          <div className="text-center mb-12 lg:mb-14 flex flex-col items-center justify-center">
+            <Badge
+              variant="outline"
+              className="border-green-200 text-green-500 bg-green-50 text-xs font-bold uppercase tracking-widest mb-4 flex items-center justify-center"
+            >
+              Try ChefSense
+            </Badge>
             <h2 className="text-3xl sm:text-6xl font-extrabold text-stone-900">
               Stop guessing. Start cooking.
             </h2>
@@ -196,13 +217,13 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
+      <Separator />
       {/* demo section  */}
       <section className="py-20 px-5 sm:px-10 lg:px-16">
         <div className="max-w-4xl mx-auto text-center">
           <Badge
             variant="outline"
-            className="border-brand-200 text-brand-500 bg-brand-50 text-xs font-bold uppercase tracking-widest mb-4"
+            className="border-green-200 text-green-500 bg-green-50 text-xs font-bold uppercase tracking-widest mb-4 "
           >
             See It In Action
           </Badge>
@@ -232,14 +253,14 @@ const LandingPage = () => {
           </Card>
         </div>
       </section>
-
+      <Separator />
       {/* steps section  */}
       <section className="py-20 px-5 sm:px-10 lg:px-16">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 lg:mb-14">
             <Badge
               variant="outline"
-              className="border-brand-200 text-brand-500 bg-brand-50 text-xs font-bold uppercase tracking-widest mb-4"
+              className="border-green-200 text-green-500 bg-green-50 text-xs font-bold uppercase tracking-widest mb-4 "
             >
               how it works
             </Badge>
@@ -249,37 +270,44 @@ const LandingPage = () => {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            {STEPS.map((step, i) => (
-              <div
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {STEPS.slice(0, 3).map((step, i) => (
+              <Card
                 key={i}
-                className="bg-white border border-stone-100 rounded-2xl overflow-hidden hover:-translate-y-1 transition-transform"
+                className="group overflow-hidden rounded-2xl border border-stone-200 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
               >
-                <div
-                  className="h-1"
-                  style={{ background: ['#B5D4F4', '#9FE1CB', '#FAC775'][i] }}
-                />
-                <div className="flex flex-col items-center gap-3 p-6 text-center">
-                  <span className="text-xs uppercase tracking-widest text-stone-400">
+                <CardContent className="flex flex-col items-center text-center p-6 gap-4">
+                  {/* Step badge */}
+                  <span className="text-xs uppercase tracking-widest text-brand-500 font-semibold bg-brand-50 px-3 py-1 rounded-full">
                     Step {i + 1}
                   </span>
-                  <img
-                    src={step.img}
-                    alt={step.alt}
-                    className="w-24 h-24 rounded-full object-cover"
-                  />
-                  <h3 className="text-lg font-semibold text-stone-900">
+
+                  {/* Image */}
+                  <div className="relative">
+                    <img
+                      src={step.img}
+                      alt={step.alt}
+                      className="w-44 h-44 rounded-xl object-cover shadow-md group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-lg font-semibold text-stone-900 group-hover:text-brand-600 transition-colors">
                     {step.title}
                   </h3>
-                  <p className="text-sm text-stone-500 leading-relaxed">
-                    {step.desc}
+
+                  {/* Description */}
+                  <p className="text-sm text-stone-500 leading-relaxed max-w-xs">
+                    {step.description}
                   </p>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
       </section>
+
+      <Separator />
 
       {/* features section  */}
       <section className="py-20 px-5 sm:px-10 lg:px-16">
@@ -287,7 +315,7 @@ const LandingPage = () => {
           <div className="text-center max-w-2xl mx-auto mb-12 lg:mb-14">
             <Badge
               variant="outline"
-              className="border-brand-200 text-brand-500 bg-brand-50 text-xs font-bold uppercase tracking-widest mb-4"
+              className="border-green-200 text-green-500 bg-green-50 text-xs font-bold uppercase tracking-widest mb-4"
             >
               features
             </Badge>
@@ -301,38 +329,43 @@ const LandingPage = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {FEATURES.map((feature) => (
-              <div
+              <Card
                 key={feature.title}
-                className="flex gap-4 p-6 bg-white border border-stone-100 rounded-2xl hover:-translate-y-0.5 transition-transform"
+                className="border-stone-200 hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-105 cursor-pointer flex items-center justify-center h-30 sm:h-40  w-full  "
               >
-                <div className="shrink-0 w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center">
-                  <feature.icon className="w-5 h-5 text-brand-600" />
-                </div>
-                <div>
-                  <div className="flex items-baseline gap-2 mb-1">
-                    <h3 className="font-semibold text-stone-900">
-                      {feature.title}
-                    </h3>
-                    <span className="text-xs text-stone-400">
-                      {feature.limit}
-                    </span>
+                <CardContent className="flex gap-4 p-6">
+                  <div className="shrink-0 w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
+                    <feature.icon className="w-5 h-5 text-green-600" />
                   </div>
-                  <p className="text-sm text-stone-500 leading-relaxed">
-                    {feature.description}
-                  </p>
-                </div>
-              </div>
+                  <div>
+                    <div className="flex items-baseline gap-2 mb-1">
+                      <h3 className="font-semibold text-stone-900">
+                        {feature.title}
+                      </h3>
+                      <span className="text-xs text-stone-400">
+                        {feature.limit}
+                      </span>
+                    </div>
+                    <p className="text-sm text-stone-500 leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
       </section>
+
+      <Separator />
+
       {/* Testimonials  */}
       <section className="py-20 px-5 sm:px-10 lg:px-16 bg-stone-50">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12 lg:mb-14">
             <Badge
               variant="outline"
-              className="border-brand-200 text-brand-500 bg-brand-50 text-xs font-bold uppercase tracking-widest mb-4"
+              className="border-green-200 text-green-500 bg-green-50 text-xs font-bold uppercase tracking-widest mb-4"
             >
               Testimonials
             </Badge>
@@ -343,65 +376,84 @@ const LandingPage = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
             {TESTIMONIALS.map((t) => (
-              <div
+              <Card
                 key={t.name}
-                className="rounded-xl border border-stone-200 bg-white p-6 shadow-sm"
+                className="rounded-xl border border-stone-200 bg-white p-6 shadow-sm hover:scale-105 transition-transform duration-300 ease-in-out"
               >
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-3.5 h-3.5 fill-amber-400 text-amber-400"
-                    />
-                  ))}
-                </div>
-                <p className="text-stone-600 text-sm mb-5 leading-relaxed">
-                  &ldquo;{t.text}&rdquo;
-                </p>
-                <Separator className="mb-5" />
-                <div className="flex items-center gap-2.5">
-                  <Avatar className="w-8 h-8">
-                    <AvatarImage
-                      src={t.avatar}
-                      alt={t.name}
-                      className="object-cover"
-                    />
-                    <AvatarFallback>{t.name[0]}</AvatarFallback>
-                  </Avatar>
-                  <p className="text-stone-900 font-semibold text-sm">
-                    {t.name}
+                <CardContent>
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className="w-3.5 h-3.5 fill-amber-400 text-amber-400"
+                      />
+                    ))}
+                  </div>
+                  <p className="text-stone-600 text-sm mb-5 leading-relaxed">
+                    &ldquo;{t.text}&rdquo;
                   </p>
-                </div>
-              </div>
+                  <Separator className="mb-5" />
+                  <div className="flex items-center gap-2.5">
+                    <Avatar className="w-8 h-8">
+                      <AvatarImage
+                        src={t.avatar}
+                        alt={t.name}
+                        className="object-cover"
+                      />
+                      <AvatarFallback>{t.name[0]}</AvatarFallback>
+                    </Avatar>
+                    <p className="text-stone-900 font-semibold text-sm">
+                      {t.name}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
       </section>
 
+      <Separator />
+
       {/* CTA section  */}
 
-      <section className="py-20 px-5 sm:px-10">
-        <div className="max-w-3xl mx-auto bg-white border border-stone-100 rounded-2xl px-8 sm:px-16 py-14 text-center">
-          <h2 className="text-3xl sm:text-5xl font-extrabold leading-tight mb-4">
-            Your next great meal is
-            <span className="text-brand-600"> already in your fridge.</span>
-          </h2>
-          <p className="text-stone-500 max-w-xl mx-auto mb-8 leading-relaxed">
-            Scan your pantry, let AI do the thinking, and cook something amazing
-            tonight — without wasting food or money.
-          </p>
-          <Link to="/dashboard">
-            <Button
-              variant="primary"
-              className="h-12 px-6 text-base font-semibold gap-2 hover:scale-105 transition-transform"
-            >
-              Scan Your Pantry Now <ArrowRight className="w-4 h-4" />
-            </Button>
-          </Link>
-          <p className="mt-5 text-sm text-stone-400">
-            No credit card required · Takes less than 30 seconds
-          </p>
-        </div>
+      <section className="py-20 px-5">
+        <Card className="max-w-4xl pt-10 pb-10 mx-auto h-full ">
+          <CardContent>
+            <div className="max-w-2xl mx-auto text-center">
+              <Badge
+                variant="outline"
+                className="border-green-200 text-green-500 bg-green-50 text-xs font-bold uppercase tracking-widest mb-4"
+              >
+                Zero Waste · Zero Stress
+              </Badge>
+
+              <h2 className="text-4xl sm:text-6xl font-bold text-stone-900 leading-tight mb-5">
+                Your next great meal is{' '}
+                <span className="text-brand-500">already in your fridge.</span>
+              </h2>
+
+              <p className="text-stone-500 text-lg mb-10 leading-relaxed">
+                Scan your pantry, let AI do the thinking, and cook something
+                amazing tonight — without wasting food or money.
+              </p>
+
+              <Link to="/dashboard">
+                <Button
+                  variant="secondary"
+                  className="h-12 px-6 text-base font-semibold gap-2 hover:scale-105 transition-transform"
+                >
+                  Scan Your Pantry
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+
+              <p className="mt-4 text-sm text-stone-400">
+                No credit card · Takes less than 30 seconds
+              </p>
+            </div>
+          </CardContent>
+        </Card>
       </section>
     </div>
   )
