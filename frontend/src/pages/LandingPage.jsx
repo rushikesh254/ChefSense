@@ -1,9 +1,9 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { FEATURES, STEPS, TESTIMONIALS } from "@/utils/data";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import { FEATURES, STEPS, TESTIMONIALS } from '@/utils/data'
 import {
   ArrowRight,
   Clock,
@@ -12,8 +12,8 @@ import {
   Star,
   Users,
   Vegan,
-} from "lucide-react";
-import { Link } from "react-router-dom";
+} from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const LandingPage = () => {
   return (
@@ -32,8 +32,8 @@ const LandingPage = () => {
               </Badge>
 
               <h1 className="text-5xl sm:text-6xl lg:text-8xl font-extrabold text-stone-900 mb-6 leading-[1.08] tracking-tight">
-                Turn your{" "}
-                <span className="italic text-brand-500">leftovers</span> into{" "}
+                Turn your{' '}
+                <span className="italic text-brand-500">leftovers</span> into{' '}
                 <br />
                 masterpieces.
               </h1>
@@ -80,7 +80,7 @@ const LandingPage = () => {
                   ))}
                 </div>
                 <p className="text-base text-stone-500">
-                  <span className="font-bold text-stone-900">10k+ cooks</span>{" "}
+                  <span className="font-bold text-stone-900">10k+ cooks</span>{' '}
                   joined last month
                 </p>
               </div>
@@ -88,7 +88,7 @@ const LandingPage = () => {
 
             {/* Right — recipe card */}
             <div className="flex flex-1 justify-center items-center hover:scale-105 transition-all duration-300 ease-in-out">
-              <div className="w-full max-w-[400px] lg:max-w-[460px] rounded-2xl overflow-hidden bg-white shadow-xl border border-stone-100">
+              <div className="w-full max-w-100 lg:max-w-115 rounded-2xl overflow-hidden bg-white shadow-xl border border-stone-100">
                 <div className="relative">
                   <img
                     src="/pasta-dish.png"
@@ -150,11 +150,11 @@ const LandingPage = () => {
                 </h3>
                 <ul className="space-y-3">
                   {[
-                    "Open fridge. Stare. Close fridge.",
+                    'Open fridge. Stare. Close fridge.',
                     'Google "recipes with eggs and sad carrots"',
-                    "Scroll for 20 mins. Nothing fits.",
-                    "Order pizza. Again.",
-                    "Throw out ₹800 worth of groceries.",
+                    'Scroll for 20 mins. Nothing fits.',
+                    'Order pizza. Again.',
+                    'Throw out ₹800 worth of groceries.',
                   ].map((item) => (
                     <li
                       key={item}
@@ -176,11 +176,11 @@ const LandingPage = () => {
                 </h3>
                 <ul className="space-y-3">
                   {[
-                    "Snap a photo of your fridge.",
-                    "AI reads exactly what you have.",
-                    "Get 3 real recipes in seconds.",
-                    "Cook something great in 30 mins.",
-                    "Zero waste. Zero guilt.",
+                    'Snap a photo of your fridge.',
+                    'AI reads exactly what you have.',
+                    'Get 3 real recipes in seconds.',
+                    'Cook something great in 30 mins.',
+                    'Zero waste. Zero guilt.',
                   ].map((item) => (
                     <li
                       key={item}
@@ -244,7 +244,7 @@ const LandingPage = () => {
               how it works
             </Badge>
             <h2 className="text-3xl sm:text-6xl font-extrabold text-stone-900">
-              From Photo to Feast in{" "}
+              From Photo to Feast in{' '}
               <span className="text-brand-500">3 Steps</span>
             </h2>
           </div>
@@ -257,7 +257,7 @@ const LandingPage = () => {
               >
                 <div
                   className="h-1"
-                  style={{ background: ["#B5D4F4", "#9FE1CB", "#FAC775"][i] }}
+                  style={{ background: ['#B5D4F4', '#9FE1CB', '#FAC775'][i] }}
                 />
                 <div className="flex flex-col items-center gap-3 p-6 text-center">
                   <span className="text-xs uppercase tracking-widest text-stone-400">
@@ -404,7 +404,7 @@ const LandingPage = () => {
         </div>
       </section>
     </div>
-  );
-};
+  )
+}
 
-export default LandingPage;
+export default LandingPage

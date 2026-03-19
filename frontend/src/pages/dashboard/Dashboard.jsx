@@ -502,7 +502,7 @@ const Dashboard = () => {
                       className="group block"
                     >
                       <Card className="overflow-hidden rounded-2xl border-stone-200/60 shadow-xs hover:shadow-md transition-shadow">
-                        <div className="aspect-[4/3]">
+                        <div className="aspect-4/3">
                           <img
                             src={recipe.imageUrl}
                             alt={recipe.title}
