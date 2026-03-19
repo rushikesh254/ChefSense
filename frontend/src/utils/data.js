@@ -1,4 +1,4 @@
-import { BookOpen, Camera, ChefHat, Search } from 'lucide-react'
+import { BookOpen, Brain, Camera, ChefHat, Heart, Search } from 'lucide-react'
 
 //  testinomials amd avatars
 
@@ -68,22 +68,67 @@ export const FEATURES = [
 
 export const STEPS = [
   {
-    title: 'Take a Photo',
-    desc: 'Snap a picture of the ingredients you already have at home.',
+    title: '1. Snap your pantry',
+    icon: Camera,
+    color: 'bg-green-100 text-brand-600 ',
+    description:
+      'Take a photo of the ingredients in your fridge or pantry. Our AI will identify everything automatically.',
     img: 'https://images.unsplash.com/photo-1542838132-92c53300491e',
     alt: 'Ingredients',
   },
   {
-    title: 'AI Analysis',
-    desc: 'Our AI identifies ingredients and finds the best recipes for you.',
+    title: '2. AI Analysis',
+    icon: Brain,
+    color: 'bg-blue-100 text-blue-600 ',
+    description:
+      'Google Gemini AI analyzes your ingredients and matches them with thousands of recipes in our database.',
     img: 'https://images.unsplash.com/photo-1697577418970-95d99b5a55cf',
     alt: 'AI Analysis',
   },
   {
-    title: 'Cook & Enjoy',
-    desc: 'Pick a recipe and start cooking instantly.',
+    title: '3. Get Recipes',
+
+    icon: ChefHat,
+    color: 'bg-amber-100 text-amber-600 ',
+    description:
+      'Receive personalized recipe suggestions ranked by how well they match your available ingredients.',
+    img: 'https://images.unsplash.com/photo-1710091691780-c7eb0dc50cf8',
+    alt: 'recipes',
+  },
+  {
+    title: '4. Cook & Enjoy',
+
+    icon: Heart,
+    color: 'bg-pink-100 text-pink-600 ',
+    description:
+      'Follow step-by-step instructions, save your favorites, and enjoy delicious homemade meals!',
     img: 'https://images.unsplash.com/photo-1710091691780-c7eb0dc50cf8',
     alt: 'Cook Food',
+  },
+]
+
+// faqs
+
+export const FAQS = [
+  {
+    question: 'What is ChefSense?',
+    answer:
+      'ChefSense is an AI-powered recipe platform that helps you cook amazing meals using ingredients you already have. Simply scan your pantry and get personalized recipe suggestions.',
+  },
+  {
+    question: 'How does the AI scanning work?',
+    answer:
+      'Our platform uses Google Gemini AI Vision to analyze photos of your ingredients. Just take a picture of your fridge or pantry, and the AI will identify the items automatically.',
+  },
+  {
+    question: 'Is ChefSense free to use?',
+    answer:
+      'Yes! ChefSense is completely free to use. You can scan your pantry, generate recipes, and save your favorites at no cost.',
+  },
+  {
+    question: 'What features does ChefSense offer?',
+    answer:
+      "ChefSense includes AI pantry scanning, personalized recipe suggestions, dashboard, chef's tips, ingredient substitutions, and PDF recipe downloads.",
   },
 ]
 

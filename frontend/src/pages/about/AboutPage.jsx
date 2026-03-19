@@ -1,15 +1,10 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card";
-
 const AboutPage = () => {
   return (
     <div className="min-h-screen py-20 px-5 sm:px-6">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-14">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-5 leading-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-5 leading-tight">
             We're on a mission to <br />
             <span className="text-brand-600">eliminate food waste.</span>
           </h1>
@@ -31,7 +26,7 @@ const AboutPage = () => {
           </div>
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 mb-4">
-              Why ChefSense?
+              Why ChefSense ?
             </h2>
             <p className="text-stone-600 mb-5 leading-relaxed">
               Every year, billions of tons of food go to waste simply because we
@@ -44,25 +39,9 @@ const AboutPage = () => {
             </p>
           </div>
         </div>
-
-        {/* CTA */}
-        <Card className="border-stone-200 max-w-md mx-auto">
-          <CardContent className="p-8 sm:p-10 text-center">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-4">
-              Join thousands of cooks
-            </h2>
-            <p className="text-stone-600 mb-6">
-              Start your journey towards a more sustainable and delicious
-              kitchen today.
-            </p>
-            <Button asChild variant="primary" size="lg">
-              <Link to="/dashboard">Get Started</Link>
-            </Button>
-          </CardContent>
-        </Card>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AboutPage;
+export default AboutPage
