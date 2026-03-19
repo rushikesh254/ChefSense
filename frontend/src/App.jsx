@@ -12,7 +12,7 @@ import HowItWorksPage from '@/pages/how-it-works/HowItWorksPage'
 import PrivacyPage from '@/pages/legal/PrivacyPage'
 import TermsPage from '@/pages/legal/TermsPage'
 import Dashboard from '@/pages/dashboard/Dashboard'
-import RecipesPage from '@/pages/recipes/RecipesPage'
+import SavedRecipes from '@/pages/recipes/SavedRecipes'
 import FilterResultsPage from '@/pages/recipes/FilterResultsPage'
 import PantryPage from '@/pages/pantry/PantryPage'
 
@@ -33,7 +33,7 @@ function App() {
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/recipes" element={<RecipesPage />} />
+          <Route path="/saved-recipes" element={<SavedRecipes />} />
           <Route
             path="/recipes/quick/:quick"
             element={<FilterResultsPage type="quick" />}
