@@ -1,15 +1,15 @@
-import React from "react";
-import { Mail, MessageSquare, MapPin } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import React from 'react'
+import { Mail, MessageSquare, MapPin } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 
 const contactInfo = [
-  { icon: Mail, title: "Email", detail: "support@chefsense.ai" },
-  { icon: MessageSquare, title: "Live Chat", detail: "Mon–Fri, 9am–5pm" },
-  { icon: MapPin, title: "Office", detail: "Prayagraj, UP" },
-];
+  { icon: Mail, title: 'Email', detail: 'support@chefsense.ai' },
+  { icon: MessageSquare, title: 'Live Chat', detail: 'Mon–Fri, 9am–5pm' },
+  { icon: MapPin, title: 'Office', detail: 'Prayagraj, UP' },
+]
 
 const ContactPage = () => {
   return (
@@ -86,7 +86,7 @@ const ContactPage = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ContactPage;
+export default ContactPage
