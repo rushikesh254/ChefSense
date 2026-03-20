@@ -1,249 +1,198 @@
 import RecipeCard from '@/components/RecipeCard'
+import RecipeImage from '@/components/RecipeImage'
+import SearchBar from '@/components/SearchBar'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import recentlyviewed from '@/Dummydata/recentrlyviewed'
+import { Card, CardContent } from '@/components/ui/card'
+import cookingTips from '@/Dummydata/cookingTips'
+import recentlyviewed from '@/Dummydata/recentlyviewed'
+import { DiscoverService } from '@/services/discover'
 import {
   DISCOVER_CATEGORIES,
   DISCOVER_CUISINES,
   DISCOVER_DIETS,
-} from '@/utils/data'
-import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-
-import {
-  ChevronRight,
-  Clock3,
-  Flame,
-  History,
-  Leaf,
-  Lightbulb,
-  Search,
-  Star,
-} from 'lucide-react'
-
-import {
   dietColors,
   getCategoryEmoji,
   getCountryFlag,
   getDietEmoji,
   slugify,
 } from '@/utils/data'
-
-import cookingTips from '@/Dummydata/cookingTips'
-
-import RecipeImage from '@/components/RecipeImage'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
 import {
-  getCategories,
-  getCuisines,
-  getDiets,
-  getFeatured,
-  getQuickMeals,
-  getTrending,
-} from '@/services/dicover'
+  ArrowRight,
+  Clock,
+  Clock3,
+  Flame,
+  History,
+  Leaf,
+  Lightbulb,
+  Star,
+} from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
 const Dashboard = () => {
-  const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState('')
   const [featuredRecipe, setFeaturedRecipe] = useState(null)
-  const [trending, setTrending] = useState([])
   const [quickMeals, setQuickMeals] = useState([])
   const [categories, setCategories] = useState(DISCOVER_CATEGORIES)
   const [cuisines, setCuisines] = useState(DISCOVER_CUISINES)
   const [diets, setDiets] = useState(DISCOVER_DIETS)
-
-  const navigate = useNavigate()
-
-  const [recentlyViewed, setRecentlyViewed] = useState(
-    recentlyviewed.recipes || [],
-  )
-
-  useEffect(() => {
-    async function LoadDashboard() {
-      setLoading(true)
-      try {
-        const featuredRecipe = await getFeatured()
-        setFeaturedRecipe(featuredRecipe.recipe || null)
-
-        const trendingRecipes = await getTrending()
-        setTrending(trendingRecipes.recipes || [])
-
-        const quickMealsData = await getQuickMeals()
-        setQuickMeals(quickMealsData.meals || [])
-
-        const categoryData = await getCategories()
-        setCategories(categoryData?.categories || DISCOVER_CATEGORIES)
-
-        const cuisineData = await getCuisines()
-        setCuisines(cuisineData?.cuisines || DISCOVER_CUISINES)
-
-        const dietData = await getDiets()
-        setDiets(dietData?.diets || DISCOVER_DIETS)
-      } catch (error) {
-        toast.error('Failed to load dashboard data. Please try again later.')
-        console.error('Error loading dashboard data:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    LoadDashboard()
-  }, [])
-
-  function handleSearch(e) {
-    e.preventDefault()
-    const query = search.trim()
-    if (!query) return
-    navigate(`/recipe?cook=${encodeURIComponent(query)}`)
-  }
-
-  useEffect(() => {
-    function handleKeyDown(e) {
-      if (e.key === 'Enter') handleSearch(e)
-    }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [search])
-
+  const [recentlyViewed] = useState(recentlyviewed.recipes || [])
   const [tipIndex, setTipIndex] = useState(
     Math.floor(Math.random() * cookingTips.length),
   )
-  const randomTip = cookingTips[tipIndex]
+
+  const [loading, setLoading] = useState(true)
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    async function loadDashboard() {
+      try {
+        const [
+          featuredData,
+          quickMealsData,
+          categoryData,
+          cuisineData,
+          dietData,
+        ] = await Promise.all([
+          DiscoverService.getFeatured(),
+          DiscoverService.getQuickMeals(),
+          DiscoverService.getCategories(),
+          DiscoverService.getCuisines(),
+          DiscoverService.getDiets(),
+        ])
+
+        setFeaturedRecipe(featuredData.recipe || null)
+        setQuickMeals(quickMealsData.recipes || [])
+        setCategories(categoryData.categories || DISCOVER_CATEGORIES)
+        setCuisines(cuisineData.cuisines || DISCOVER_CUISINES)
+        setDiets(dietData.diets || DISCOVER_DIETS)
+      } catch (error) {
+        toast.error('Failed to load dashboard data. Please try again later.')
+        console.error('Error loading dashboard data:', error)
+      }
+      setLoading(false)
+    }
+
+    loadDashboard()
+  }, [])
+
   const refreshTip = () =>
     setTipIndex(Math.floor(Math.random() * cookingTips.length))
 
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="border rounded-full inline-flex items-center bg-white px-6 py-4 text-lg font-bold text-stone-900">
+          <Clock className="  mr-3 h-6 w-6 animate-spin text-orange-600" />
+          Loading Your Dashboard...
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen pb-16 sm:pb-20">
-      {/* hero section  */}
+      {/* hero section */}
       {featuredRecipe && (
-        <section className="relative h-[55vh] sm:h-[65vh] overflow-hidden">
+        <section className="relative h-[60vh] sm:h-[70vh] overflow-hidden">
           <RecipeImage
             src={featuredRecipe.imageUrl}
             alt={featuredRecipe.title}
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
 
-          <div className="relative z-10 max-w-7xl mx-auto px-3 h-full flex items-end pb-10 sm:pb-14">
-            <div className="max-w-xs sm:max-w-lg space-y-2 sm:space-y-3">
-              <Badge className="bg-brand-500 text-white border-0">
-                <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                Featured
-              </Badge>
+          <div className="relative z-10 h-full flex items-end">
+            <div className="w-full max-w-7xl mx-auto px-5 sm:px-10 pb-10 sm:pb-16 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
+              {/* left — info */}
+              <div className="space-y-3 max-w-xl">
+                <div className="flex gap-2 flex-col items-start">
+                  <Badge className="bg-brand-600 text-white border-0">
+                    <Flame className="w-5 h-5" /> Featured
+                  </Badge>
+                  <div className="flex gap-2">
+                    {featuredRecipe.category && (
+                      <Badge className="bg-white/15 text-white border-0 backdrop-blur-sm">
+                        {featuredRecipe.category}
+                      </Badge>
+                    )}
+                    {featuredRecipe.cuisine && (
+                      <Badge className="bg-white/15 text-white border-0 backdrop-blur-sm">
+                        {featuredRecipe.cuisine}
+                      </Badge>
+                    )}
+                    {featuredRecipe.diet && (
+                      <Badge className="bg-white/15 text-white border-0 backdrop-blur-sm">
+                        {featuredRecipe.diet}
+                      </Badge>
+                    )}
+                  </div>
+                </div>
 
-              {/* Title */}
-              <h1 className="text-2xl sm:text-4xl font-bold text-white/90 leading-tight">
-                {featuredRecipe.title}
-              </h1>
+                <h1 className="text-3xl sm:text-5xl font-extrabold text-white leading-tight">
+                  {featuredRecipe.title}
+                </h1>
 
-              {/* Description */}
-              {featuredRecipe.description && (
-                <p className="text-xs sm:text-base text-white line-clamp-2 sm:line-clamp-none">
-                  {featuredRecipe.description}
-                </p>
-              )}
-
-              {/* Info row */}
-              <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-stone-300">
-                {featuredRecipe.cookTime && (
-                  <span className="flex items-center gap-1">
-                    <Clock3 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                    {featuredRecipe.cookTime} min
-                  </span>
+                {featuredRecipe.description && (
+                  <p className="text-sm sm:text-base text-white/65 line-clamp-2 max-w-md">
+                    {featuredRecipe.description}
+                  </p>
                 )}
-                {featuredRecipe.rating && (
-                  <span className="flex items-center gap-1">
-                    <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-400" />
-                    {featuredRecipe.rating.toFixed(1)}
-                  </span>
-                )}
-                {featuredRecipe.servings && (
-                  <span>{featuredRecipe.servings} servings</span>
-                )}
-              </div>
 
-              {/* Tags */}
-              {(featuredRecipe.cuisine ||
-                featuredRecipe.diet ||
-                featuredRecipe.category) && (
-                <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1">
-                  {featuredRecipe.cuisine && (
-                    <Badge
-                      variant="secondary"
-                      className="bg-white/20 text-white"
-                    >
-                      {featuredRecipe.cuisine}
-                    </Badge>
+                <div className="flex items-center gap-4 text-sm text-white/55">
+                  {featuredRecipe.cookTime && (
+                    <span className="flex items-center gap-1.5">
+                      <Clock3 className="w-4 h-4" /> {featuredRecipe.cookTime}{' '}
+                      min
+                    </span>
                   )}
-                  {featuredRecipe.diet && (
-                    <Badge
-                      variant="secondary"
-                      className="bg-white/20 text-white"
-                    >
-                      {featuredRecipe.diet}
-                    </Badge>
+                  {featuredRecipe.rating && (
+                    <span className="flex items-center gap-1.5">
+                      <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                      {featuredRecipe.rating.toFixed(1)}
+                    </span>
                   )}
-                  {featuredRecipe.category && (
-                    <Badge
-                      variant="secondary"
-                      className="bg-white/20 text-white"
-                    >
-                      {featuredRecipe.category}
-                    </Badge>
+                  {featuredRecipe.servings && (
+                    <span>{featuredRecipe.servings} servings</span>
                   )}
                 </div>
-              )}
-
-              <Link to={`/recipe/${featuredRecipe.id}`}>
-                <Button
-                  variant="primary"
-                  className="cursor-pointer transition-all duration-300 hover:scale-105 h-12 w-full sm:w-auto font-bold"
-                >
-                  Start Cooking Free
-                </Button>
-              </Link>
+                {/* right — CTA */}
+                <Link to={`/recipe/${featuredRecipe.id}`} className="shrink-0">
+                  <Button
+                    variant="outline"
+                    className="h-9 px-5 bg-stone-100/80 font-bold text-base hover:scale-105 border-none transition-transform gap-2"
+                  >
+                    Cook This <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </section>
       )}
-      {/* search section  */}
-      <div className="px-4 sm:px-6 -mt-6 sm:-mt-7 relative z-20">
-        <form onSubmit={handleSearch} className="mx-auto max-w-3xl">
-          <div className="relative">
-            <Search className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-stone-400" />
-            <Input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search recipes (e.g. Paneer tikka, Dal makhani)"
-              className="h-12 sm:h-14 w-full rounded-xl bg-white pl-10 pr-4 text-sm shadow-xl shadow-stone-200 border border-stone-200 placeholder:text-stone-400"
-            />
-          </div>
-        </form>
-      </div>
-
-      {/* main content  */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 pt-10 sm:pt-16 pb-16 space-y-12 sm:space-y-20">
+      {/* search section */}
+      <SearchBar />
+      {/* main content */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 pt-10 sm:pt-14 pb-16 space-y-10 sm:space-y-14">
         {/* Categories */}
-        {categories?.length > 0 && (
-          <section className="rounded-3xl p-5 sm:p-8">
-            <div className="mb-6 sm:mb-8">
-              <h2 className="text-xl sm:text-4xl font-extrabold tracking-tight text-stone-900 flex items-center gap-2">
+        {categories.length > 0 && (
+          <section>
+            <div className="mb-5 sm:mb-6">
+              <h2 className="text-xl sm:text-3xl font-extrabold tracking-tight text-stone-900">
                 Explore Styles
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-brand-500" />
               </h2>
-              <p className="text-stone-500 text-xs sm:text-sm font-medium mt-1.5 sm:mt-2">
+              <p className="text-stone-500 text-xs sm:text-sm font-medium mt-1">
                 Browse recipes by your favorite style.
               </p>
             </div>
-
-            <div className="flex flex-wrap gap-2.5 sm:gap-3">
+            <div className="flex flex-wrap gap-2.5 sm:gap-4 sm:px-15">
               {categories.map((cat) => (
                 <Link
                   key={cat.name}
                   to={`/recipes/category/${slugify(cat.name)}`}
-                  className="group px-4 sm:px-5 py-2.5 sm:py-3 bg-white hover:bg-brand-50 border border-stone-200 rounded-full flex items-center gap-2 sm:gap-3 transition-all duration-300 hover:scale-105 shadow-xs hover:shadow-brand-200/50 hover:border-brand-500"
+                  className="group px-4 sm:px-5 sm:h-15 h-10 py-2.5 sm:py-3 bg-white hover:bg-brand-50 border border-stone-200 rounded-full flex items-center gap-2 sm:gap-3 transition-all duration-300 hover:scale-105 shadow-xs hover:shadow-brand-200/50 hover:border-brand-500"
                 >
                   <span className="text-xl sm:text-2xl inline-block group-hover:scale-125 transition-transform duration-300 origin-center">
                     {getCategoryEmoji(cat.name)}
@@ -258,54 +207,47 @@ const Dashboard = () => {
         )}
 
         {/* Quick Meals */}
-        {quickMeals?.length > 0 && (
-          <section className="rounded-xl sm:rounded-2xl p-4 sm:p-8">
-            <div className="flex items-start sm:items-center justify-between mb-5 sm:mb-6 gap-3">
+        {quickMeals.length > 0 && (
+          <section>
+            <div className="flex items-center justify-between mb-5 sm:mb-6">
               <div>
-                <p className="text-sm sm:text-lg text-stone-500 mb-0.5 sm:mb-1 font-semibold uppercase tracking-wider">
+                <p className="text-xs sm:text-sm text-stone-500 font-semibold uppercase tracking-wider mb-0.5">
                   Quick Recipes
                 </p>
                 <h2 className="text-xl sm:text-3xl font-extrabold tracking-tight text-stone-900">
                   Ready in 15 Minutes
                 </h2>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                className="rounded-full shrink-0 text-xs sm:text-sm"
-              >
-                <Link to="/recipes/quick/all" className="cursor-pointer">
-                  View All
-                </Link>
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5">
-              {quickMeals?.slice(0, 4).map((meal) => (
-                <Link
-                  key={meal.id}
-                  to={`/recipe?cook=${encodeURIComponent(meal.title)}`}
+              <Link to="/recipes/quick/all">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="rounded-full text-xs sm:text-sm"
                 >
-                  <RecipeCard recipe={meal} />
-                </Link>
+                  View All
+                </Button>
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5">
+              {quickMeals.slice(0, 4).map((meal) => (
+                <RecipeCard key={meal.id} recipe={meal} />
               ))}
             </div>
           </section>
         )}
 
         {/* Cuisines */}
-        {cuisines?.length > 0 && (
-          <section className="rounded-3xl p-5 sm:p-10">
-            <div className="text-center mb-7 sm:mb-10">
-              <h2 className="text-xl sm:text-5xl font-extrabold tracking-tight text-stone-900">
+        {cuisines.length > 0 && (
+          <section>
+            <div className="text-center mb-7 sm:mb-8">
+              <h2 className="text-xl sm:text-3xl font-extrabold tracking-tight text-stone-900">
                 Explore Cuisines
               </h2>
-              <p className="text-stone-500 text-xs sm:text-sm font-medium mt-1.5 sm:mt-2">
+              <p className="text-stone-500 text-xs sm:text-sm font-medium mt-1">
                 Discover flavors from around the world.
               </p>
             </div>
-
-            <div className="flex flex-wrap justify-center gap-5 sm:gap-10">
+            <div className="flex flex-wrap justify-center gap-5 sm:gap-10 sm:px-15">
               {cuisines.map((cuisine) => {
                 const flagUrl = getCountryFlag(cuisine.name)
                 return (
@@ -314,7 +256,7 @@ const Dashboard = () => {
                     to={`/recipes/cuisine/${slugify(cuisine.name)}`}
                     className="group flex flex-col items-center gap-2 sm:gap-3"
                   >
-                    <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-white shadow-sm border border-stone-100 flex items-center justify-center group-hover:scale-110 group-hover:shadow-xl group-hover:ring-2 group-hover:ring-brand-300 transition-all duration-300">
+                    <div className="w-14 h-14 sm:w-25 sm:h-25 rounded-full bg-white shadow-sm border border-stone-100 flex items-center justify-center group-hover:scale-110 group-hover:shadow-xl group-hover:ring-2 group-hover:ring-brand-300 transition-all duration-300">
                       {flagUrl ? (
                         <img
                           src={flagUrl}
@@ -336,24 +278,23 @@ const Dashboard = () => {
         )}
 
         {/* Diets */}
-        {diets?.length > 0 && (
-          <section className="rounded-3xl p-5 sm:p-8">
-            <div className="mb-7 sm:mb-10">
-              <div className="flex items-center gap-2 mb-2 sm:mb-3">
+        {diets.length > 0 && (
+          <section>
+            <div className="mb-5 sm:mb-7">
+              <div className="flex items-center gap-2 mb-2">
                 <Leaf className="w-4 h-4 sm:w-5 sm:h-5 text-brand-600" />
                 <p className="text-[10px] sm:text-xs text-brand-600 font-bold uppercase tracking-widest">
                   Lifestyle
                 </p>
               </div>
-              <h2 className="text-xl sm:text-4xl font-extrabold tracking-tight text-stone-900">
+              <h2 className="text-xl sm:text-3xl font-extrabold tracking-tight text-stone-900">
                 Dietary Preferences
               </h2>
-              <p className="text-stone-500 text-xs sm:text-sm font-medium mt-1.5 sm:mt-2">
+              <p className="text-stone-500 text-xs sm:text-sm font-medium mt-1">
                 Choose a lifestyle that fits your taste.
               </p>
             </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
               {diets.map((diet) => {
                 const colors =
                   dietColors[diet.name] ||
@@ -384,41 +325,35 @@ const Dashboard = () => {
         )}
 
         {/* Recently Viewed */}
-        {recentlyViewed?.length > 0 && (
+        {recentlyViewed.length > 0 && (
           <section>
-            <div className="flex items-center gap-2 sm:gap-2.5 mb-5 sm:mb-8">
+            <div className="flex items-center gap-2 sm:gap-2.5 mb-5 sm:mb-6">
               <History className="w-4 h-4 sm:w-5 sm:h-5 text-brand-600" />
               <h2 className="text-xl sm:text-3xl font-extrabold tracking-tight text-stone-900">
                 Recently Viewed
               </h2>
             </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5">
+            <div className="flex flex-nowrap gap-2 overflow-x-auto">
               {recentlyViewed.map((recipe) => (
-                <Link
-                  key={recipe.id}
-                  to={`/recipe?cook=${encodeURIComponent(recipe.title)}`}
-                >
+                <div key={recipe.id} className="shrink-0 w-64 ">
                   <RecipeCard recipe={recipe} />
-                </Link>
+                </div>
               ))}
             </div>
           </section>
         )}
 
         {/* Cooking Tip */}
-        {randomTip && (
+        {cookingTips.length > 0 && (
           <section>
             <div className="relative bg-brand-50/80 border border-brand-200 rounded-2xl sm:rounded-3xl overflow-hidden min-h-32 sm:min-h-40">
               <div className="absolute top-0 right-0 p-6 sm:p-8 opacity-5">
                 <Lightbulb className="w-24 h-24 sm:w-32 sm:h-32 text-brand-900" />
               </div>
-
               <div className="relative z-10 p-4 sm:p-8 flex items-start gap-3 sm:gap-6">
                 <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-brand-100 flex items-center justify-center shrink-0">
                   <Lightbulb className="w-5 h-5 sm:w-7 sm:h-7 text-brand-600" />
                 </div>
-
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1.5 sm:mb-2 gap-2">
                     <p className="text-[10px] sm:text-sm font-bold uppercase tracking-widest text-brand-600">
@@ -432,7 +367,7 @@ const Dashboard = () => {
                     </button>
                   </div>
                   <p className="text-sm sm:text-lg font-medium text-stone-800 leading-relaxed pr-2">
-                    {randomTip}
+                    {cookingTips[tipIndex]}
                   </p>
                 </div>
               </div>
