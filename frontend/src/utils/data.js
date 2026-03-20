@@ -237,32 +237,28 @@ export function getDietEmoji(diet) {
 // diet colors fn
 
 export const dietColors = {
-  Vegetarian:
-    'bg-orange-50 border-orange-200 text-orange-700 hover:bg-orange-100',
+  Vegetarian: 'bg-orange-50  text-orange-700 hover:bg-orange-100',
 
-  Vegan: 'bg-green-50 border-green-200 text-green-700 hover:bg-green-100',
+  Vegan: 'bg-green-50  text-green-700 hover:bg-green-100',
 
-  'Gluten-Free':
-    'bg-yellow-50 border-yellow-200 text-yellow-700 hover:bg-yellow-100',
+  'Gluten-Free': 'bg-yellow-50  text-yellow-700 hover:bg-yellow-100',
 
-  'Dairy-Free': 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100',
+  'Dairy-Free': 'bg-blue-50  text-blue-700 hover:bg-blue-100',
 
-  Keto: 'bg-red-50 border-red-200 text-red-700 hover:bg-red-100',
+  Keto: 'bg-red-50  text-red-700 hover:bg-red-100',
 
-  Paleo: 'bg-amber-50 border-amber-200 text-amber-700 hover:bg-amber-100',
+  Paleo: 'bg-amber-50  text-amber-700 hover:bg-amber-100',
 
-  'Low-Carb':
-    'bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100',
+  'Low-Carb': 'bg-emerald-50  text-emerald-700 hover:bg-emerald-100',
 
-  'Low-Fat': 'bg-sky-50 border-sky-200 text-sky-700 hover:bg-sky-100',
+  'Low-Fat': 'bg-sky-50  text-sky-700 hover:bg-sky-100',
 
-  'High-Protein':
-    'bg-purple-50 border-purple-200 text-purple-700 hover:bg-purple-100',
+  'High-Protein': 'bg-purple-50  text-purple-700 hover:bg-purple-100',
 
-  'Sugar-Free': 'bg-pink-50 border-pink-200 text-pink-700 hover:bg-pink-100',
+  'Sugar-Free': 'bg-pink-50  text-pink-700 hover:bg-pink-100',
 }
 
-// slugify fn
+// slugify fn (remove html tags, special characters and spaces from an string)
 
 export function slugify(text) {
   return text

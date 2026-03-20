@@ -8,26 +8,30 @@ import {
   ArrowRight,
   Clock,
   Frown,
+  Leaf,
   Smile,
   Star,
   Users,
   Vegan,
 } from 'lucide-react'
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { AuthContext } from '@/context/AuthContext'
+
+const BADGE_CLASS =
+  'border-green-200 text-green-500 bg-green-50 text-xs font-bold uppercase tracking-widest mb-4'
 
 const LandingPage = () => {
+  const { user } = useContext(AuthContext)
   return (
-    <div className=" min-h-screen">
-      {/* hero sectiom  */}
-      <section className=" pt-24 pb-20 px-5 sm:px-10 lg:px-16">
+    <div className="min-h-screen">
+      {/* hero section */}
+      <section className="pt-24 pb-20 px-5 sm:px-10 lg:px-16">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             {/* left */}
             <div className="flex-1 text-center lg:text-left">
-              <Badge
-                variant="outline"
-                className="border-green-200 text-green-500 bg-green-50 text-xs font-bold uppercase tracking-widest mb-4"
-              >
+              <Badge variant="outline" className={BADGE_CLASS}>
                 #1 AI Cooking Assistant
               </Badge>
 
@@ -44,10 +48,10 @@ const LandingPage = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-center md:justify-start">
-                <Link to="/dashboard">
+                <Link to={user ? '/dashboard' : '/sign-in'}>
                   <Button
                     variant="primary"
-                    className="flex items-center gap-2 cursor-pointer hover:bg-brand-600 hover:text-white transition-all duration-300 ease-in-out hover:scale-105 h-12 w-full sm:w-auto text-base font-bold  "
+                    className="flex items-center gap-2 cursor-pointer hover:bg-brand-600 hover:text-white transition-all duration-300 ease-in-out hover:scale-105 h-12 w-full sm:w-auto text-base font-bold"
                   >
                     Start Cooking Free <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
@@ -55,7 +59,7 @@ const LandingPage = () => {
                 <Link to="/how-it-works">
                   <Button
                     variant="outline"
-                    className="flex items-center gap-2 cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 h-12 w-full sm:w-auto text-base font-bold  "
+                    className="flex items-center gap-2 cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 h-12 w-full sm:w-auto text-base font-bold"
                   >
                     See How It Works
                   </Button>
@@ -87,7 +91,7 @@ const LandingPage = () => {
             </div>
 
             {/* Right — recipe card */}
-            <div className="flex flex-1 justify-center items-center ">
+            <div className="flex flex-1 justify-center items-center">
               <Card className="p-0 hover:scale-105 transition-all duration-300 ease-in-out">
                 <CardContent className="p-0">
                   <div className="relative h-full w-full">
@@ -101,7 +105,7 @@ const LandingPage = () => {
                     </Badge>
                   </div>
                   <div className="p-6">
-                    <h3 className="text-stone-900 text-3xl font-bold mb-2 ">
+                    <h3 className="text-stone-900 text-3xl font-bold mb-2">
                       Rustic Tomato Basil Pasta
                     </h3>
                     <div className="flex items-center gap-1 mb-4">
@@ -117,21 +121,21 @@ const LandingPage = () => {
                     </div>
                     <div className="flex items-center gap-2 flex-wrap">
                       <Badge
-                        variant="outline "
+                        variant="outline"
                         className="gap-1 border border-stone-500 bg-stone-50"
                       >
                         <Clock className="w-3 h-3" /> 25 mins
                       </Badge>
 
                       <Badge
-                        variant="outline "
+                        variant="outline"
                         className="gap-1 border border-stone-500 bg-stone-50"
                       >
                         <Users className="w-3 h-3" /> 2 servings
                       </Badge>
 
                       <Badge
-                        variant="outline "
+                        variant="outline"
                         className="gap-1 border border-stone-500 bg-stone-50"
                       >
                         <Vegan className="w-3 h-3" /> Vegetarian
@@ -147,14 +151,11 @@ const LandingPage = () => {
 
       <Separator />
 
-      {/* problem - solution section  */}
+      {/* problem - solution section */}
       <section className="py-20 px-5 sm:px-10 lg:px-16">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12 lg:mb-14 flex flex-col items-center justify-center">
-            <Badge
-              variant="outline"
-              className="border-green-200 text-green-500 bg-green-50 text-xs font-bold uppercase tracking-widest mb-4 flex items-center justify-center"
-            >
+          <div className="text-center mb-12 lg:mb-14">
+            <Badge variant="outline" className={BADGE_CLASS}>
               Try ChefSense
             </Badge>
             <h2 className="text-3xl sm:text-6xl font-extrabold text-stone-900">
@@ -163,7 +164,7 @@ const LandingPage = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
-            <Card className="border-red-100 bg-red-50 shadow-none hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-105 cursor-pointer">
+            <Card className="border-red-100 bg-red-50 shadow-none">
               <CardContent className="p-7 lg:p-8">
                 <h3 className="font-bold text-red-500 mb-5 flex items-center gap-2">
                   <Frown />
@@ -189,7 +190,7 @@ const LandingPage = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-green-100 bg-green-50 shadow-none hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-105 cursor-pointer">
+            <Card className="border-green-100 bg-green-50 shadow-none">
               <CardContent className="p-7 lg:p-8">
                 <h3 className="font-bold text-green-600 mb-5 flex items-center gap-2">
                   <Smile />
@@ -217,14 +218,13 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
       <Separator />
-      {/* demo section  */}
+
+      {/* demo section */}
       <section className="py-20 px-5 sm:px-10 lg:px-16">
         <div className="max-w-4xl mx-auto text-center">
-          <Badge
-            variant="outline"
-            className="border-green-200 text-green-500 bg-green-50 text-xs font-bold uppercase tracking-widest mb-4 "
-          >
+          <Badge variant="outline" className={BADGE_CLASS}>
             See It In Action
           </Badge>
 
@@ -236,6 +236,7 @@ const LandingPage = () => {
             No setup. No subscriptions. Just snap and cook.
           </p>
 
+          {/* keeping the browser mockup as-is per your instructions */}
           <Card className="mx-auto max-w-3xl shadow-xl border-stone-200 overflow-hidden">
             <div className="flex items-center gap-2 px-4 py-3 bg-stone-50 border-b border-stone-100">
               <span className="w-3 h-3 rounded-full bg-red-400" />
@@ -247,61 +248,59 @@ const LandingPage = () => {
             </div>
             <CardContent className="p-0">
               <div className="w-full h-80 sm:h-96 bg-white flex flex-col items-center justify-center gap-3">
-                <img src="/dashboard.png" alt="dashboard screenshot" />
+                {/* <img src="/dashboard.png" alt="dashboard screenshot" /> */}
+                dashboard image
               </div>
             </CardContent>
           </Card>
         </div>
       </section>
+
       <Separator />
-      {/* steps section  */}
+
+      {/* steps section */}
       <section className="py-20 px-5 sm:px-10 lg:px-16">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12 lg:mb-14">
-            <Badge
-              variant="outline"
-              className="border-green-200 text-green-500 bg-green-50 text-xs font-bold uppercase tracking-widest mb-4 "
-            >
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12 lg:mb-16">
+            <Badge variant="outline" className={BADGE_CLASS}>
               how it works
             </Badge>
-            <h2 className="text-3xl sm:text-6xl font-extrabold text-stone-900">
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-stone-900">
               From Photo to Feast in{' '}
               <span className="text-brand-500">3 Steps</span>
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {STEPS.slice(0, 3).map((step, i) => (
-              <Card
-                key={i}
-                className="group overflow-hidden rounded-2xl border border-stone-200 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
-              >
-                <CardContent className="flex flex-col items-center text-center p-6 gap-4">
-                  {/* Step badge */}
-                  <span className="text-xs uppercase tracking-widest text-brand-500 font-semibold bg-brand-50 px-3 py-1 rounded-full">
-                    Step {i + 1}
-                  </span>
-
-                  {/* Image */}
-                  <div className="relative">
-                    <img
-                      src={step.img}
-                      alt={step.alt}
-                      className="w-44 h-44 rounded-xl object-cover shadow-md group-hover:scale-105 transition-transform duration-300"
-                    />
+          <div className="flex flex-col gap-0">
+            {STEPS.map((step, i) => (
+              <div key={i} className="flex gap-6 sm:gap-10 group">
+                {/* Left — number + connector line */}
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 rounded-full bg-brand-500 text-white flex items-center justify-center text-lg font-extrabold shrink-0 group-hover:scale-110 transition-transform duration-200">
+                    {i + 1}
                   </div>
+                  {i < STEPS.length - 1 && (
+                    <div className="w-0.5 flex-1 bg-stone-200 my-2" />
+                  )}
+                </div>
 
-                  {/* Title */}
-                  <h3 className="text-lg font-semibold text-stone-900 group-hover:text-brand-600 transition-colors">
-                    {step.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-sm text-stone-500 leading-relaxed max-w-xs">
-                    {step.description}
-                  </p>
-                </CardContent>
-              </Card>
+                {/* Right — content */}
+                <div className="flex flex-col sm:flex-row items-start gap-5 pb-12">
+                  <img
+                    src={step.img}
+                    alt={step.alt}
+                    className="w-24 h-24 rounded-2xl object-cover shadow-md shrink-0"
+                  />
+                  <div className="pt-1">
+                    <h3 className="text-xl font-bold text-stone-900 mb-1">
+                      {step.title}
+                    </h3>
+                    <p className="text-stone-500 text-sm leading-relaxed max-w-sm">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -309,64 +308,99 @@ const LandingPage = () => {
 
       <Separator />
 
-      {/* features section  */}
+      {/* features section */}
       <section className="py-20 px-5 sm:px-10 lg:px-16">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center max-w-2xl mx-auto mb-12 lg:mb-14">
-            <Badge
-              variant="outline"
-              className="border-green-200 text-green-500 bg-green-50 text-xs font-bold uppercase tracking-widest mb-4"
-            >
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <Badge variant="outline" className={BADGE_CLASS}>
               features
             </Badge>
-            <h2 className="text-3xl sm:text-6xl font-extrabold text-stone-900 mb-4">
-              Your <span className="text-brand-500">Smart </span>Kitchen
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-stone-900 mb-3">
+              Your <span className="text-brand-500">Smart</span> Kitchen
             </h2>
             <p className="text-stone-500 text-lg">
               Everything you need to master your meal prep.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {FEATURES.map((feature) => (
-              <Card
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+            {FEATURES.slice(0, 4).map((feature) => (
+              <div
                 key={feature.title}
-                className="border-stone-200 hover:shadow-lg transition-all duration-300 ease-in-out hover:scale-105 cursor-pointer flex items-center justify-center h-30 sm:h-40  w-full  "
+                className="bg-stone-50 rounded-2xl p-6 flex gap-4 items-start"
               >
-                <CardContent className="flex gap-4 p-6">
-                  <div className="shrink-0 w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
-                    <feature.icon className="w-5 h-5 text-green-600" />
-                  </div>
-                  <div>
-                    <div className="flex items-baseline gap-2 mb-1">
-                      <h3 className="font-semibold text-stone-900">
-                        {feature.title}
-                      </h3>
-                      <span className="text-xs text-stone-400">
+                <Badge className={`${BADGE_CLASS} h-12 w-12`} variant="outline">
+                  <feature.icon className="w-5 h-5 text-green-600" />
+                </Badge>
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-bold text-stone-900">
+                      {feature.title}
+                    </h3>
+                    {feature.limit && (
+                      <span className="text-xs text-stone-400 bg-white border border-stone-200 px-2 py-0.5 rounded-full">
                         {feature.limit}
                       </span>
-                    </div>
-                    <p className="text-sm text-stone-500 leading-relaxed">
-                      {feature.description}
-                    </p>
+                    )}
                   </div>
-                </CardContent>
-              </Card>
+                  <p className="text-sm text-stone-500 leading-relaxed">
+                    {feature.description}
+                  </p>
+                </div>
+              </div>
             ))}
+          </div>
+
+          <div className="rounded-2xl overflow-hidden flex flex-col sm:flex-row bg-stone-700">
+            <div className="flex-1 p-8 flex flex-col justify-center">
+              <div className="w-10 h-10 rounded-xl bg-green-300 flex items-center justify-center mb-5">
+                <Leaf className="w-5 h-5 text-green-800" />
+              </div>
+              <h3 className="font-extrabold text-white text-2xl mb-2">
+                Zero waste, every time
+              </h3>
+              <p className="text-stone-200 text-sm leading-relaxed max-w-sm mb-8">
+                ChefSense always prioritizes ingredients closest to expiry. Cook
+                smarter, waste less, save money every week.
+              </p>
+              <div className="flex items-center gap-8">
+                <div>
+                  <p className="text-3xl font-extrabold text-white">₹1500</p>
+                  <p className="text-xs text-stone-500 mt-0.5">
+                    saved per week
+                  </p>
+                </div>
+                <div className="w-px h-10 bg-stone-700" />
+                <div>
+                  <p className="text-3xl font-extrabold text-white">30%</p>
+                  <p className="text-xs text-stone-500 mt-0.5">
+                    less food wasted
+                  </p>
+                </div>
+                <div className="w-px h-10 bg-stone-700" />
+                <div>
+                  <p className="text-3xl font-extrabold text-white">10k+</p>
+                  <p className="text-xs text-stone-500 mt-0.5">happy cooks</p>
+                </div>
+              </div>
+            </div>
+            <img
+              src="https://images.unsplash.com/photo-1543353071-873f17a7a088?w=700&auto=format&fit=crop"
+              alt="Zero waste cooking"
+              className="w-full sm:w-129 h-56 sm:h-auto object-cover"
+            />
           </div>
         </div>
       </section>
 
       <Separator />
 
-      {/* Testimonials  */}
+      {/* Testimonials */}
       <section className="py-20 px-5 sm:px-10 lg:px-16 bg-stone-50">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12 lg:mb-14">
-            <Badge
-              variant="outline"
-              className="border-green-200 text-green-500 bg-green-50 text-xs font-bold uppercase tracking-widest mb-4"
-            >
+            {/* ✅ CHANGE: used BADGE_CLASS constant */}
+            <Badge variant="outline" className={BADGE_CLASS}>
               Testimonials
             </Badge>
             <h2 className="text-3xl sm:text-6xl font-extrabold text-stone-900">
@@ -415,45 +449,37 @@ const LandingPage = () => {
 
       <Separator />
 
-      {/* CTA section  */}
+      {/* CTA section */}
+      <section className="py-24 px-5 sm:px-10 lg:px-16 bg-stone-100">
+        <div className="max-w-3xl mx-auto text-center">
+          <p className="text-green-600 text-sm font-bold uppercase tracking-widest mb-4">
+            Zero Waste · Zero Stress
+          </p>
 
-      <section className="py-20 px-5">
-        <Card className="max-w-4xl pt-10 pb-10 mx-auto h-full ">
-          <CardContent>
-            <div className="max-w-2xl mx-auto text-center">
-              <Badge
-                variant="outline"
-                className="border-green-200 text-green-500 bg-green-50 text-xs font-bold uppercase tracking-widest mb-4"
-              >
-                Zero Waste · Zero Stress
-              </Badge>
+          <h2 className="text-4xl sm:text-6xl font-extrabold text-black leading-tight mb-5">
+            Your next great meal is{' '}
+            <span className="text-brand-600">already in your fridge.</span>
+          </h2>
 
-              <h2 className="text-4xl sm:text-6xl font-bold text-stone-900 leading-tight mb-5">
-                Your next great meal is{' '}
-                <span className="text-brand-500">already in your fridge.</span>
-              </h2>
+          <p className="text-stone-600 text-lg mb-10 leading-relaxed max-w-xl mx-auto">
+            Scan your pantry, let AI do the thinking, and cook something amazing
+            tonight — without wasting food or money.
+          </p>
 
-              <p className="text-stone-500 text-lg mb-10 leading-relaxed">
-                Scan your pantry, let AI do the thinking, and cook something
-                amazing tonight — without wasting food or money.
-              </p>
+          <Link to="/dashboard">
+            <Button
+              variant="primary"
+              className="h-12 px-8 text-base font-bold gap-2 bg-brand-500 hover:bg-brand-600 text-white hover:scale-105 transition-transform"
+            >
+              Scan Your Pantry
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </Link>
 
-              <Link to="/dashboard">
-                <Button
-                  variant="secondary"
-                  className="h-12 px-6 text-base font-semibold gap-2 hover:scale-105 transition-transform"
-                >
-                  Scan Your Pantry
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
-
-              <p className="mt-4 text-sm text-stone-400">
-                No credit card · Takes less than 30 seconds
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+          <p className="mt-5 text-sm text-stone-500">
+            No credit card · Takes less than 30 seconds
+          </p>
+        </div>
       </section>
     </div>
   )

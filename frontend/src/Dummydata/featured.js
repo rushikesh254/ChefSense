@@ -1,29 +1,19 @@
 const featuredRecipes = {
   recipe: {
-    id: '1',
-    title: 'Paneer Butter Masala',
+    id: '4',
+    title: 'Shahi Paneer',
     description:
-      'A creamy, buttery curry with soft paneer in a rich tomato gravy.',
+      'A royal Mughlai dish consisting of paneer cubes in a thick, aromatic gravy made of almonds, cashews, and cream.',
     cuisine: 'indian',
     category: 'dinner',
     diet: 'vegetarian',
     difficulty: 'medium',
-    tags: [
-      'Indian',
-      'Curry',
-      'Paneer',
-      'Vegetarian',
-      'Creamy',
-      'Butter',
-      'Main Course',
-    ],
-    imageUrl:
-      'https://images.unsplash.com/photo-1690401767645-595de0e0e5f8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NjQ0NjZ8MHwxfHNlYXJjaHwxfHxQYW5lZXIlMjBCdXR0ZXIlMjBNYXNhbGF8ZW58MXwwfHx8MTc3MzcyOTc1OXww&ixlib=rb-4.1.0&q=80&w=1080',
-    cookTime: 30,
+    imageUrl: `
+https://images.unsplash.com/photo-1631452180539-96aca7d48617?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`,
+    cookTime: 35,
     prepTime: 15,
     servings: 4,
-    rating: 4.7,
-    servings: 4,
+    rating: 4.9,
     isVeg: true,
   },
 }
