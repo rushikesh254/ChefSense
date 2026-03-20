@@ -3,6 +3,7 @@ import { AuthContext } from '@/context/AuthContext'
 import { Cookie, LayoutDashboard, Menu, Refrigerator, X } from 'lucide-react'
 import { useContext, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import HowToCookModal from './HowToCookModal'
 import UserDropdown from './UserDropdown'
 
 const PUBLIC_NAV_LINKS = [
@@ -57,6 +58,7 @@ function Header() {
               </NavLink>
             ))}
           </div>
+          <HowToCookModal />
 
           {/* right side */}
           <div className="flex items-center gap-2">

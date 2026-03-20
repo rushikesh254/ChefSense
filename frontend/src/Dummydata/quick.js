@@ -7,8 +7,8 @@ const quickmeals = {
       category: 'dinner',
       diet: 'non-vegetarian',
       difficulty: 'medium',
-      tags: ['Chicken', 'Curry', 'Creamy'],
-      imageUrl: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+        'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=800&q=80',
       cookTime: 40,
       prepTime: 20,
       servings: 4,
@@ -18,7 +18,8 @@ const quickmeals = {
     {
       id: '2',
       title: 'Margherita Pizza',
-      imageUrl: 'https://images.unsplash.com/photo-1601924928376-5b6e0d9e0b4c?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+        'https://images.unsplash.com/photo-1601924928376-5b6e0d9e0b4c?auto=format&fit=crop&w=800&q=80',
       cuisine: 'italian',
       category: 'dinner',
       diet: 'vegetarian',
@@ -32,7 +33,8 @@ const quickmeals = {
     {
       id: '3',
       title: 'Chicken Biryani',
-      imageUrl: 'https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+        'https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=800&q=80',
       cuisine: 'indian',
       category: 'lunch',
       diet: 'non-vegetarian',
@@ -46,7 +48,8 @@ const quickmeals = {
     {
       id: '4',
       title: 'Veg Fried Rice',
-      imageUrl: 'https://images.unsplash.com/photo-1604908812038-7d0c8b8e1a1c?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+        'https://images.unsplash.com/photo-1604908812038-7d0c8b8e1a1c?auto=format&fit=crop&w=800&q=80',
       cuisine: 'chinese',
       category: 'lunch',
       diet: 'vegetarian',
@@ -64,8 +67,8 @@ const quickmeals = {
       category: 'dinner',
       diet: 'vegetarian',
       difficulty: 'medium',
-      tags: ['Paneer', 'Spicy', 'Grill'],
-      imageUrl: 'https://images.unsplash.com/photo-1567184109171-969977ec14e4?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+        'https://images.unsplash.com/photo-1567184109171-969977ec14e4?auto=format&fit=crop&w=800&q=80',
       cookTime: 35,
       prepTime: 20,
       servings: 4,
@@ -79,8 +82,8 @@ const quickmeals = {
       category: 'dinner',
       diet: 'non-vegetarian',
       difficulty: 'medium',
-      tags: ['Pasta', 'Creamy', 'Classic'],
-      imageUrl: 'https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+        'https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=800&q=80',
       cookTime: 20,
       prepTime: 10,
       servings: 2,
@@ -94,8 +97,8 @@ const quickmeals = {
       category: 'lunch',
       diet: 'non-vegetarian',
       difficulty: 'hard',
-      tags: ['Spicy', 'Peanuts', 'Stir-fry'],
-      imageUrl: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+        'https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=800&q=80',
       cookTime: 30,
       prepTime: 15,
       servings: 3,
@@ -109,8 +112,8 @@ const quickmeals = {
       category: 'lunch',
       diet: 'vegetarian',
       difficulty: 'easy',
-      tags: ['Fresh', 'Healthy', 'Quick'],
-      imageUrl: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+        'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80',
       cookTime: 0,
       prepTime: 15,
       servings: 2,
@@ -124,8 +127,8 @@ const quickmeals = {
       category: 'dinner',
       diet: 'non-vegetarian',
       difficulty: 'easy',
-      tags: ['Meat', 'Street Food', 'Spicy'],
-      imageUrl: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+        'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80',
       cookTime: 15,
       prepTime: 15,
       servings: 4,
@@ -139,8 +142,8 @@ const quickmeals = {
       category: 'dinner',
       diet: 'vegetarian',
       difficulty: 'hard',
-      tags: ['Creamy', 'Rice', 'Savory'],
-      imageUrl: 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+        'https://images.unsplash.com/photo-1476124369491-e7addf5db371?auto=format&fit=crop&w=800&q=80',
       cookTime: 45,
       prepTime: 10,
       servings: 3,
@@ -154,8 +157,8 @@ const quickmeals = {
       category: 'lunch',
       diet: 'non-vegetarian',
       difficulty: 'medium',
-      tags: ['Wrap', 'Garlic', 'Grilled'],
-      imageUrl: 'https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+        'https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=800&q=80',
       cookTime: 25,
       prepTime: 40,
       servings: 4,
@@ -169,8 +172,8 @@ const quickmeals = {
       category: 'lunch',
       diet: 'vegetarian',
       difficulty: 'easy',
-      tags: ['Lentils', 'Healthy', 'Comfort'],
-      imageUrl: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+        'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80',
       cookTime: 20,
       prepTime: 10,
       servings: 4,
@@ -184,8 +187,8 @@ const quickmeals = {
       category: 'dinner',
       diet: 'non-vegetarian',
       difficulty: 'medium',
-      tags: ['Coconut', 'Spicy', 'Herbal'],
-      imageUrl: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+        'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?auto=format&fit=crop&w=800&q=80',
       cookTime: 30,
       prepTime: 20,
       servings: 3,
@@ -199,8 +202,8 @@ const quickmeals = {
       category: 'lunch',
       diet: 'vegetarian',
       difficulty: 'easy',
-      tags: ['Noodles', 'Quick', 'Stir-fry'],
-      imageUrl: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+        'https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=800&q=80',
       cookTime: 15,
       prepTime: 15,
       servings: 2,
