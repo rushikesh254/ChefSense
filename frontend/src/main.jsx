@@ -1,13 +1,13 @@
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
-import AuthProvider from './context/AuthContext'
 import './index.css'
+import { UserProvider } from './context/AuthContext.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <AuthProvider>
+  <UserProvider>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </AuthProvider>,
+  </UserProvider>,
 )

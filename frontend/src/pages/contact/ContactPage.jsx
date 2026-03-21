@@ -1,9 +1,8 @@
-import React from 'react'
-import { Mail, MessageSquare, MapPin } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { Mail, MapPin, MessageSquare } from 'lucide-react'
 
 const contactInfo = [
   { icon: Mail, title: 'Email', detail: 'support@chefsense.ai' },

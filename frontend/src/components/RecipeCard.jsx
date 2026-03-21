@@ -124,7 +124,7 @@ function RecipeCard({ recipe }) {
             </div>
           )}
 
-          {/* Category / Cuisine / Diet — unified transparent badges */}
+          {/* Category / Cuisine / Diet — badge*/}
           {taxonomyBadges.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-auto pt-1">
               {taxonomyBadges.map((label) => (

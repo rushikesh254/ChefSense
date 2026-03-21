@@ -1,9 +1,9 @@
 const user = {
   id: 1,
   email: `rushikeshbodke884@gmail.com`,
-  image: `https://i.pravatar.cc/150?u=priya@example.com`,
+  image: ``,
   firstName: 'Rushikesh',
-  lastName: 'Kulkarni',
+  lastName: 'Bodke',
 }
 
 export default user

@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
-import { AuthContext } from '@/context/AuthContext'
+import { useUser } from '@/context/AuthContext'
 import { Cookie, LayoutDashboard, Menu, Refrigerator, X } from 'lucide-react'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import HowToCookModal from './HowToCookModal'
 import UserDropdown from './UserDropdown'
@@ -19,7 +19,7 @@ const PRIVATE_NAV_LINKS = [
 ]
 
 function Header() {
-  const { user } = useContext(AuthContext)
+  const { user } = useUser()
 
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -33,7 +33,7 @@ function Header() {
           {/* logo */}
           <Link to={user ? '/dashboard' : '/'} className="shrink-0">
             <img
-              src="/orange-logo.png"
+              src="/orange_logo.png"
               alt="ChefSense"
               className="w-16 sm:w-20"
             />
@@ -86,7 +86,6 @@ function Header() {
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="md:hidden p-2 rounded-lg text-stone-600 hover:bg-stone-100 transition-colors"
-              aria-label="Toggle menu"
             >
               {mobileOpen ? (
                 <X className="w-5 h-5" />

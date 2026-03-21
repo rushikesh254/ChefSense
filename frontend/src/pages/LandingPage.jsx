@@ -3,7 +3,8 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { FEATURES, STEPS, TESTIMONIALS } from '@/utils/data'
+import { useUser } from '@/context/AuthContext'
+import { FEATURES, TESTIMONIALS } from '@/utils/data'
 import {
   ArrowRight,
   Clock,
@@ -14,15 +15,14 @@ import {
   Users,
   Vegan,
 } from 'lucide-react'
-import { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { AuthContext } from '@/context/AuthContext'
 
 const BADGE_CLASS =
   'border-green-200 text-green-500 bg-green-50 text-xs font-bold uppercase tracking-widest mb-4'
 
 const LandingPage = () => {
-  const { user } = useContext(AuthContext)
+  const { user } = useUser()
+
   return (
     <div className="min-h-screen">
       {/* hero section */}
@@ -51,7 +51,7 @@ const LandingPage = () => {
                 <Link to={user ? '/dashboard' : '/sign-in'}>
                   <Button
                     variant="primary"
-                    className="flex items-center gap-2 cursor-pointer hover:bg-brand-600 hover:text-white transition-all duration-300 ease-in-out hover:scale-105 h-12 w-full sm:w-auto text-base font-bold"
+                    className=" transition-transform hover:scale-105 h-12 w-full sm:w-auto text-base font-bold"
                   >
                     Start Cooking Free <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
@@ -59,7 +59,7 @@ const LandingPage = () => {
                 <Link to="/how-it-works">
                   <Button
                     variant="outline"
-                    className="flex items-center gap-2 cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 h-12 w-full sm:w-auto text-base font-bold"
+                    className=" transition-transform hover:scale-105 h-12 w-full sm:w-auto text-base font-bold"
                   >
                     See How It Works
                   </Button>
@@ -92,7 +92,7 @@ const LandingPage = () => {
 
             {/* Right — recipe card */}
             <div className="flex flex-1 justify-center items-center">
-              <Card className="p-0 hover:scale-105 transition-all duration-300 ease-in-out">
+              <Card className="p-0 hover:scale-105 transition-transform">
                 <CardContent className="p-0">
                   <div className="relative h-full w-full">
                     <img
@@ -148,8 +148,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      <Separator />
 
       {/* problem - solution section */}
       <section className="py-20 px-5 sm:px-10 lg:px-16">
@@ -218,95 +216,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      <Separator />
-
-      {/* demo section */}
-      <section className="py-20 px-5 sm:px-10 lg:px-16">
-        <div className="max-w-4xl mx-auto text-center">
-          <Badge variant="outline" className={BADGE_CLASS}>
-            See It In Action
-          </Badge>
-
-          <h2 className="text-3xl sm:text-6xl font-extrabold text-stone-900 mb-3">
-            Fridge photo to recipe <br />
-            <span className="text-brand-500">in seconds.</span>
-          </h2>
-          <p className="text-stone-500 text-lg mb-12 max-w-xl mx-auto">
-            No setup. No subscriptions. Just snap and cook.
-          </p>
-
-          {/* keeping the browser mockup as-is per your instructions */}
-          <Card className="mx-auto max-w-3xl shadow-xl border-stone-200 overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-3 bg-stone-50 border-b border-stone-100">
-              <span className="w-3 h-3 rounded-full bg-red-400" />
-              <span className="w-3 h-3 rounded-full bg-yellow-400" />
-              <span className="w-3 h-3 rounded-full bg-green-400" />
-              <div className="flex-1 mx-3 bg-white border border-stone-200 rounded-md px-3 py-1 text-xs text-stone-400 text-left">
-                chefsense.app/dashboard
-              </div>
-            </div>
-            <CardContent className="p-0">
-              <div className="w-full h-80 sm:h-96 bg-white flex flex-col items-center justify-center gap-3">
-                {/* <img src="/dashboard.png" alt="dashboard screenshot" /> */}
-                dashboard image
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      <Separator />
-
-      {/* steps section */}
-      <section className="py-20 px-5 sm:px-10 lg:px-16">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12 lg:mb-16">
-            <Badge variant="outline" className={BADGE_CLASS}>
-              how it works
-            </Badge>
-            <h2 className="text-3xl sm:text-5xl font-extrabold text-stone-900">
-              From Photo to Feast in{' '}
-              <span className="text-brand-500">3 Steps</span>
-            </h2>
-          </div>
-
-          <div className="flex flex-col gap-0">
-            {STEPS.map((step, i) => (
-              <div key={i} className="flex gap-6 sm:gap-10 group">
-                {/* Left — number + connector line */}
-                <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 rounded-full bg-brand-500 text-white flex items-center justify-center text-lg font-extrabold shrink-0 group-hover:scale-110 transition-transform duration-200">
-                    {i + 1}
-                  </div>
-                  {i < STEPS.length - 1 && (
-                    <div className="w-0.5 flex-1 bg-stone-200 my-2" />
-                  )}
-                </div>
-
-                {/* Right — content */}
-                <div className="flex flex-col sm:flex-row items-start gap-5 pb-12">
-                  <img
-                    src={step.img}
-                    alt={step.alt}
-                    className="w-24 h-24 rounded-2xl object-cover shadow-md shrink-0"
-                  />
-                  <div className="pt-1">
-                    <h3 className="text-xl font-bold text-stone-900 mb-1">
-                      {step.title}
-                    </h3>
-                    <p className="text-stone-500 text-sm leading-relaxed max-w-sm">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <Separator />
 
       {/* features section */}
       <section className="py-20 px-5 sm:px-10 lg:px-16">
@@ -393,13 +302,33 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* steps section */}
       <Separator />
 
+      <section className="py-20 px-5 sm:px-10 lg:px-16">
+        <div className="max-w-4xl mx-auto text-center">
+          <Badge variant="outline" className={BADGE_CLASS}>
+            how it works
+          </Badge>
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-stone-900 mb-6">
+            From Photo to Feast in{' '}
+            <span className="text-brand-500">4 Steps</span>
+          </h2>
+          <Link to="/how-it-works">
+            <Button
+              variant="primary"
+              className="gap-2 w-fit px-6 h-12 text-base font-bold rounded-full hover:scale-105 transition-transform"
+            >
+              See How It Works <ArrowRight className="w-5 h-5" />
+            </Button>
+          </Link>
+        </div>
+      </section>
+      <Separator />
       {/* Testimonials */}
       <section className="py-20 px-5 sm:px-10 lg:px-16 bg-stone-50">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12 lg:mb-14">
-            {/* ✅ CHANGE: used BADGE_CLASS constant */}
             <Badge variant="outline" className={BADGE_CLASS}>
               Testimonials
             </Badge>
@@ -412,7 +341,7 @@ const LandingPage = () => {
             {TESTIMONIALS.map((t) => (
               <Card
                 key={t.name}
-                className="rounded-xl border border-stone-200 bg-white p-6 shadow-sm hover:scale-105 transition-transform duration-300 ease-in-out"
+                className="hover:scale-105 transition-transform"
               >
                 <CardContent>
                   <div className="flex gap-1 mb-4">
@@ -426,7 +355,6 @@ const LandingPage = () => {
                   <p className="text-stone-600 text-sm mb-5 leading-relaxed">
                     &ldquo;{t.text}&rdquo;
                   </p>
-                  <Separator className="mb-5" />
                   <div className="flex items-center gap-2.5">
                     <Avatar className="w-8 h-8">
                       <AvatarImage
@@ -446,8 +374,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      <Separator />
 
       {/* CTA section */}
       <section className="py-24 px-5 sm:px-10 lg:px-16 bg-stone-100">
@@ -469,7 +395,7 @@ const LandingPage = () => {
           <Link to="/dashboard">
             <Button
               variant="primary"
-              className="h-12 px-8 text-base font-bold gap-2 bg-brand-500 hover:bg-brand-600 text-white hover:scale-105 transition-transform"
+              className="h-12 px-8 w-fit text-base font-bold gap-2 hover:scale-105 transition-transform"
             >
               Scan Your Pantry
               <ArrowRight className="w-4 h-4" />
