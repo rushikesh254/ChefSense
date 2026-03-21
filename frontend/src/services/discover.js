@@ -1,7 +1,5 @@
 import featuredRecipes from '@/Dummydata/featured'
 import fileterRecipes from '@/Dummydata/filterRecipes'
-import quickmeals from '@/Dummydata/quick'
-import quick from '@/Dummydata/quick'
 import {
   DISCOVER_CATEGORIES,
   DISCOVER_CUISINES,
@@ -10,36 +8,40 @@ import {
 
 export const DiscoverService = {
   async getFeatured() {
+    // return dummy recipe
     return featuredRecipes
   },
 
   async getQuickMeals() {
-    // Mock quick meals data
-    return quickmeals
+    // returns dummy recipes
+    return fileterRecipes
   },
 
   async getCategories() {
-    // Mock categories data
+    // return dummy categegories
     return DISCOVER_CATEGORIES
   },
 
   async getCuisines() {
-    // Mock cuisines data
+    // return dummy cusines
     return DISCOVER_CUISINES
   },
 
   async getDiets() {
-    // Mock diets data
+    // returns dummy diets
     return DISCOVER_DIETS
   },
 
   async getByCategory(name) {
+    // returns dummy recipes
     return fileterRecipes
   },
   async getByCuisine(name) {
+    // returns dummy recipes
     return fileterRecipes
   },
   async getByDiet(name) {
+    // returns dummy recipes
     return fileterRecipes
   },
 }

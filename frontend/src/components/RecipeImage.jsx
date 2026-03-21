@@ -5,6 +5,7 @@ import { useState } from 'react'
 export default function RecipeImage({ src, alt, className, children }) {
   const [broken, setBroken] = useState(false)
 
+  // broken image
   if (!src || broken) {
     return (
       <div
@@ -19,6 +20,7 @@ export default function RecipeImage({ src, alt, className, children }) {
     )
   }
 
+  // image
   return (
     <div className={className}>
       <img

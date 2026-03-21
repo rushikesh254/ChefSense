@@ -1,7 +1,7 @@
 import RecipeCard from '@/components/RecipeCard'
 import { Button } from '@/components/ui/button'
 import { DiscoverService } from '@/services/discover'
-import { ArrowLeft, ChefHat, Clock, Loader2, UtensilsCrossed } from 'lucide-react'
+import { ArrowLeft, ChefHat, Loader2, UtensilsCrossed } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -34,6 +34,7 @@ function FilterResultsPage({ type }) {
   useEffect(() => {
     async function run() {
       try {
+        setLoading(true)
         let data
 
         if (type === 'quick') data = await DiscoverService.getQuickMeals()
@@ -43,9 +44,6 @@ function FilterResultsPage({ type }) {
           data = await DiscoverService.getByCategory(params.category)
         else if (type === 'diet')
           data = await DiscoverService.getByDiet(params.diet)
-
-        // add a small delay to ensure the loading animation is seen (prevents flickering)
-        await new Promise((resolve) => setTimeout(resolve, 600))
 
         setRecipes(data.recipes || [])
       } catch (error) {
