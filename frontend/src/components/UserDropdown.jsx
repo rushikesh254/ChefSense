@@ -1,11 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { AuthContext } from '@/context/AuthContext'
+import { useUser } from '@/context/AuthContext'
 import { getInitials } from '@/lib/utils'
-import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 
 function UserDropdown() {
-  const { user } = useContext(AuthContext)
+  const { user } = useUser()
   return (
     <div>
       <Link to="/profie" className="relative h-10 w-10 rounded-full">

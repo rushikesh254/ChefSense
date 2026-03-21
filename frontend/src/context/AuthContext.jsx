@@ -1,20 +1,24 @@
 import dummyuser from '@/Dummydata/user'
-import React, { useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
-export const AuthContext = React.createContext()
+const UserContext = createContext()
 
-function AuthProvider({ children }) {
+export function UserProvider({ children }) {
   const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setUser(dummyuser)
+    setLoading(false)
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, loading, setLoading }}>
       {children}
-    </AuthContext.Provider>
+    </UserContext.Provider>
   )
 }
 
-export default AuthProvider
+export function useUser() {
+  return useContext(UserContext)
+}
