@@ -1,9 +1,9 @@
+import SearchBar from '@/components/SearchBar'
 import { Button } from '@/components/ui/button'
 import { useUser } from '@/context/AuthContext'
 import { Cookie, LayoutDashboard, Menu, Refrigerator, X } from 'lucide-react'
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import HowToCookModal from './HowToCookModal'
 import UserDropdown from './UserDropdown'
 
 const PUBLIC_NAV_LINKS = [
@@ -20,6 +20,8 @@ const PRIVATE_NAV_LINKS = [
 
 function Header() {
   const { user } = useUser()
+
+  const [search, setSearch] = useState('')
 
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -58,7 +60,16 @@ function Header() {
               </NavLink>
             ))}
           </div>
-          <HowToCookModal />
+          {user && (
+            <div className="hidden md:flex items-center">
+              <SearchBar
+                variant="compact"
+                value={search}
+                onChange={setSearch}
+                placeholder="Search recipes..."
+              />
+            </div>
+          )}
 
           {/* right side */}
           <div className="flex items-center gap-2">
@@ -100,6 +111,15 @@ function Header() {
       {/* mobile menu */}
       {mobileOpen && (
         <div className="md:hidden bg-white border-b border-stone-200 shadow-lg">
+          {user && (
+            <div className="px-1 pb-2">
+              <SearchBar
+                value={search}
+                onChange={setSearch}
+                placeholder="Search recipes..."
+              />
+            </div>
+          )}
           <div className="px-4 py-3 space-y-1">
             {currentNavLinks.map(({ to, icon: Icon, label }) => (
               <NavLink

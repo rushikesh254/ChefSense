@@ -92,7 +92,8 @@ export const STEPS = [
     color: 'bg-amber-100 text-amber-600 ',
     description:
       'Receive personalized recipe suggestions ranked by how well they match your available ingredients.',
-    img: 'https://images.unsplash.com/photo-1710091691780-c7eb0dc50cf8',
+    img: 'https://images.unsplash.com/photo-1657143377606-ad2f0b790fc6?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+
     alt: 'recipes',
   },
   {

@@ -2,14 +2,9 @@ import RecipeImage from '@/components/RecipeImage'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { DIFFICULTY_STYLES } from '@/utils/constants'
 import { Clock, Star, Users, Zap } from 'lucide-react'
 import { Link } from 'react-router-dom'
-
-const DIFFICULTY_STYLES = {
-  easy: 'bg-emerald-50 text-emerald-700 border-emerald-100',
-  medium: 'bg-amber-50  text-amber-700  border-amber-100',
-  hard: 'bg-red-50    text-red-700    border-red-100',
-}
 
 function RecipeCard({ recipe }) {
   if (!recipe) return null
@@ -32,7 +27,7 @@ function RecipeCard({ recipe }) {
   const totalTime = cookTime + prepTime
 
   const diffStyle =
-    DIFFICULTY_STYLES[difficulty] ??
+    DIFFICULTY_STYLES[difficulty?.toLowerCase()] ??
     'bg-stone-50 text-stone-600 border-stone-100'
 
   const taxonomyBadges = [category, cuisine, diet].filter(Boolean)

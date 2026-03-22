@@ -32,6 +32,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
 const Dashboard = () => {
+  const [search, setSearch] = useState('')
   const [featuredRecipe, setFeaturedRecipe] = useState(null)
   const [quickMeals, setQuickMeals] = useState([])
   const [categories, setCategories] = useState(DISCOVER_CATEGORIES)
@@ -85,7 +86,7 @@ const Dashboard = () => {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="border rounded-full inline-flex items-center bg-white px-6 py-4 text-lg font-bold text-stone-900">
-          <Clock className="  mr-3 h-6 w-6 animate-spin text-orange-600" />
+          <Clock className="  mr-3 h-6 w-6 animate-spin text-brand-600" />
           Loading Your Dashboard...
         </div>
       </div>
@@ -173,7 +174,13 @@ const Dashboard = () => {
         </section>
       )}
       {/* search section */}
-      <SearchBar />
+      <div className="px-4 sm:px-6 -mt-6 sm:-mt-7 relative z-20">
+        <SearchBar
+          value={search}
+          onChange={setSearch}
+          placeholder="Search for any recipe, cuisine, or ingredient..."
+        />
+      </div>
       {/* main content */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 pt-10 sm:pt-14 pb-16 space-y-10 sm:space-y-14">
         {/* Categories */}

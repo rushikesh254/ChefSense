@@ -7,7 +7,7 @@ function UserDropdown() {
   const { user } = useUser()
   return (
     <div>
-      <Link to="/profie" className="relative h-10 w-10 rounded-full">
+      <Link to="/profile" className="relative h-10 w-10 rounded-full">
         <Avatar className="cursor-pointer bg-brand-600 text-white">
           <AvatarImage src={user.image} />
           <AvatarFallback className="bg-brand-600 text-white">
