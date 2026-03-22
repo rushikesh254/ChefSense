@@ -392,7 +392,7 @@ const LandingPage = () => {
             tonight — without wasting food or money.
           </p>
 
-          <Link to="/dashboard">
+          <Link to={user ? '/dashboard' : '/sign-in'}>
             <Button
               variant="primary"
               className="h-12 px-8 w-fit text-base font-bold gap-2 hover:scale-105 transition-transform"

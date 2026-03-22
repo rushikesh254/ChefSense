@@ -15,7 +15,6 @@ import {
   getCategoryEmoji,
   getCountryFlag,
   getDietEmoji,
-  slugify,
 } from '@/utils/data'
 import {
   ArrowRight,
@@ -32,6 +31,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
 const Dashboard = () => {
+  const [search, setSearch] = useState('')
   const [featuredRecipe, setFeaturedRecipe] = useState(null)
   const [quickMeals, setQuickMeals] = useState([])
   const [categories, setCategories] = useState(DISCOVER_CATEGORIES)
@@ -85,7 +85,7 @@ const Dashboard = () => {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="border rounded-full inline-flex items-center bg-white px-6 py-4 text-lg font-bold text-stone-900">
-          <Clock className="  mr-3 h-6 w-6 animate-spin text-orange-600" />
+          <Clock className="  mr-3 h-6 w-6 animate-spin text-brand-600" />
           Loading Your Dashboard...
         </div>
       </div>
@@ -173,7 +173,13 @@ const Dashboard = () => {
         </section>
       )}
       {/* search section */}
-      <SearchBar />
+      <div className="px-4 sm:px-6 -mt-6 sm:-mt-7 relative z-20">
+        <SearchBar
+          value={search}
+          onChange={setSearch}
+          placeholder="Search for any recipe, cuisine, or ingredient..."
+        />
+      </div>
       {/* main content */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 pt-10 sm:pt-14 pb-16 space-y-10 sm:space-y-14">
         {/* Categories */}
@@ -191,7 +197,7 @@ const Dashboard = () => {
               {categories.map((cat) => (
                 <Link
                   key={cat.name}
-                  to={`/recipes/category/${slugify(cat.name)}`}
+                  to={`/recipes/category/${cat.name}`}
                   className="group px-4 sm:px-5 sm:h-15 h-10 py-2.5 sm:py-3 bg-white hover:bg-brand-50 border border-stone-200 rounded-full flex items-center gap-2 sm:gap-3 transition-all duration-300 hover:scale-105 shadow-xs hover:shadow-brand-200/50 hover:border-brand-500"
                 >
                   <span className="text-xl sm:text-2xl inline-block group-hover:scale-125 transition-transform duration-300 origin-center">
@@ -253,7 +259,7 @@ const Dashboard = () => {
                 return (
                   <Link
                     key={cuisine.name}
-                    to={`/recipes/cuisine/${slugify(cuisine.name)}`}
+                    to={`/recipes/cuisine/${cuisine.name}`}
                     className="group flex flex-col items-center gap-2 sm:gap-3"
                   >
                     <div className="w-14 h-14 sm:w-25 sm:h-25 rounded-full bg-white shadow-sm border border-stone-100 flex items-center justify-center group-hover:scale-110 group-hover:shadow-xl group-hover:ring-2 group-hover:ring-brand-300 transition-all duration-300">
@@ -302,7 +308,7 @@ const Dashboard = () => {
                 return (
                   <Link
                     key={diet.name}
-                    to={`/recipes/diet/${slugify(diet.name)}`}
+                    to={`/recipes/diet/${diet.name}`}
                     className="group"
                   >
                     <Card
