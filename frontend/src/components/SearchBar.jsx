@@ -9,7 +9,6 @@ export default function SearchBar({
   onChange,
   onSubmit,
   variant = 'default',
-  placeholder = 'Search recipes...',
 }) {
   const navigate = useNavigate()
 
@@ -36,7 +35,7 @@ export default function SearchBar({
         <Input
           value={value ?? ''}
           onChange={(e) => onChange?.(e.target.value)}
-          placeholder={placeholder}
+          placeholder="Search recipes..."
           className={`
             w-full bg-white border-stone-200 placeholder:text-stone-400 text-black
             focus-visible:ring-1 focus-visible:ring-brand-400 focus-visible:border-brand-400

@@ -3,10 +3,15 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { DIFFICULTY_STYLES } from '@/utils/constants'
-import { Clock, Star, Users, Zap } from 'lucide-react'
+import { Clock, Star, Trash2, Users, Zap } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-function RecipeCard({ recipe }) {
+function RecipeCard({ recipe, deletebtn, removeRecipe }) {
+  function deleterecipe(e) {
+    e.preventDefault()
+    removeRecipe(recipe.id)
+  }
+
   if (!recipe) return null
 
   const {
@@ -47,6 +52,15 @@ function RecipeCard({ recipe }) {
             <div className="h-full w-full bg-stone-100 flex items-center justify-center">
               <span className="text-4xl opacity-20">🍽️</span>
             </div>
+          )}
+
+          {deletebtn && (
+            <button
+              onClick={deleterecipe}
+              className="absolute bottom-2 right-2 z-20 bg-white border border-red-200 text-red-500 hover:bg-red-200 hover:text-red-600 p-2 rounded-xl "
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
           )}
 
           {/* Rating */}
