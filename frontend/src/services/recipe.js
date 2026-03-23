@@ -1,11 +1,11 @@
-import dummyrecipe from '@/Dummydata/dummyrecipe'
+import CompleteRecipe from '@/Dummydata/CompleteRecipe'
 
 export const recipeservice = {
   async getById(id) {
-    return dummyrecipe
+    return CompleteRecipe
   },
 
   async getByQuery(query) {
-    return dummyrecipe
+    return CompleteRecipe
   },
 }

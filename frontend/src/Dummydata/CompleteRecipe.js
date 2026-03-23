@@ -1,4 +1,4 @@
-const dummyrecipe = {
+const CompleteRecipe = {
   id: '1',
   title: 'Royal Shahi Paneer',
   description:
@@ -104,4 +104,4 @@ https://images.unsplash.com/photo-1631452180539-96aca7d48617?q=80&w=1470&auto=fo
   ],
 }
 
-export default dummyrecipe
+export default CompleteRecipe

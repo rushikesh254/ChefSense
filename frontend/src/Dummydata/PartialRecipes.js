@@ -1,4 +1,4 @@
-const fileterRecipes = {
+const partialRecipes = {
   recipes: [
     {
       id: '1',
@@ -228,4 +228,4 @@ const fileterRecipes = {
   ],
 }
 
-export default fileterRecipes
+export default partialRecipes

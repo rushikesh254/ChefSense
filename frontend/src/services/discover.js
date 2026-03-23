@@ -1,5 +1,5 @@
 import featuredRecipes from '@/Dummydata/featured'
-import fileterRecipes from '@/Dummydata/filterRecipes'
+import partialRecipes from '@/Dummydata/PartialRecipes'
 import {
   DISCOVER_CATEGORIES,
   DISCOVER_CUISINES,
@@ -14,7 +14,7 @@ export const DiscoverService = {
 
   async getQuickMeals() {
     // returns dummy recipes
-    return fileterRecipes
+    return partialRecipes
   },
 
   async getCategories() {
@@ -34,14 +34,14 @@ export const DiscoverService = {
 
   async getByCategory(name) {
     // returns dummy recipes
-    return fileterRecipes
+    return partialRecipes
   },
   async getByCuisine(name) {
     // returns dummy recipes
-    return fileterRecipes
+    return partialRecipes
   },
   async getByDiet(name) {
     // returns dummy recipes
-    return fileterRecipes
+    return partialRecipes
   },
 }

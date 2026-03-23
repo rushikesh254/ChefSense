@@ -258,12 +258,3 @@ export const dietColors = {
 
   'Sugar-Free': 'bg-pink-50  text-pink-700 hover:bg-pink-100',
 }
-
-// slugify fn (remove html tags, special characters and spaces from an string)
-
-export function slugify(text) {
-  return text
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w-]+/g, '')
-}
