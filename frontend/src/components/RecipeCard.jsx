@@ -1,21 +1,28 @@
-import RecipeImage from '@/components/RecipeImage'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
-import { DIFFICULTY_STYLES } from '@/utils/constants'
-import { Clock, Star, Trash2, Users, Zap } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import RecipeImage from "@/components/RecipeImage";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { DIFFICULTY_STYLES } from "@/utils/constants";
+import { Clock, Star, Trash2, Users, Zap } from "lucide-react";
+import { Link } from "react-router-dom";
+import { X } from "lucide-react";
 
-function RecipeCard({ recipe, deletebtn, removeRecipe }) {
+function RecipeCard({
+  recipe,
+  deletebtn,
+  removeRecipe,
+  matchpercentage,
+  missingingredients,
+}) {
   function deleterecipe(e) {
-    e.preventDefault()
-    removeRecipe(recipe.id)
+    e.preventDefault();
+    removeRecipe(recipe.id);
   }
 
-  if (!recipe) return null
+  if (!recipe) return null;
 
   const {
-    title = 'Recipe',
+    title = "Recipe",
     imageUrl,
     description,
     category,
@@ -27,15 +34,15 @@ function RecipeCard({ recipe, deletebtn, removeRecipe }) {
     rating,
     difficulty,
     isVeg,
-  } = recipe
+  } = recipe;
 
-  const totalTime = cookTime + prepTime
+  const totalTime = cookTime + prepTime;
 
   const diffStyle =
     DIFFICULTY_STYLES[difficulty?.toLowerCase()] ??
-    'bg-stone-50 text-stone-600 border-stone-100'
+    "bg-stone-50 text-stone-600 border-stone-100";
 
-  const taxonomyBadges = [category, cuisine, diet].filter(Boolean)
+  const taxonomyBadges = [category, cuisine, diet].filter(Boolean);
 
   return (
     <Link to={`/recipe/${recipe.id}`} className="w-full h-full">
@@ -63,12 +70,23 @@ function RecipeCard({ recipe, deletebtn, removeRecipe }) {
             </button>
           )}
 
+          {matchpercentage != null && (
+            <div className="absolute bottom-2 right-2 z-20">
+              <Badge
+                className={`border-none px-2 py-0.5 text-[11px] font-semibold text-white shadow-sm backdrop-blur-sm
+        ${matchpercentage >= 90 ? "bg-green-600/90" : matchpercentage >= 75 ? "bg-brand-600/90" : "bg-stone-600/90"}
+      `}
+              >
+                {matchpercentage}% Match
+              </Badge>
+            </div>
+          )}
           {/* Rating */}
           {rating != null && (
             <div className="absolute top-2.5 right-2.5 flex items-center gap-1 rounded-full bg-white/90 backdrop-blur-sm px-2 py-0.5 shadow-sm">
               <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
               <span className="text-[11px] font-semibold text-stone-800 leading-none">
-                {typeof rating === 'number' ? rating.toFixed(1) : rating}
+                {typeof rating === "number" ? rating.toFixed(1) : rating}
               </span>
             </div>
           )}
@@ -77,10 +95,10 @@ function RecipeCard({ recipe, deletebtn, removeRecipe }) {
           {isVeg != null && (
             <div
               className="absolute top-2.5 left-2.5 w-5 h-5 rounded-sm border-2 bg-white flex items-center justify-center shadow-sm"
-              style={{ borderColor: isVeg ? '#16a34a' : '#dc2626' }}
+              style={{ borderColor: isVeg ? "#16a34a" : "#dc2626" }}
             >
               <div
-                className={`w-2 h-2 rounded-full ${isVeg ? 'bg-green-500' : 'bg-red-500'}`}
+                className={`w-2 h-2 rounded-full ${isVeg ? "bg-green-500" : "bg-red-500"}`}
               />
             </div>
           )}
@@ -133,6 +151,33 @@ function RecipeCard({ recipe, deletebtn, removeRecipe }) {
             </div>
           )}
 
+          {missingingredients?.length > 0 && (
+            <div className="mt-1 rounded-xl bg-brand-50/50 p-2 border border-brand-100/50">
+              <span className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-brand-800/80">
+                Missing Ingredients
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {missingingredients.slice(0, 3).map((ingredient) => (
+                  <Badge
+                    key={ingredient}
+                    variant="outline"
+                    className="rounded-md border-brand-200 bg-white px-1.5 py-0 text-[9px] font-medium text-brand-700 leading-tight"
+                  >
+                    {ingredient}
+                  </Badge>
+                ))}
+                {missingingredients.length > 3 && (
+                  <Badge
+                    variant="outline"
+                    className="rounded-md border-brand-200 bg-white px-1.5 py-0 text-[9px] font-medium text-brand-700 leading-tight"
+                  >
+                    +{missingingredients.length - 3} more
+                  </Badge>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Category / Cuisine / Diet — badge*/}
           {taxonomyBadges.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-auto pt-1">
@@ -150,7 +195,7 @@ function RecipeCard({ recipe, deletebtn, removeRecipe }) {
         </CardContent>
       </Card>
     </Link>
-  )
+  );
 }
 
-export default RecipeCard
+export default RecipeCard;
