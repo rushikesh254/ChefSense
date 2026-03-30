@@ -51,38 +51,6 @@ const recentlyviewed = {
       rating: 4.8,
       isVeg: true,
     },
-    {
-      id: '4',
-      title: 'Masala Dosa',
-      description: 'Crispy rice crepe filled with spiced potato filling.',
-      cuisine: 'indian',
-      category: 'breakfast',
-      diet: 'vegetarian',
-      difficulty: 'medium',
-      imageUrl:
-        'https://images.unsplash.com/photo-1604908812038-7d0c8b8e1a1c?auto=format&fit=crop&w=800&q=80',
-      cookTime: 30,
-      prepTime: 20,
-      servings: 2,
-      rating: 4.5,
-      isVeg: true,
-    },
-    {
-      id: '5',
-      title: 'Paneer Tikka Masala',
-      cuisine: 'indian',
-      category: 'dinner',
-      diet: 'vegetarian',
-      difficulty: 'medium',
-      tags: ['Paneer', 'Spicy', 'Grill'],
-      imageUrl:
-        'https://images.unsplash.com/photo-1567184109171-969977ec14e4?auto=format&fit=crop&w=800&q=80',
-      cookTime: 35,
-      prepTime: 20,
-      servings: 4,
-      rating: 4.7,
-      isVeg: true,
-    },
   ],
 }
 
