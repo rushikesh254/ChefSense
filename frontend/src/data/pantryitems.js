@@ -1,0 +1,86 @@
+const dummyitems = [
+  {
+    id: 1,
+    name: "Milk",
+    quantity: "1 Gallon",
+    category: "dairy",
+    expiryDate: "2026-04-10",
+    expiryStatus: "fresh",
+  },
+  {
+    id: 2,
+    name: "Eggs",
+    quantity: "1 Dozen",
+    category: "dairy",
+    expiryDate: "2026-03-28",
+    expiryStatus: "expiring soon",
+  },
+  {
+    id: 3,
+    name: "Bread",
+    quantity: "1 Loaf",
+    category: "bakery",
+    expiryDate: "2026-03-20",
+    expiryStatus: "expired",
+  },
+  {
+    id: 4,
+    name: "Jasmine Rice",
+    quantity: "5 lbs",
+    category: "pantry",
+    expiryDate: "",
+    expiryStatus: "no expiry",
+  },
+  {
+    id: 5,
+    name: "Spinach",
+    quantity: "1 Bag",
+    category: "produce",
+    expiryDate: "2026-03-30",
+    expiryStatus: "fresh",
+  },
+  {
+    id: 6,
+    name: "Chicken Breast",
+    quantity: "2 lbs",
+    category: "meat",
+    expiryDate: "2026-03-27",
+    expiryStatus: "expiring soon",
+  },
+  {
+    id: 7,
+    name: "Tomatoes",
+    quantity: "3 medium",
+    category: "produce",
+    expiryDate: "2026-03-29",
+    expiryStatus: "fresh",
+  },
+  {
+    id: 8,
+    name: "Pasta",
+    quantity: "1 box",
+    category: "pantry",
+    expiryDate: "",
+    expiryStatus: "no expiry",
+  },
+  {
+    id: 9,
+    name: "Yogurt",
+    quantity: "4 cups",
+    category: "dairy",
+    expiryDate: "2026-03-25",
+    expiryStatus: "expired",
+  },
+  {
+    id: 10,
+    name: "Salmon",
+    quantity: "1 fillet",
+    category: "meat",
+    expiryDate: "2026-03-31",
+    expiryStatus: "fresh",
+  },
+];
+
+
+
+export default dummyitems;

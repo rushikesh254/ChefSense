@@ -2,10 +2,9 @@ import RecipeImage from "@/components/RecipeImage";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { DIFFICULTY_STYLES } from "@/utils/constants";
+import { getdifficultyColor } from "@/lib/utils";
 import { Clock, Star, Trash2, Users, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
-import { X } from "lucide-react";
 
 function RecipeCard({
   recipe,
@@ -36,13 +35,9 @@ function RecipeCard({
     isVeg,
   } = recipe;
 
-  const totalTime = cookTime + prepTime;
+  const totalTime = (cookTime || 10) + (prepTime || 10); // default time if not provided
 
-  const diffStyle =
-    DIFFICULTY_STYLES[difficulty?.toLowerCase()] ??
-    "bg-stone-50 text-stone-600 border-stone-100";
-
-  const taxonomyBadges = [category, cuisine, diet].filter(Boolean);
+  let diffStyle = getdifficultyColor(recipe?.difficulty); // badge colors based on difficulty
 
   return (
     <Link to={`/recipe/${recipe.id}`} className="w-full h-full">
@@ -178,20 +173,33 @@ function RecipeCard({
             </div>
           )}
 
-          {/* Category / Cuisine / Diet — badge*/}
-          {taxonomyBadges.length > 0 && (
-            <div className="flex flex-wrap gap-1 mt-auto pt-1">
-              {taxonomyBadges.map((label) => (
-                <Badge
-                  key={label}
-                  variant="outline"
-                  className="rounded-full border-stone-200 bg-stone-50 px-2 py-0.5 text-[10px] font-medium text-stone-500 hover:bg-stone-100 transition-colors"
-                >
-                  {label}
-                </Badge>
-              ))}
-            </div>
-          )}
+          {/* show category, cuisine and diet if they exist */}
+          <div className="flex flex-wrap gap-1 mt-auto pt-1">
+            {category && (
+              <Badge
+                variant="outline"
+                className="rounded-full border-stone-200 text-xs bg-stone-100 text-stone-500"
+              >
+                {category}
+              </Badge>
+            )}
+            {cuisine && (
+              <Badge
+                variant="outline"
+                className="rounded-full border-stone-200 text-xs bg-stone-100 text-stone-500"
+              >
+                {cuisine}
+              </Badge>
+            )}
+            {diet && (
+              <Badge
+                variant="outline"
+                className="rounded-full border-stone-200 text-xs bg-stone-100 text-stone-500"
+              >
+                {diet}
+              </Badge>
+            )}
+          </div>
         </CardContent>
       </Card>
     </Link>

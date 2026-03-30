@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { STEPS } from '@/utils/data'
+import { STEPS } from '@/lib/siteContent'
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 

@@ -1,22 +1,18 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 const footerLinks = {
   Product: [
-    { name: 'Scan Pantry', to: '/dashboard' },
-    { name: 'AI Recipes', to: '/dashboard' },
-    { name: 'My Pantry', to: '/pantry' },
+    { name: "Dashboard", to: "/dashboard" },
+    { name: "Scan Pantry", to: "/pantry" },
+    { name: "AI Recipes", to: "/pantry-recipes" },
   ],
   Resources: [
-    { name: 'How it works', to: '/how-it-works' },
-    { name: 'FAQs', to: '/faqs' },
-    { name: 'Contact', to: '/contact' },
+    { name: "How it works", to: "/how-it-works" },
+    { name: "FAQs", to: "/faqs" },
+    { name: "Contact", to: "/contact" },
   ],
-  Chefsense: [
-    { name: 'About', to: '/about' },
-    { name: 'Privacy Policy', to: '/privacy' },
-    { name: 'Terms of Service', to: '/terms' },
-  ],
-}
+  Chefsense: [{ name: "About", to: "/about" }],
+};
 
 function Footer() {
   return (
@@ -66,7 +62,7 @@ function Footer() {
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-stone-200 pt-6 text-sm text-stone-500 sm:flex-row">
           <span>&copy; 2026 ChefSense. All rights reserved.</span>
           <span className="flex items-center gap-1">
-            Made with 💗 by{' '}
+            Made with 💗 by{" "}
             <a
               href="https://github.com/rushikesh254"
               target="_blank"
@@ -78,7 +74,7 @@ function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
 
-export default Footer
+export default Footer;

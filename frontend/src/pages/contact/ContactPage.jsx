@@ -2,11 +2,15 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Mail, MapPin, MessageSquare } from 'lucide-react'
-
-const ContactPage = () => {
-  const handleSend = (e) => {
+import { toast } from 'sonner'
+function ContactPage() {
+  function handleSend(e) {
     e.preventDefault()
-    console.log('send')
+    // console.log('send');
+
+    // Here FORM SUBMISSION HANDLE  send data to  backend
+    // here shown  toast only later send to backend
+    toast.success('Message sent successfully!')
   }
 
   return (

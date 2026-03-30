@@ -5,7 +5,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { Card, CardContent } from '@/components/ui/card'
-import { FAQS } from '@/utils/data'
+import { FAQS } from '@/lib/siteContent'
 
 export default function FAQPage() {
   return (
