@@ -1,4 +1,4 @@
-const AboutPage = () => {
+function AboutPage() {
   return (
     <div className="min-h-screen py-20 px-5 sm:px-6">
       <div className="max-w-4xl mx-auto">

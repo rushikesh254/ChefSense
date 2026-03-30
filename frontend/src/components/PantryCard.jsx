@@ -1,207 +1,221 @@
-import React, { useState } from "react";
-import { Edit2, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { PANTRY_CATEGORIES, EXPIRY_STATUS } from "@/utils/constants";
+import { EXPIRY_STATUSES, PANTRY_CATEGORIES } from "@/lib/constants";
+import { STATUS_CONFIG } from "@/lib/utils";
+import { Calendar, Edit2, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
-function getStatus(status) {
-  if (status === "fresh")
-    return { accentBar: "bg-green-500", labelClass: "text-green-600" };
-  if (status === "expiring_soon")
-    return { accentBar: "bg-amber-400", labelClass: "text-amber-600" };
-  if (status === "expired")
-    return { accentBar: "bg-red-500", labelClass: "text-red-600" };
-  return { accentBar: "bg-stone-300", labelClass: "text-stone-500" };
-}
+function PantryCard({ item, updateItem, deleteItem }) {
+  // toggle state for edit mode
+  const [isediting, setIsediting] = useState(false);
 
-function getStatusLabel(status) {
-  const found = EXPIRY_STATUS.find((s) => s.value === status);
-  return found ? found.label : "No Expiry";
-}
-
-function getCategoryLabel(value) {
-  if (!value) return "Other";
-  const found = PANTRY_CATEGORIES.find((c) => c.value === value.toLowerCase());
-  return found ? found.label : value;
-}
-
-function PantryCard({ item, deleteItem, updateItem }) {
-  const [isEditing, setIsEditing] = useState(false);
+  // form states
   const [name, setName] = useState(item.name);
   const [quantity, setQuantity] = useState(item.quantity);
   const [category, setCategory] = useState(item.category);
   const [expiryDate, setExpiryDate] = useState(item.expiryDate);
   const [expiryStatus, setExpiryStatus] = useState(item.expiryStatus);
 
-  const itemId = item.id || item._id;
-  const colors = getStatus(item.expiryStatus);
-  const displayCategory = getCategoryLabel(item.category);
-
-  function handleSubmit(e) {
+  // handle form submit
+  function handleformsubmit(e) {
     e.preventDefault();
-    updateItem(itemId, name, quantity, category, expiryDate, expiryStatus);
-    setIsEditing(false);
+
+    // send the current states to pantrypage
+    updateItem(item.id, {
+      name,
+      quantity,
+      category,
+      expiryDate,
+      expiryStatus,
+    });
+    setIsediting(false);
   }
 
-  function handleCancel() {
+  // reset the form to the original values when camcel button clicked
+  function handlecancel() {
+    setIsediting(false);
     setName(item.name);
     setQuantity(item.quantity);
     setCategory(item.category);
     setExpiryDate(item.expiryDate);
     setExpiryStatus(item.expiryStatus);
-    setIsEditing(false);
   }
 
+  const status = STATUS_CONFIG[item.expiryStatus] || STATUS_CONFIG["no expiry"];
+
   return (
-    <Card
-      className={`overflow-hidden p-0 flex flex-col ${
-        isEditing
-          ? "ring-2 ring-brand-300 shadow-md"
-          : "hover:-translate-y-0.5 hover:shadow-md transition-all"
-      }`}
-    >
-      {isEditing ? (
-        <form onSubmit={handleSubmit} className="p-5 space-y-3">
-          <div>
-            <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-stone-400">
-              Name
-            </label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} />
-          </div>
-
-          <div>
-            <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-stone-400">
-              Quantity
-            </label>
-            <Input
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              placeholder="e.g. 2 lbs, 1 jar"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-stone-400">
-                Category
-              </label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="h-9 w-full rounded-lg border border-stone-200 bg-white px-3 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
-              >
-                {PANTRY_CATEGORIES.map((c) => (
-                  <option key={c.value} value={c.value}>
-                    {c.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-stone-400">
-                Status
-              </label>
-              <select
-                value={expiryStatus}
-                onChange={(e) => setExpiryStatus(e.target.value)}
-                className="h-9 w-full rounded-lg border border-stone-200 bg-white px-3 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
-              >
-                {EXPIRY_STATUS.map((s) => (
-                  <option key={s.value} value={s.value}>
-                    {s.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-stone-400">
-              Expiry Date
-            </label>
-            <Input
-              type="date"
-              value={expiryDate}
-              onChange={(e) => setExpiryDate(e.target.value)}
-            />
-          </div>
-
-          <div className="flex gap-2 pt-1">
-            <Button type="submit" variant="primary" className="flex-1">
-              Save
-            </Button>
-            <Button
-              type="button"
-              onClick={handleCancel}
-              variant="outline"
-              className="flex-1"
-            >
-              Cancel
-            </Button>
-          </div>
-        </form>
-      ) : (
-        <>
-          <div className={`h-1.5 ${colors.accentBar}`} />
-
-          <CardContent className="p-5 flex flex-1 flex-col">
-            <div className="mb-4 flex items-start justify-between">
+    <Card className="rounded-2xl h-full flex flex-col">
+      {!isediting ? (
+        // not editing state
+        <CardContent className="p-4 flex flex-col justify-between h-full">
+          {/* Top Section */}
+          <div className="flex flex-col gap-3">
+            <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0 pr-2">
-                <h3 className="mb-0.5 truncate text-[15px] font-semibold text-stone-900">
+                <h3 className="text-lg font-bold text-black " title={item.name}>
                   {item.name}
                 </h3>
-                <p className="truncate text-sm text-stone-400">
-                  {item.quantity || "--"}
-                </p>
+                <div className="flex items-center gap-1.5 text-stone-500 mt-1">
+                  <span className="text-xs px-2 py-0.5 bg-stone-50 rounded-md border border-stone-100">
+                    {item.quantity || "Qty not set"}
+                  </span>
+                </div>
               </div>
 
               <Badge
                 variant="outline"
-                className="shrink-0 rounded-full border-stone-200 bg-stone-50 text-[10px] text-stone-500"
+                className="text-xs py-1 px-2 font-bold uppercase border rounded-full"
               >
-                {displayCategory}
+                {item.category}
               </Badge>
             </div>
 
-            <div className="mt-auto flex items-center justify-between border-t border-stone-100 pt-4">
-              <div>
-                <span
-                  className={`text-[10px] font-bold uppercase tracking-wider ${colors.labelClass}`}
-                >
-                  {getStatusLabel(item.expiryStatus)}
-                </span>
-                {item.expiryDate && (
-                  <p className="text-xs text-stone-400 mt-0.5">
-                    Exp: {item.expiryDate}
-                  </p>
-                )}
+            <div className="flex items-center justify-between gap-2 pt-1">
+              <Badge
+                className={`text-xs px-2 py-1 rounded-full font-black uppercase border ${status.color}`}
+              >
+                {status.label}
+              </Badge>
+
+              {item.expiryDate && (
+                <div className="flex items-center gap-1.5 text-xs text-stone-400 font-bold uppercase ">
+                  <Calendar className="w-3.5 h-3.5" />
+                  {item.expiryDate}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2 pt-3 border-t border-stone-50">
+            <Button
+              variant="outline"
+              onClick={() => setIsediting(true)}
+              className="flex-1 h-9 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 "
+            >
+              <Edit2 className="h-3.5 w-3.5" />
+              Edit
+            </Button>
+
+            <Button
+              variant="outline"
+              onClick={() => deleteItem(item.id)}
+              className="px-3 h-9 rounded-xl text-red-500 "
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
+        </CardContent>
+      ) : (
+        // editing state
+        <CardContent className="p-5 h-full">
+          <form
+            onSubmit={handleformsubmit}
+            className="flex flex-col h-full gap-4"
+          >
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-8 h-8 rounded-lg bg-brand-50 flex items-center justify-center">
+                <Edit2 className="w-4 h-4 text-brand-500" />
+              </div>
+              <h3 className="font-black text-sm ">Edit Ingredient</h3>
+            </div>
+
+            <div className="grid gap-3">
+              <div className="space-y-1">
+                <label className="text-xs font-bold uppercase text-stone-400">
+                  Name
+                </label>
+                <Input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="border-stone-200   text-sm  rounded-xl"
+                  placeholder="Ingredient name"
+                />
               </div>
 
-              <div className="flex gap-1">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setIsEditing(true)}
-                  className="h-8 w-8 text-stone-400 hover:bg-stone-100 hover:text-stone-900"
-                >
-                  <Edit2 className="h-4 w-4" />
-                </Button>
+              <div className="space-y-1">
+                <label className="text-xs font-bold uppercase text-stone-400 ml-1">
+                  Quantity
+                </label>
+                <Input
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  className="border-stone-200   text-sm  rounded-xl"
+                  placeholder="e.g. 500g, 2 units"
+                />
+              </div>
 
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => deleteItem(itemId)}
-                  className="h-8 w-8 text-stone-400 hover:bg-red-50 hover:text-red-600"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase text-stone-400 ml-1">
+                    Category
+                  </label>
+                  <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="w-full rounded-xl border border-stone-200 px-3 text-sm  h-10"
+                  >
+                    {PANTRY_CATEGORIES.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-bold uppercase text-stone-400 ml-1">
+                    Status
+                  </label>
+                  <select
+                    value={expiryStatus}
+                    onChange={(e) => setExpiryStatus(e.target.value)}
+                    className="w-full rounded-xl border border-stone-200 px-3 text-sm  h-10"
+                  >
+                    {EXPIRY_STATUSES.map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold uppercase text-stone-400 ml-1">
+                  Expiry Date
+                </label>
+                <Input
+                  type="date"
+                  value={expiryDate}
+                  onChange={(e) => setExpiryDate(e.target.value)}
+                  className="border-stone-200   text-sm  rounded-xl"
+                />
               </div>
             </div>
-          </CardContent>
-        </>
+
+            <div className="flex gap-2 pt-2 mt-auto">
+              <Button
+                type="submit"
+                variant="primary"
+                className="flex-1  text-xs font-bold "
+              >
+                Save
+              </Button>
+
+              <Button
+                onClick={handlecancel}
+                variant="secondary"
+                className="flex-1 text-xs font-bold border-stone-200 text-stone-600"
+                type="button"
+              >
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </CardContent>
       )}
     </Card>
   );

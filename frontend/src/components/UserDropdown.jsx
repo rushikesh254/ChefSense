@@ -1,10 +1,10 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { useUser } from '@/context/AuthContext'
-import { getInitials } from '@/lib/utils'
-import { Link } from 'react-router-dom'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useUser } from "@/context/AuthContext";
+import { getInitials } from "@/lib/helpers";
+import { Link } from "react-router-dom";
 
 function UserDropdown() {
-  const { user } = useUser()
+  const { user } = useUser();
   return (
     <div>
       <Link to="/profile" className="relative h-10 w-10 rounded-full">
@@ -16,7 +16,7 @@ function UserDropdown() {
         </Avatar>
       </Link>
     </div>
-  )
+  );
 }
 
-export default UserDropdown
+export default UserDropdown;
