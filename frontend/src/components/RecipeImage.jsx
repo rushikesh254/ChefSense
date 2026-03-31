@@ -21,6 +21,7 @@ export default function RecipeImage({ src, alt, className }) {
     <img
       src={src}
       alt={alt || 'Recipe'}
+      loading='lazy'
       className={className}
       onError={() => setIsBroken(true)}
     />

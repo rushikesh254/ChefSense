@@ -3,36 +3,43 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion'
-import { Card, CardContent } from '@/components/ui/card'
-import { FAQS } from '@/lib/siteContent'
+} from "@/components/ui/accordion";
+import { Card, CardContent } from "@/components/ui/card";
+import { FAQS } from "@/lib/siteContent";
 
 export default function FAQPage() {
   return (
-    <div className="min-h-screen bg-stone-50 pt-20">
-      <div className="container mx-auto px-4 py-16 max-w-3xl">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold text-stone-900 mb-4">
+    
+    <div className="min-h-screen pt-20">
+      <div className="max-w-3xl mx-auto px-5 py-16">
+        {/* Header */}
+        <div className="text-center mb-14">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Frequently Asked Questions
           </h1>
-          <p className="text-lg sm:text-xl text-stone-600">
+
+          <p className="text-lg text-stone-600">
             Everything you need to know about ChefSense.
           </p>
         </div>
 
-        <Card className="border-stone-200">
-          <CardContent className="p-5 sm:p-8">
-            <Accordion type="single" collapsible className="space-y-1">
+        {/* Card */}
+        <Card className="border border-stone-200 shadow-sm rounded-xl">
+          <CardContent className="p-6">
+            <Accordion type="single" collapsible className="space-y-3">
               {FAQS.map((faq, i) => (
                 <AccordionItem
                   key={faq.question}
                   value={`item-${i}`}
-                  className="border-b border-stone-200 last:border-b-0"
+                  className="border border-stone-200 rounded-lg px-4"
                 >
-                  <AccordionTrigger className="text-left font-bold text-lg sm:text-xl hover:no-underline py-4">
+                  {/* Question */}
+                  <AccordionTrigger className="text-left font-semibold text-base md:text-lg py-4 hover:no-underline">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-stone-600 text-base sm:text-lg leading-relaxed pb-4">
+
+                  {/* Answer */}
+                  <AccordionContent className="text-stone-600 text-sm md:text-base pb-4">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -42,5 +49,5 @@ export default function FAQPage() {
         </Card>
       </div>
     </div>
-  )
+  );
 }

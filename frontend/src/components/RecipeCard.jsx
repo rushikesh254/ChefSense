@@ -6,13 +6,7 @@ import { getdifficultyColor } from "@/lib/utils";
 import { Clock, Star, Trash2, Users, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 
-function RecipeCard({
-  recipe,
-  deletebtn,
-  removeRecipe,
-  matchpercentage,
-  missingingredients,
-}) {
+function RecipeCard({ recipe, deletebtn, removeRecipe }) {
   function deleterecipe(e) {
     e.preventDefault();
     removeRecipe(recipe.id);
@@ -33,6 +27,8 @@ function RecipeCard({
     rating,
     difficulty,
     isVeg,
+    missingIngredients,
+    matchPercentage,
   } = recipe;
 
   const totalTime = (cookTime || 10) + (prepTime || 10); // default time if not provided
@@ -65,14 +61,14 @@ function RecipeCard({
             </button>
           )}
 
-          {matchpercentage != null && (
+          {matchPercentage != null && (
             <div className="absolute bottom-2 right-2 z-20">
               <Badge
                 className={`border-none px-2 py-0.5 text-[11px] font-semibold text-white shadow-sm backdrop-blur-sm
-        ${matchpercentage >= 90 ? "bg-green-600/90" : matchpercentage >= 75 ? "bg-brand-600/90" : "bg-stone-600/90"}
+        ${matchPercentage >= 90 ? "bg-green-600/80" : matchPercentage >= 75 ? "bg-brand-600/80" : "bg-stone-600/80"}
       `}
               >
-                {matchpercentage}% Match
+                {matchPercentage}% Match
               </Badge>
             </div>
           )}
@@ -146,13 +142,13 @@ function RecipeCard({
             </div>
           )}
 
-          {missingingredients?.length > 0 && (
+          {missingIngredients?.length > 0 && (
             <div className="mt-1 rounded-xl bg-brand-50/50 p-2 border border-brand-100/50">
               <span className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-brand-800/80">
                 Missing Ingredients
               </span>
               <div className="flex flex-wrap gap-1">
-                {missingingredients.slice(0, 3).map((ingredient) => (
+                {missingIngredients.slice(0, 3).map((ingredient) => (
                   <Badge
                     key={ingredient}
                     variant="outline"
@@ -161,12 +157,12 @@ function RecipeCard({
                     {ingredient}
                   </Badge>
                 ))}
-                {missingingredients.length > 3 && (
+                {missingIngredients.length > 3 && (
                   <Badge
                     variant="outline"
                     className="rounded-md border-brand-200 bg-white px-1.5 py-0 text-[9px] font-medium text-brand-700 leading-tight"
                   >
-                    +{missingingredients.length - 3} more
+                    +{missingIngredients.length - 3} more
                   </Badge>
                 )}
               </div>

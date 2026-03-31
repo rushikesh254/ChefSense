@@ -1,26 +1,36 @@
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Mail, MapPin, MessageSquare } from 'lucide-react'
-import { toast } from 'sonner'
-function ContactPage() {
-  function handleSend(e) {
-    e.preventDefault()
-    // console.log('send');
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Mail, MapPin, MessageSquare } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
-    // Here FORM SUBMISSION HANDLE  send data to  backend
-    // here shown  toast only later send to backend
-    toast.success('Message sent successfully!')
+function ContactPage() {
+  // state for form data
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  // handle form submission
+  function handleSend(e) {
+    // check if all fields are filled
+
+    e.preventDefault();
+    if (!name || !email || !message) {
+      toast.error("Please fill all the fields");
+      return;
+    }
+    toast.success("Message sent successfully!");
+    // console.log(name, email, message);
+    //todo: later send the form data to backend
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-full max-w-md border-2  p-5 rounded-lg bg-white">
+    <div className="min-h-screen flex items-center justify-center px-5 py-20">
+      <div className="w-full max-w-lg bg-white rounded-xl shadow-sm border p-8">
         {/* header */}
-        <div className="mb-10">
-          <h1 className="text-3xl capitalize font-bold text-stone-900 mb-2">
-            Get in touch
-          </h1>
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold mb-2">Get in touch</h1>
           <p className="text-stone-500 text-sm">
             We'll get back to you within 24 hours.
           </p>
@@ -28,32 +38,49 @@ function ContactPage() {
 
         {/* form */}
         <form className="space-y-4" onSubmit={handleSend}>
-          <Input placeholder="Your name" />
-          <Input type="email" placeholder="you@email.com" />
-          <Textarea placeholder="How can we help you?" rows={4} />
-          <Button variant="primary" type="submit" className="w-full" size="lg">
+          <Input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Your name"
+          />
+          <Input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            placeholder="you@email.com"
+          />
+          <Textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="How can we help you?"
+            rows={4}
+          />
+
+          <Button variant="primary" type="submit" className="w-full mt-2">
             Send Message
           </Button>
         </form>
 
         {/* contact info */}
-        <div className="mt-10 pt-8 border-t border-stone-200 flex flex-col sm:flex-row gap-5 text-sm text-stone-500">
-          <span className="flex items-center gap-2">
+        <div className="mt-10 pt-6 border-t flex flex-col gap-3 text-sm text-stone-500">
+          <div className="flex items-center gap-2">
             <Mail className="w-4 h-4" />
             support@chefsense.ai
-          </span>
-          <span className="flex items-center gap-2">
+          </div>
+
+          <div className="flex items-center gap-2">
             <MessageSquare className="w-4 h-4" />
             Mon–Fri, 9am–5pm
-          </span>
-          <span className="flex items-center gap-2">
+          </div>
+
+          <div className="flex items-center gap-2">
             <MapPin className="w-4 h-4" />
             Prayagraj, Uttar Pradesh
-          </span>
+          </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default ContactPage
+export default ContactPage;

@@ -2,40 +2,27 @@
 
 import { BookOpen, Brain, Camera, ChefHat, Heart, Search } from "lucide-react";
 
-//  testinomials amd avatars
-
+//  testinomials amd avatars used in landing page
 export const TESTIMONIALS = [
   {
     name: "Priya S.",
     avatar: "https://i.pravatar.cc/150?u=priya@example.com",
     text: "I had random veggies and it gave me a restaurant-level curry. Insane.",
-    fallback: "C1",
   },
   {
     name: "James T.",
     avatar: "https://i.pravatar.cc/150?u=james@example.com",
     text: "Stopped throwing out food. This app paid for itself in a week.",
-    fallback: "C2",
   },
   {
     name: "Meera K.",
     avatar: "https://i.pravatar.cc/150?u=meera@example.com",
     text: "The recipe steps are super clear. Even my kids follow them.",
-    fallback: "C3",
   },
 ];
 
-// site stats
-
-export const SITE_STATS = [
-  { label: "AI Scans", val: "unlimited" },
-  { label: "Recipes Generated", val: "1M+" },
-  { label: "Cost to Start", val: "$0" },
-  { label: "App Store Rating", val: "4.9" },
-];
-
 // features
-
+// used in landing page
 export const FEATURES = [
   {
     title: "Scan Your Pantry",
@@ -66,52 +53,7 @@ export const FEATURES = [
   },
 ];
 
-// how it works steps
-
-export const STEPS = [
-  {
-    title: "1. Snap your pantry",
-    icon: Camera,
-    color: "bg-green-100 text-brand-600 ",
-    description:
-      "Take a photo of the ingredients in your fridge or pantry. Our AI will identify everything automatically.",
-    img: "https://images.unsplash.com/photo-1542838132-92c53300491e",
-    alt: "Ingredients",
-  },
-  {
-    title: "2. AI Analysis",
-    icon: Brain,
-    color: "bg-blue-100 text-blue-600 ",
-    description:
-      "Google Gemini AI analyzes your ingredients and matches them with thousands of recipes in our database.",
-    img: "https://images.unsplash.com/photo-1697577418970-95d99b5a55cf",
-    alt: "AI Analysis",
-  },
-  {
-    title: "3. Get Recipes",
-
-    icon: ChefHat,
-    color: "bg-amber-100 text-amber-600 ",
-    description:
-      "Receive personalized recipe suggestions ranked by how well they match your available ingredients.",
-    img: "https://images.unsplash.com/photo-1657143377606-ad2f0b790fc6?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-
-    alt: "recipes",
-  },
-  {
-    title: "4. Cook & Enjoy",
-
-    icon: Heart,
-    color: "bg-pink-100 text-pink-600 ",
-    description:
-      "Follow step-by-step instructions, save your favorites, and enjoy delicious homemade meals!",
-    img: "https://images.unsplash.com/photo-1710091691780-c7eb0dc50cf8",
-    alt: "Cook Food",
-  },
-];
-
-// faqs
-
+// used in faqs page
 export const FAQS = [
   {
     question: "What is ChefSense?",
@@ -133,4 +75,89 @@ export const FAQS = [
     answer:
       "ChefSense includes AI pantry scanning, personalized recipe suggestions, dashboard, chef's tips, ingredient substitutions, and PDF recipe downloads.",
   },
+];
+
+// used in landing page
+export const WITHOUT_CHEFSENSE = [
+  "Open fridge. Stare. Close fridge.",
+  'Google "recipes with eggs and sad carrots"',
+  "Scroll for 20 mins. Nothing fits.",
+  "Order pizza. Again.",
+  "Throw out ₹800 worth of groceries.",
+];
+
+// used in landing page
+export const WITH_CHEFSENSE = [
+  "Open fridge. Snap photo.",
+  "AI instantly identifies ingredients.",
+  "Get 5+ recipes you can make right now.",
+  "Cook a delicious meal in minutes.",
+  "Save ₹800 worth of groceries.",
+];
+
+// used in how it works page
+export const STEPS = [
+  {
+    id: 1,
+    title: "1. Snap your pantry",
+    icon: Camera,
+    description:
+      "Take a photo of the ingredients in your fridge or pantry. Our AI will identify everything automatically.",
+    img: "https://images.unsplash.com/photo-1542838132-92c53300491e",
+  },
+  {
+    id: 2,
+    title: "2. AI Analysis",
+    icon: Brain,
+    description:
+      "Google Gemini AI analyzes your ingredients and matches them with thousands of recipes in our database.",
+    img: "https://images.unsplash.com/photo-1697577418970-95d99b5a55cf",
+  },
+  {
+    id: 3,
+    title: "3. Get Recipes",
+    icon: ChefHat,
+    description:
+      "Receive personalized recipe suggestions ranked by how well they match your available ingredients.",
+    img: "https://images.unsplash.com/photo-1657143377606-ad2f0b790fc6?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+  {
+    id: 4,
+    title: "4. Cook & Enjoy",
+    icon: Heart,
+    description:
+      "Follow step-by-step instructions, save your favorites, and enjoy delicious homemade meals!",
+    img: "https://images.unsplash.com/photo-1710091691780-c7eb0dc50cf8",
+  },
+];
+
+// used in landing page hero section
+export const recipe = {
+  title: "Paneer Butter Masala",
+  description:
+    "A rich and creamy North Indian curry made with paneer, tomatoes, and a blend of spices. Perfect for a comforting dinner.",
+  cuisine: "indian",
+  category: "dinner",
+  diet: "vegetarian",
+  difficulty: "medium",
+  tags: ["Paneer", "Rich", "Curry", "North Indian"],
+  imageUrl: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7",
+  cookTime: 35,
+  prepTime: 15,
+  servings: 4,
+  rating: 4.8,
+  isVeg: true,
+  matchPercentage: 85,
+  missingIngredients: ["heavy cream", "kasuri methi", "tomatoes"],
+};
+
+
+
+
+//stats 
+
+export const STATS = [
+  { value: "₹1500", label: "saved per week" },
+  { value: "30%", label: "less food wasted" },
+  { value: "10k+", label: "happy cooks" },
 ];

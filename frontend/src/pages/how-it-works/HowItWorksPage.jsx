@@ -5,14 +5,14 @@ import { Link } from 'react-router-dom'
 
 export default function HowItWorksPage() {
   return (
-    <div className="min-h-screen flex justify-center items-center">
+    <div className="min-h-screen flex justify-center items-center pt-20">
       <div className="max-w-3xl mx-auto my-2 sm:my-10 ">
         {/* Header */}
         <div className="text-center mb-14 sm:mb-20">
-          <span className="inline-block text-xs font-bold uppercase tracking-widest text-brand-500 border border-brand-200 px-3 py-1 rounded-full mb-4">
-            How it works
-          </span>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-stone-900 leading-tight mb-4">
+
+          <p className="text-xs sm:text-sm font-bold uppercase tracking-widest text-brand-500 mb-3 sm:mb-4">How it works</p>
+
+          <h1 className="text-4xl sm:text-6xl font-extrabold text-stone-900 mb-4 px-5 sm:px-10 lg:px-16">
             Fridge to fork in <span className="text-brand-500">4 steps</span>
           </h1>
           <p className="text-stone-500 text-sm sm:text-base max-w-xs sm:max-w-sm mx-auto leading-relaxed">
@@ -65,11 +65,11 @@ export default function HowItWorksPage() {
         </div>
 
         {/* CTA */}
-        <div className="mt-12 sm:mt-16 bg-stone-700 rounded-2xl sm:rounded-3xl px-6 py-10 sm:p-12 text-center">
-          <p className="text-stone-200 text-xs font-semibold uppercase tracking-widest mb-3">
+        <div className="mt-12 sm:mt-16 bg-stone-50 rounded-2xl sm:rounded-3xl px-6 py-10 sm:p-12 text-center border border-stone-100 shadow-sm">
+          <p className="text-stone-900 text-xs font-semibold uppercase tracking-widest mb-3">
             Ready to try?
           </p>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-6 leading-snug">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-900 mb-6 leading-snug">
             Your next great meal is
             <br className="hidden sm:block" /> already in your fridge.
           </h2>
@@ -81,7 +81,7 @@ export default function HowItWorksPage() {
               Start Cooking Free <ArrowRight className="w-4 h-4" />
             </Button>
           </Link>
-          <p className="text-stone-200 text-xs mt-4">
+          <p className="text-stone-900 text-xs mt-4">
             No credit card · Under 30 seconds
           </p>
         </div>
