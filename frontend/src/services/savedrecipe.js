@@ -1,9 +1,7 @@
-import partialRecipes from '@/Dummydata/PartialRecipes'
+import savedRecipesData from "@/data/savedrecipes";
 
-const savedrecipesService = {
-  async loadsavedrecipes() {
-    return partialRecipes
-  },
+// function to load saved recipes from backend
+export async function loadsavedrecipes() {
+  return savedRecipesData;
 }
 
-export default savedrecipesService

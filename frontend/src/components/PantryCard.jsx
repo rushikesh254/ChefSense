@@ -9,7 +9,7 @@ import { Input } from "./ui/input";
 
 function PantryCard({ item, updateItem, deleteItem }) {
   // toggle state for edit mode
-  const [isediting, setIsediting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   // form states
   const [name, setName] = useState(item.name);
@@ -19,7 +19,7 @@ function PantryCard({ item, updateItem, deleteItem }) {
   const [expiryStatus, setExpiryStatus] = useState(item.expiryStatus);
 
   // handle form submit
-  function handleformsubmit(e) {
+  function handleFormSubmit(e) {
     e.preventDefault();
 
     // send the current states to pantrypage
@@ -30,12 +30,12 @@ function PantryCard({ item, updateItem, deleteItem }) {
       expiryDate,
       expiryStatus,
     });
-    setIsediting(false);
+    setIsEditing(false);
   }
 
   // reset the form to the original values when camcel button clicked
-  function handlecancel() {
-    setIsediting(false);
+  function handleCancel() {
+    setIsEditing(false);
     setName(item.name);
     setQuantity(item.quantity);
     setCategory(item.category);
@@ -47,7 +47,7 @@ function PantryCard({ item, updateItem, deleteItem }) {
 
   return (
     <Card className="rounded-2xl h-full flex flex-col">
-      {!isediting ? (
+      {!isEditing ? (
         // not editing state
         <CardContent className="p-4 flex flex-col justify-between h-full">
           {/* Top Section */}
@@ -92,8 +92,8 @@ function PantryCard({ item, updateItem, deleteItem }) {
           <div className="flex items-center gap-2 pt-3 border-t border-stone-50">
             <Button
               variant="outline"
-              onClick={() => setIsediting(true)}
-              className="flex-1 h-9 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 "
+              onClick={() => setIsEditing(true)}
+              className="flex-1 h-9 rounded-full text-xs font-bold flex items-center justify-center gap-1.5 "
             >
               <Edit2 className="h-3.5 w-3.5" />
               Edit
@@ -102,7 +102,7 @@ function PantryCard({ item, updateItem, deleteItem }) {
             <Button
               variant="outline"
               onClick={() => deleteItem(item.id)}
-              className="px-3 h-9 rounded-xl text-red-500 "
+              className="px-3 h-9 rounded-full text-red-500 "
             >
               <Trash2 className="h-4 w-4" />
             </Button>
@@ -112,7 +112,7 @@ function PantryCard({ item, updateItem, deleteItem }) {
         // editing state
         <CardContent className="p-5 h-full">
           <form
-            onSubmit={handleformsubmit}
+            onSubmit={handleFormSubmit}
             className="flex flex-col h-full gap-4"
           >
             <div className="flex items-center gap-2 mb-1">
@@ -149,14 +149,17 @@ function PantryCard({ item, updateItem, deleteItem }) {
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black uppercase text-stone-400 ml-1">
+                  <label className="text-xs font-bold uppercase text-stone-400 ml-1">
                     Category
                   </label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full rounded-xl border border-stone-200 px-3 text-sm  h-10"
+                    className="w-full rounded-xl border border-stone-200 bg-white px-3 text-sm h-10 focus:outline-none focus:ring-2 focus:ring-brand-200"
                   >
+                    <option value="" disabled>
+                      Category
+                    </option>
                     {PANTRY_CATEGORIES.map((cat) => (
                       <option key={cat} value={cat}>
                         {cat}
@@ -172,8 +175,11 @@ function PantryCard({ item, updateItem, deleteItem }) {
                   <select
                     value={expiryStatus}
                     onChange={(e) => setExpiryStatus(e.target.value)}
-                    className="w-full rounded-xl border border-stone-200 px-3 text-sm  h-10"
+                    className="w-full rounded-xl border border-stone-200 bg-white px-3 text-sm h-10 focus:outline-none focus:ring-2 focus:ring-brand-200"
                   >
+                    <option value="" disabled>
+                      Status
+                    </option>
                     {EXPIRY_STATUSES.map((status) => (
                       <option key={status} value={status}>
                         {status}
@@ -200,15 +206,15 @@ function PantryCard({ item, updateItem, deleteItem }) {
               <Button
                 type="submit"
                 variant="primary"
-                className="flex-1  text-xs font-bold "
+                className="flex-1 text-xs font-bold rounded-full"
               >
                 Save
               </Button>
 
               <Button
-                onClick={handlecancel}
+                onClick={handleCancel}
                 variant="secondary"
-                className="flex-1 text-xs font-bold border-stone-200 text-stone-600"
+                className="flex-1 text-xs font-bold rounded-full border-stone-200 text-stone-600"
                 type="button"
               >
                 Cancel

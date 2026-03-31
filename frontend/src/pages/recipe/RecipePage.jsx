@@ -2,8 +2,8 @@ import RecipeImage from '@/components/RecipeImage'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { recipeservice } from '@/services/recipe'
-import { DIFFICULTY_STYLES } from '@/utils/constants'
+import { getById } from '@/services/recipe'
+import { getdifficultyColor } from '@/lib/utils'
 import {
   ArrowLeft,
   CheckCircle2,
@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
-const RecipePage = () => {
+function RecipePage() {
   const navigate = useNavigate()
   const { id } = useParams()
 
@@ -28,10 +28,14 @@ const RecipePage = () => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    async function loadRecipe() {
+    function loadRecipe() {
       try {
         setLoading(true)
-        const res = await recipeservice.getById(id)
+        const res = getById(id)
+        // using simple function now not async .. layter when backend is ready it will be async and then we can use await here
+
+        // console.log('recipe res', res)
+
         setRecipe(res)
       } catch {
         toast.error('Failed to load recipe')
@@ -41,25 +45,19 @@ const RecipePage = () => {
       }
     }
     loadRecipe()
-  }, [])
+  }, [id]) // if id changes load new recipe
 
-  const totalTime = (recipe?.prepTime ?? 0) + (recipe?.cookTime ?? 0)
+  const totalTime = (recipe?.prepTime || 0) + (recipe?.cookTime || 0) // total time= prep time + cook time
 
-  const diffStyle =
-    DIFFICULTY_STYLES[recipe?.difficulty?.toLowerCase()] ??
-    'bg-stone-50 text-stone-600 border-stone-100'
+  let diffStyle = getdifficultyColor(recipe?.difficulty)
 
+  // loading state
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-stone-50 px-4">
-        <div className="w-full max-w-xl rounded-2xl bg-white px-8 py-12 text-center shadow-2xl">
-          <Loader2 className="mx-auto mb-6 h-16 w-16 animate-spin text-brand-600" />
-          <h2 className="mb-2 text-4xl font-bold text-black">
-            Cooking up your recipe...
-          </h2>
-          <p className="mb-8 text-lg font-light text-stone-500">
-            The AI chef is writing the ingredients, steps, and kitchen notes.
-          </p>
+      <div className="flex justify-center items-center min-h-screen ">
+        <div className="flex items-center gap-2 p-4 border rounded-2xl">
+          <Loader2 className="mr-3 h-6 w-6 animate-spin text-brand-600" />
+          <p className="text-lg font-bold">Loading your recipe...</p>
         </div>
       </div>
     )
@@ -182,7 +180,8 @@ const RecipePage = () => {
         </Card>
 
         {/* Main grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+
+        <div className="flex flex-col gap-4">
           {/* Sidebar */}
           <aside className="lg:col-span-4 space-y-4 lg:sticky lg:top-24">
             {/* Ingredients */}
@@ -400,3 +399,5 @@ const RecipePage = () => {
 }
 
 export default RecipePage
+
+

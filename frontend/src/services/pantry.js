@@ -1,11 +1,9 @@
-import pantryitems from "@/Dummydata/pantryitems";
+// todo: add pantry functions  here now i have done it in the pantry page but it will be better to have it here and then import it in the pantry page
 
-const pantryService = {
-  async getitems() {
-    return pantryitems;
-  },
-};
+// function to get pantry recipes suggestions
 
+import pantryRecipes from '@/data/pantryrecipes'
 
-
-export default pantryService;
+export async function getPantryRecipes() {
+    return pantryRecipes.recipes
+}

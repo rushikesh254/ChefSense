@@ -1,11 +1,11 @@
-import CompleteRecipe from '@/Dummydata/CompleteRecipe'
+import CompleteRecipe from '@/data/CompleteRecipe'
 
-export const recipeservice = {
-  async getById(id) {
-    return CompleteRecipe
-  },
+// function to get recipe by id
+export function getById(id) {
+  return CompleteRecipe
+}
 
-  async getByQuery(query) {
-    return CompleteRecipe
-  },
+// function to get recipe by query (from header and dashboard)
+export function getByQuery(query) {
+  return CompleteRecipe
 }

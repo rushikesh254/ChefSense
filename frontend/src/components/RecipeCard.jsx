@@ -6,13 +6,7 @@ import { getdifficultyColor } from "@/lib/utils";
 import { Clock, Star, Trash2, Users, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 
-function RecipeCard({
-  recipe,
-  deletebtn,
-  removeRecipe,
-  matchpercentage,
-  missingingredients,
-}) {
+function RecipeCard({ recipe, deletebtn, removeRecipe }) {
   function deleterecipe(e) {
     e.preventDefault();
     removeRecipe(recipe.id);
@@ -33,6 +27,8 @@ function RecipeCard({
     rating,
     difficulty,
     isVeg,
+    missingIngredients,
+    matchPercentage,
   } = recipe;
 
   const totalTime = (cookTime || 10) + (prepTime || 10); // default time if not provided
@@ -41,7 +37,7 @@ function RecipeCard({
 
   return (
     <Link to={`/recipe/${recipe.id}`} className="w-full h-full">
-      <Card className="group flex flex-col overflow-hidden rounded-2xl border border-stone-100 bg-white shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 cursor-pointer p-0 w-full h-full">
+      <Card className="group flex flex-col overflow-hidden rounded-2xl border border-stone-10  hover:shadow-md hover:-translate-y-0.5 cursor-pointer p-0 duration-300 transition-all w-full h-full">
         {/* image  */}
         <div className="relative overflow-hidden aspect-4/3 w-full shrink-0">
           {imageUrl ? (
@@ -65,14 +61,14 @@ function RecipeCard({
             </button>
           )}
 
-          {matchpercentage != null && (
+          {matchPercentage != null && (
             <div className="absolute bottom-2 right-2 z-20">
               <Badge
-                className={`border-none px-2 py-0.5 text-[11px] font-semibold text-white shadow-sm backdrop-blur-sm
-        ${matchpercentage >= 90 ? "bg-green-600/90" : matchpercentage >= 75 ? "bg-brand-600/90" : "bg-stone-600/90"}
+                className={`border-none px-2 py-0.5 text-[11px] font-semibold text-white backdrop-blur-sm
+        ${matchPercentage >= 90 ? "bg-green-600/60" : matchPercentage >= 75 ? "bg-brand-600/60" : "bg-stone-600/60"}
       `}
               >
-                {matchpercentage}% Match
+                {matchPercentage}% Match
               </Badge>
             </div>
           )}
@@ -89,8 +85,9 @@ function RecipeCard({
           {/* Veg / Non-veg square dot */}
           {isVeg != null && (
             <div
-              className="absolute top-2.5 left-2.5 w-5 h-5 rounded-sm border-2 bg-white flex items-center justify-center shadow-sm"
-              style={{ borderColor: isVeg ? "#16a34a" : "#dc2626" }}
+              className={`absolute top-2.5 left-2.5 w-5 h-5 rounded-sm border-2 bg-white flex items-center justify-center shadow-sm ${
+                isVeg ? "border-green-600" : "border-red-600"
+              }`}
             >
               <div
                 className={`w-2 h-2 rounded-full ${isVeg ? "bg-green-500" : "bg-red-500"}`}
@@ -113,7 +110,7 @@ function RecipeCard({
           )}
 
           {/* Title */}
-          <h3 className="font-serif text-sm sm:text-[15px] font-semibold leading-snug text-stone-900 line-clamp-1 tracking-tight">
+          <h3 className="text-sm sm:text-[15px] font-semibold leading-snug line-clamp-1 tracking-tight">
             {title}
           </h3>
 
@@ -146,13 +143,13 @@ function RecipeCard({
             </div>
           )}
 
-          {missingingredients?.length > 0 && (
+          {missingIngredients?.length > 0 && (
             <div className="mt-1 rounded-xl bg-brand-50/50 p-2 border border-brand-100/50">
               <span className="mb-1.5 block text-[10px] font-bold uppercase tracking-wider text-brand-800/80">
                 Missing Ingredients
               </span>
               <div className="flex flex-wrap gap-1">
-                {missingingredients.slice(0, 3).map((ingredient) => (
+                {missingIngredients.map((ingredient) => (
                   <Badge
                     key={ingredient}
                     variant="outline"
@@ -161,14 +158,6 @@ function RecipeCard({
                     {ingredient}
                   </Badge>
                 ))}
-                {missingingredients.length > 3 && (
-                  <Badge
-                    variant="outline"
-                    className="rounded-md border-brand-200 bg-white px-1.5 py-0 text-[9px] font-medium text-brand-700 leading-tight"
-                  >
-                    +{missingingredients.length - 3} more
-                  </Badge>
-                )}
               </div>
             </div>
           )}
