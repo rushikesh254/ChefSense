@@ -8,16 +8,6 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-// set badge style based on difficulty used in recipecard
-export function getdifficultyColor(difficulty) {
-  if (difficulty === "easy")
-    return "bg-emerald-50 text-emerald-700 border-emerald-200";
-  if (difficulty === "medium")
-    return "bg-amber-50 text-amber-700 border-amber-200";
-  if (difficulty === "hard") return "bg-red-100 text-red-700 border-red-200";
-  return "bg-stone-50 text-stone-500";
-}
-
 // emoji helpers
 
 // category emoji fn used in dashboard
@@ -86,23 +76,14 @@ export function getDietEmoji(diet) {
 
 export const dietColors = {
   Vegetarian: "bg-orange-50  text-orange-700 hover:bg-orange-100",
-
   Vegan: "bg-green-50  text-green-700 hover:bg-green-100",
-
   "Gluten-Free": "bg-yellow-50  text-yellow-700 hover:bg-yellow-100",
-
   "Dairy-Free": "bg-blue-50  text-blue-700 hover:bg-blue-100",
-
   Keto: "bg-red-50  text-red-700 hover:bg-red-100",
-
   Paleo: "bg-amber-50  text-amber-700 hover:bg-amber-100",
-
   "Low-Carb": "bg-emerald-50  text-emerald-700 hover:bg-emerald-100",
-
   "Low-Fat": "bg-sky-50  text-sky-700 hover:bg-sky-100",
-
   "High-Protein": "bg-purple-50  text-purple-700 hover:bg-purple-100",
-
   "Sugar-Free": "bg-pink-50  text-pink-700 hover:bg-pink-100",
 };
 
@@ -116,3 +97,13 @@ export const STATUS_CONFIG = {
   expired: { label: "Expired", color: "bg-red-100 text-red-500" },
   "no expiry": { label: "No Expiry", color: "bg-gray-100 text-gray-500" },
 };
+
+// set badge style based on difficulty used in recipecard
+export function getdifficultyColor(difficulty) {
+  if (difficulty === "easy")
+    return "bg-emerald-50 text-emerald-700 border-emerald-200";
+  if (difficulty === "medium")
+    return "bg-amber-50 text-amber-700 border-amber-200";
+  if (difficulty === "hard") return "bg-red-100 text-red-700 border-red-200";
+  return "bg-stone-50 text-stone-500";
+}

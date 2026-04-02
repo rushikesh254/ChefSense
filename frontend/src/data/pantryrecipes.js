@@ -3,6 +3,8 @@ const partialRecipes = {
     {
       id: "1",
       title: "Paneer Butter Masala",
+      description:
+        "A rich and creamy curry made with paneer, tomatoes, and spices.",
       cuisine: "indian",
       category: "dinner",
       diet: "vegetarian",
@@ -20,6 +22,8 @@ const partialRecipes = {
     {
       id: "2",
       title: "Spaghetti Carbonara",
+      description:
+        "A rich and creamy pasta dish made with eggs, cheese, and pork.",
       cuisine: "italian",
       category: "dinner",
       diet: "non-vegetarian",
@@ -37,6 +41,8 @@ const partialRecipes = {
     {
       id: "3",
       title: "Greek Salad",
+      description:
+        "A refreshing salad made with fresh vegetables and feta cheese.",
       cuisine: "mediterranean",
       category: "lunch",
       diet: "vegetarian",
@@ -54,6 +60,8 @@ const partialRecipes = {
     {
       id: "4",
       title: "Beef Tacos",
+      description:
+        "A classic Mexican dish made with ground beef and tortillas.",
       cuisine: "mexican",
       category: "dinner",
       diet: "non-vegetarian",
@@ -71,6 +79,8 @@ const partialRecipes = {
     {
       id: "5",
       title: "Palak Paneer",
+      description:
+        "A rich and creamy curry made with paneer, tomatoes, and spices.",
       cuisine: "indian",
       category: "lunch",
       diet: "vegetarian",
@@ -88,6 +98,8 @@ const partialRecipes = {
     {
       id: "6",
       title: "Chicken Alfredo",
+      description:
+        "A rich and creamy pasta dish made with chicken, cheese, and cream.",
       cuisine: "italian",
       category: "dinner",
       diet: "non-vegetarian",
@@ -105,6 +117,8 @@ const partialRecipes = {
     {
       id: "7",
       title: "Tofu Stir Fry",
+      description:
+        "A quick and healthy stir fry made with tofu and vegetables.",
       cuisine: "chinese",
       category: "lunch",
       diet: "vegetarian",
@@ -122,6 +136,8 @@ const partialRecipes = {
     {
       id: "8",
       title: "Mutton Rogan Josh",
+      description:
+        "A rich and creamy curry made with mutton, tomatoes, and spices.",
       cuisine: "indian",
       category: "dinner",
       diet: "non-vegetarian",
@@ -143,6 +159,8 @@ const partialRecipes = {
     {
       id: "9",
       title: "Mushroom Risotto",
+      description:
+        "A rich and creamy risotto made with mushrooms, cheese, and cream.",
       cuisine: "italian",
       category: "dinner",
       diet: "vegetarian",
@@ -164,6 +182,8 @@ const partialRecipes = {
     {
       id: "10",
       title: "Sushi Rolls",
+      description:
+        "A rich and creamy curry made with mutton, tomatoes, and spices.",
       cuisine: "japanese",
       category: "dinner",
       diet: "non-vegetarian",
@@ -186,6 +206,8 @@ const partialRecipes = {
     {
       id: "11",
       title: "Dal Tadka",
+      description:
+        "A rich and creamy curry made with mutton, tomatoes, and spices.",
       cuisine: "indian",
       category: "lunch",
       diet: "vegetarian",
@@ -203,6 +225,8 @@ const partialRecipes = {
     {
       id: "12",
       title: "Grilled Salmon",
+      description:
+        "A rich and creamy curry made with mutton, tomatoes, and spices.",
       cuisine: "american",
       category: "dinner",
       diet: "non-vegetarian",
@@ -220,6 +244,8 @@ const partialRecipes = {
     {
       id: "13",
       title: "Classic Cheeseburger",
+      description:
+        "A rich and creamy curry made with mutton, tomatoes, and spices.",
       cuisine: "american",
       category: "lunch",
       diet: "non-vegetarian",
@@ -241,6 +267,8 @@ const partialRecipes = {
     {
       id: "14",
       title: "Vegetable Quesadilla",
+      description:
+        "A rich and creamy curry made with mutton, tomatoes, and spices.",
       cuisine: "mexican",
       category: "lunch",
       diet: "vegetarian",
@@ -258,6 +286,8 @@ const partialRecipes = {
     {
       id: "15",
       title: "Thai Green Curry",
+      description:
+        "A rich and creamy curry made with mutton, tomatoes, and spices.",
       cuisine: "thai",
       category: "dinner",
       diet: "non-vegetarian",

@@ -7,18 +7,17 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { FAQS } from "@/lib/siteContent";
 
-export default function FAQPage() {
+function FAQPage() {
   return (
-    
     <div className="min-h-screen pt-20">
       <div className="max-w-3xl mx-auto px-5 py-16">
         {/* Header */}
-        <div className="text-center mb-14">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl sm:text-5xl font-extrabold  mb-4">
             Frequently Asked Questions
           </h1>
 
-          <p className="text-lg text-stone-600">
+          <p className="text-lg text-stone-500">
             Everything you need to know about ChefSense.
           </p>
         </div>
@@ -27,10 +26,11 @@ export default function FAQPage() {
         <Card className="border border-stone-200 shadow-sm rounded-xl">
           <CardContent className="p-6">
             <Accordion type="single" collapsible className="space-y-3">
-              {FAQS.map((faq, i) => (
+              {/* 4 questions and ans */}
+              {FAQS.map((faq) => (
                 <AccordionItem
                   key={faq.question}
-                  value={`item-${i}`}
+                  value={`item-${faq.question}`}
                   className="border border-stone-200 rounded-lg px-4"
                 >
                   {/* Question */}
@@ -51,3 +51,5 @@ export default function FAQPage() {
     </div>
   );
 }
+
+export default FAQPage;

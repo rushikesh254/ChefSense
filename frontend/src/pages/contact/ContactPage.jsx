@@ -26,11 +26,13 @@ function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-5 py-20">
+    <div className="min-h-screen flex items-center justify-center px-6 py-20">
       <div className="w-full max-w-lg bg-white rounded-xl shadow-sm border p-8">
         {/* header */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold mb-2">Get in touch</h1>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-stone-900 mb-2">
+            Get in touch
+          </h1>
           <p className="text-stone-500 text-sm">
             We'll get back to you within 24 hours.
           </p>
@@ -47,7 +49,7 @@ function ContactPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             type="email"
-            placeholder="you@email.com"
+            placeholder="your@email.com"
           />
           <Textarea
             value={message}
@@ -56,7 +58,11 @@ function ContactPage() {
             rows={4}
           />
 
-          <Button variant="primary" type="submit" className="w-full mt-2">
+          <Button
+            variant="primary"
+            type="submit"
+            className="w-full h-11 mt-2 rounded-full font-bold"
+          >
             Send Message
           </Button>
         </form>

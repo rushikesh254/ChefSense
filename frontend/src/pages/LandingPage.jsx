@@ -3,7 +3,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { useUser } from "@/context/AuthContext";
 import {
   FEATURES,
   STATS,
@@ -16,12 +15,10 @@ import { ArrowRight, Frown, Leaf, Smile, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 
 function LandingPage() {
-  const { user } = useUser();
-
   return (
     <div className="min-h-screen">
       {/* hero section */}
-      <section className="py-20 px-6   overflow-hidden">
+      <section className="py-20 px-6 overflow-hidden">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row  items-center justify-between gap-10">
           {/* Left Column: Text & CTA */}
           <div className="flex-1 text-center w-full ">
@@ -29,7 +26,7 @@ function LandingPage() {
               Best AI Cooking Assistant
             </p>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl  font-extrabold text-stone-900 mb-5 sm:mb-6 ">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl  font-extrabold  mb-5 sm:mb-6 ">
               Turn your <span className="italic text-brand-500">leftovers</span>{" "}
               into <br className="hidden sm:block" />
               masterpieces.
@@ -41,10 +38,7 @@ function LandingPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch  justify-center">
-              <Link
-                to={user ? "/dashboard" : "/sign-in"}
-                className="w-full sm:w-auto"
-              >
+              <Link to="/dashboard" className="w-full sm:w-auto">
                 <Button
                   variant="primary"
                   className="h-12 w-full sm:w-auto  font-bold"
@@ -68,21 +62,20 @@ function LandingPage() {
                   <Avatar key={testimonial.name} className="w-10 h-10">
                     <AvatarImage
                       src={testimonial.avatar}
-                      alt={testimonial.name}
+                      alt="avatar"
                       className="object-cover"
                     />
                   </Avatar>
                 ))}
               </div>
               <p className="text-sm sm:text-base text-stone-500 mt-2 sm:mt-0">
-                <span className="font-bold text-stone-900">10k+ cooks</span>{" "}
-                joined last month
+                <span className="font-bold ">10k+ cooks</span> joined last month
               </p>
             </div>
           </div>
 
-          {/* Right Column: Recipe Card Presentation */}
-          <div className="w-full flex justify-center lg:justify-end  flex-1">
+          {/* Right Column: Recipe Card */}
+          <div className="w-full max-w-7xl flex justify-center  flex-1">
             <div className="w-full max-w-80 sm:max-w-sm relative ">
               <RecipeCard recipe={recipe} />
             </div>
@@ -101,7 +94,7 @@ function LandingPage() {
               Try ChefSense
             </p>
 
-            <h2 className="text-4xl sm:text-6xl font-extrabold text-stone-900 mt-4">
+            <h2 className="text-4xl sm:text-6xl font-extrabold  mt-4">
               Stop guessing.
               <br />
               <span className="text-brand-500">Start cooking.</span>
@@ -111,7 +104,7 @@ function LandingPage() {
           {/* cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* without */}
-            <Card className="border  border-red-100 bg-red-100 p-7 lg:p-8 transition-all  hover:shadow-xl hover:-translate-y-1">
+            <Card className="border border-red-100 bg-red-50 p-7 lg:p-8 transition-all  hover:shadow-xl hover:bg-red-100 hover:-translate-y-1">
               <div className="relative">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center">
@@ -134,7 +127,7 @@ function LandingPage() {
             </Card>
 
             {/* with */}
-            <Card className="border border-green-100 bg-green-100 p-7 lg:p-8 transition-all  hover:shadow-xl hover:-translate-y-1">
+            <Card className="border border-green-100 bg-green-50 p-7 lg:p-8 transition-all  hover:shadow-xl hover:bg-green-100 hover:-translate-y-1">
               <div className="relative">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
@@ -170,7 +163,7 @@ function LandingPage() {
               Features
             </p>
 
-            <h2 className="text-4xl sm:text-5xl font-extrabold text-stone-900 mt-3">
+            <h2 className="text-4xl sm:text-5xl font-extrabold  mt-3">
               Your <span className="text-brand-500">Smart</span> Kitchen
             </h2>
 
@@ -180,34 +173,35 @@ function LandingPage() {
           </div>
 
           {/* feature cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
-            {FEATURES.slice(0, 4).map((feature) => (
-              <Card
-                key={feature.title}
-                className="    p-6 flex gap-4 hover:shadow-lg transition "
-              >
-                <div className="border px-2 py-2 w-fit rounded-full bg-stone-50 flex items-center justify-center shrink-0">
-                  <feature.icon className="w-5 h-5 text-brand-600" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-semibold text-stone-900 text-lg">
-                      {feature.title}
-                    </h3>
-
-                    {feature.limit && (
-                      <span className="text-xs text-stone-400 bg-stone-100 px-2 py-0.5 rounded-full">
-                        {feature.limit}
-                      </span>
-                    )}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+            {FEATURES.map((feature) => {
+              const Icon = feature.icon;
+              return (
+                <Card
+                  key={feature.title}
+                  className="p-6 flex gap-4 hover:shadow-lg"
+                >
+                  <div className="border px-2 py-2 w-fit rounded-full bg-stone-50 flex items-center justify-center shrink-0">
+                    <Icon className="w-5 h-5 text-brand-600" />
                   </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-semibold text-lg">{feature.title}</h3>
 
-                  <p className="text-sm text-stone-500 ">
-                    {feature.description}
-                  </p>
-                </div>
-              </Card>
-            ))}
+                      {feature.limit && (
+                        <span className="text-xs text-stone-400 bg-stone-100 px-2 py-0.5 rounded-full">
+                          {feature.limit}
+                        </span>
+                      )}
+                    </div>
+
+                    <p className="text-sm text-stone-500 ">
+                      {feature.description}
+                    </p>
+                  </div>
+                </Card>
+              );
+            })}
           </div>
 
           {/* highlight card */}
@@ -243,7 +237,7 @@ function LandingPage() {
             {/* image */}
             <div className="relative lg:w-[45%] h-64 lg:h-auto">
               <img
-                src="https://images.unsplash.com/photo-1543353071-873f17a7a088?w=900&auto=format&fit=crop"
+                src="/statsimg.png"
                 alt="Zero waste cooking"
                 loading="lazy"
                 className="w-full h-full object-cover"
@@ -266,7 +260,7 @@ function LandingPage() {
               Testimonials
             </p>
 
-            <h2 className="text-4xl sm:text-6xl font-extrabold text-stone-900 mt-4">
+            <h2 className="text-4xl sm:text-6xl font-extrabold  mt-4">
               What our <span className="text-brand-500">chefs</span> say
             </h2>
           </div>
@@ -305,9 +299,7 @@ function LandingPage() {
                     </Avatar>
 
                     <div>
-                      <p className="text-stone-900 font-semibold text-sm">
-                        {t.name}
-                      </p>
+                      <p className=" font-semibold text-sm">{t.name}</p>
                       <p className="text-xs text-stone-400">Home Cook</p>
                     </div>
                   </div>
@@ -337,7 +329,7 @@ function LandingPage() {
             tonight — without wasting food or money.
           </p>
 
-          <Link to={user ? "/dashboard" : "/sign-in"}>
+          <Link to="/dashboard">
             <Button
               variant="primary"
               className="px-8 py-5  w-fit  font-bold gap-2 "

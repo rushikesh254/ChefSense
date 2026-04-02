@@ -18,7 +18,6 @@ import UserDropdown from "./UserDropdown";
 function Header() {
   const { user } = useUser();
 
-  const [search, setSearch] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -90,12 +89,7 @@ function Header() {
 
           {user && (
             <div className="hidden md:flex items-center ml-2">
-              <SearchBar
-                variant="compact"
-                value={search}
-                onChange={setSearch}
-                placeholder="Search recipes..."
-              />
+              <SearchBar variant="compact" />
             </div>
           )}
 
@@ -171,11 +165,7 @@ function Header() {
                 ))}
 
                 <div className="px-1 pt-1">
-                  <SearchBar
-                    value={search}
-                    onChange={setSearch}
-                    placeholder="Search recipes..."
-                  />
+                  <SearchBar />
                 </div>
               </>
             ) : (

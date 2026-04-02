@@ -1,33 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import {
-  AlertCircle,
-  Loader2,
-  PlusCircle,
-  Refrigerator,
-  Sparkles,
-} from "lucide-react";
-import { toast } from "sonner";
-import pantryService from "@/services/pantry";
-import { Button } from "@/components/ui/button";
+import AddToPantryModal from "@/components/AddToPantryModal";
 import PantryCard from "@/components/PantryCard";
-import { FILTERS } from "@/utils/constants";
-
-// import AddToPantryModal from '@/components/AddToPantryModal'
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import dummyitems from "@/data/pantryitems";
+import { AlertCircle, Loader2, PlusCircle, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 function PantryPage() {
+  // console.log(dummyitems);
+
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [statusFilter, setStatusFilter] = useState("all");
 
+  // laod the items when page loaded
   useEffect(() => {
     async function loaditems() {
       try {
-        const response = await pantryService.getitems();
-        setItems(response.items || []);
+        setItems(dummyitems); //set items
       } catch (error) {
-        toast.error("Failed to load pantry items");
+        console.log(error);
+        toast.error("Failed to load items");
       } finally {
         setLoading(false);
       }
@@ -35,164 +30,152 @@ function PantryPage() {
     loaditems();
   }, []);
 
-  const filteredItems =
-    statusFilter === "all"
-      ? items
-      : items.filter((item) => item.expiryStatus === statusFilter);
+  // upadte the item
+  function updateItem(id, updatedItem) {
+    console.log(id, updatedItem);
 
-  function deleteItem(id) {
-    setItems(items.filter((item) => item.id !== id));
-    toast.success("Item deleted successfully");
+    setItems((prevItems) => {
+      return prevItems.map((item) => {
+        if (item.id === id) {
+          return { ...updatedItem, id };
+        }
+        return item;
+      });
+    });
   }
 
-  function updateItem(id, name, quantity, category, expiryDate, expiryStatus) {
-    const updateditem = {
-      id,
-      name,
-      quantity,
-      category,
-      expiryDate,
-      expiryStatus,
-    };
-    setItems(items.map((item) => (item.id === id ? updateditem : item)));
-    toast.success("Item updated successfully");
+  // delete the item
+  function deleteItem(id) {
+    setItems(items.filter((item) => item.id !== id));
+  }
+
+  // add the item
+  function handleAdd(newItems) {
+    setItems((prev) => [...prev, ...newItems]);
   }
 
   return (
     <div className="min-h-screen pt-24 pb-16 px-4">
-      <div className="mx-auto max-w-6xl">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-brand-500 mb-2">
+      <div className="mx-auto max-w-7xl">
+        {/* header */}
+        <div className="flex flex-col gap-4 mb-6 justify-between md:flex-row md:items-end">
+          <div className="space-y-2">
+            <p className="text-xs font-bold uppercase tracking-widest text-brand-500">
               Kitchen
             </p>
-            <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-stone-900">
+            <h1 className="text-4xl sm:text-6xl font-extrabold text-black">
               My Pantry
             </h1>
-            <p className="mt-2 text-stone-500 text-sm">
-              {items.length} {items.length === 1 ? "item" : "items"} available
+            <p className="text-stone-500 sm:text-lg text-sm">
+              Your digital ingredient tracker. Manage your staples and explore
+              AI recipe suggestions.
             </p>
           </div>
 
-          <Button
-            onClick={() => setShowModal(true)}
-            variant="primary"
-            size="lg"
-            className="gap-2 cursor-pointer w-full sm:w-auto"
-          >
-            <PlusCircle className="w-5 h-5" />
-            Add Ingredients
-          </Button>
+          <div className="flex items-center gap-4">
+            <div className="flex flex-col items-start md:items-end">
+              <span className="text-3xl sm:text-4xl font-black text-stone-900 ">
+                {items.length}
+              </span>
+              <span className="text-[10px] sm:text-xs font-bold uppercase text-stone-400 mt-1">
+                Items found
+              </span>
+            </div>
+
+            <Button
+              onClick={() => setShowModal(true)}
+              variant="secondary"
+              size="lg"
+              className="w-1/2 sm:w-auto font-bold rounded-2xl shadow-lg border-brand-600 text-brand-600 hover:bg-brand-600 hover:text-white"
+            >
+              <PlusCircle className="w-5 h-5 mr-2" />
+              Add Pantry Items
+            </Button>
+          </div>
         </div>
 
+        {/* AI recipe banner */}
         {items.length > 0 && (
-          <div className="mb-8 bg-linear-to-r from-green-600 to-emerald-500 rounded-2xl overflow-hidden">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-5 p-6 sm:p-8">
-              <div className="text-white">
-                <h2 className="mb-2 flex items-center gap-2 text-2xl sm:text-3xl font-extrabold tracking-tight">
-                  <Sparkles className="w-6 h-6 text-yellow-300" />
+          <div className="rounded-2xl p-6 bg-blue-400 text-white mb-12">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="text-center lg:text-left space-y-3">
+                <Badge className="bg-white/20 text-white text-xs font-bold uppercase mb-1">
+                  <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+                  AI Suggested
+                </Badge>
+                <h2 className="text-3xl sm:text-4xl font-black text-white">
                   Wondering what to make?
                 </h2>
-                <p className="text-green-50/80 text-sm sm:text-base">
-                  Our AI chef can analyze your pantry and generate{" "}
-                  {items.length > 5 ? "dozens of" : "a few"} recipes right now.
+                <p className="text-brand-50 text-base sm:text-lg max-w-xl">
+                  Our AI chef can analyze your pantry and generate
+                  <span className="font-bold text-white underline decoration-brand-300 underline-offset-4">
+                    {" "}
+                    dozens of custom recipes
+                  </span>{" "}
+                  instantly.
                 </p>
               </div>
-              <Link to="/pantry/recipes" className="w-full sm:w-auto shrink-0">
+              <Link to="/pantry-recipes" className="w-full sm:w-auto">
                 <Button
                   variant="outline"
-                  className="w-full sm:w-auto h-11 px-6 bg-white/90 hover:bg-white text-stone-900 font-bold border-0 rounded-xl hover:scale-105"
+                  className="w-full sm:w-auto h-14 px-10 text-brand-600 rounded-2xl text-lg font-bold"
                 >
-                  Get Recipe Suggestions
+                  Explore Recipes
                 </Button>
               </Link>
             </div>
           </div>
         )}
-        {/* filters */}
-        {items.length > 0 && (
-          <div className="bg-white rounded-2xl border border-stone-200 p-4 mb-6">
-            <div className="flex flex-wrap gap-2">
-              {FILTERS.map((filter) => {
-                const Icon = filter.icon;
-                const isActive = statusFilter === filter.key;
-                return (
-                  <button
-                    key={filter.key}
-                    onClick={() => setStatusFilter(filter.key)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-semibold border flex items-center gap-1.5 transition-colors ${
-                      isActive
-                        ? "bg-stone-900 text-white border-stone-900"
-                        : "bg-white text-stone-600 border-stone-200 hover:border-stone-400"
-                    }`}
-                  >
-                    <Icon className="h-3.5 w-3.5" />
-                    {filter.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
 
-        {/* loading */}
+        {/* <div>hello</div> */}
+        {/* loading state  */}
         {loading ? (
-          <div className="flex min-h-[300px] items-center justify-center">
-            <div className="border rounded-full inline-flex items-center bg-white px-6 py-4 text-lg font-bold text-stone-900">
-              <Loader2 className="mr-3 h-6 w-6 animate-spin text-brand-600" />
+          <div className="flex items-center justify-center">
+            <div className="border border-stone-200 rounded-full flex justify-center items-center bg-stone-50 sm:px-8 px-4 sm:py-4 py-3 text-lg font-bold shadow-xl">
+              <Loader2 className="animate-spin text-brand-600 mr-3 h-6 w-6" />
               Loading your pantry...
             </div>
           </div>
-        ) : items.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-stone-200 p-16 text-center">
+        ) : // no items state
+        items.length === 0 ? (
+          <div className="rounded-2xl border border-stone-200 bg-white p-10 sm:p-20 text-center">
             <div className="w-20 h-20 bg-stone-50 rounded-full flex items-center justify-center mx-auto mb-5">
-              <Refrigerator className="w-9 h-9 text-stone-300" />
-            </div>
-            <h3 className="text-xl font-bold text-stone-800 mb-2">
-              Your pantry is empty
-            </h3>
-            <p className="text-stone-500 text-sm mb-8 max-w-xs mx-auto">
-              Add ingredients to your digital pantry to keep track of what you
-              have and get AI-powered recipe suggestions.
-            </p>
-            <Button onClick={() => setShowModal(true)} variant="primary">
-              Add Your First Item
-            </Button>
-          </div>
-        ) : filteredItems.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-stone-200 p-16 text-center">
-            <div className="w-20 h-20 bg-stone-50 rounded-full flex items-center justify-center mx-auto mb-5">
-              <AlertCircle className="w-9 h-9 text-stone-300" />
+              <AlertCircle className="w-9 h-9 text-brand-600" />
             </div>
             <h3 className="text-xl font-bold text-stone-800 mb-2">
               No items found
             </h3>
-            <p className="text-stone-500 text-sm mb-6">
-              There are no items matching the current filter.
+            <p className="text-stone-500 text-sm mb-6 max-w-xs mx-auto">
+              Start by adding your first ingredient
             </p>
-            <Button variant="outline" onClick={() => setStatusFilter("all")}>
-              Clear Filter
+            <Button
+              onClick={() => setShowModal(true)}
+              variant="primary"
+              className="rounded-full font-bold gap-2"
+            >
+              <PlusCircle className="w-4 h-4" />
+              Add Ingredient
             </Button>
           </div>
         ) : (
+          // items found state
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredItems.map((item) => (
+            {items.map((item) => (
               <PantryCard
                 key={item.id}
                 item={item}
-                deleteItem={deleteItem}
                 updateItem={updateItem}
+                deleteItem={deleteItem}
               />
             ))}
           </div>
         )}
-        {/* modal */}
-        {/* <AddToPantryModal
+
+        <AddToPantryModal
           isOpen={showModal}
           onClose={() => setShowModal(false)}
           onAdd={handleAdd}
-        /> */}
+        />
       </div>
     </div>
   );

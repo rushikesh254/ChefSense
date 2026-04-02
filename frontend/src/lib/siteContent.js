@@ -2,7 +2,29 @@
 
 import { BookOpen, Brain, Camera, ChefHat, Heart, Search } from "lucide-react";
 
+// used in landing page hero section
+
+export const recipe = {
+  title: "Paneer Butter Masala",
+  description:
+    "A rich and creamy North Indian curry made with paneer, tomatoes, and a blend of spices. Perfect for a comforting dinner.",
+  cuisine: "indian",
+  category: "dinner",
+  diet: "vegetarian",
+  difficulty: "medium",
+  tags: ["Paneer", "Rich", "Curry", "North Indian"],
+  imageUrl: "/PaneerButter.png",
+  cookTime: 35,
+  prepTime: 15,
+  servings: 4,
+  rating: 4.8,
+  isVeg: true,
+  matchPercentage: 85,
+  missingIngredients: ["heavy cream", "kasuri methi", "tomatoes"],
+};
+
 //  testinomials amd avatars used in landing page
+
 export const TESTIMONIALS = [
   {
     name: "Priya S.",
@@ -23,6 +45,7 @@ export const TESTIMONIALS = [
 
 // features
 // used in landing page
+
 export const FEATURES = [
   {
     title: "Scan Your Pantry",
@@ -53,7 +76,36 @@ export const FEATURES = [
   },
 ];
 
+// used in landing page
+
+export const WITHOUT_CHEFSENSE = [
+  "Open fridge. Stare. Close fridge.",
+  'Google "recipes with eggs and sad carrots"',
+  "Scroll for 20 mins. Nothing fits.",
+  "Order pizza. Again.",
+  "Throw out ₹800 worth of groceries.",
+];
+
+// used in landing page
+
+export const WITH_CHEFSENSE = [
+  "Open fridge. Snap photo.",
+  "AI instantly identifies ingredients.",
+  "Get 5+ recipes you can make right now.",
+  "Cook a delicious meal in minutes.",
+  "Save ₹800 worth of groceries.",
+];
+
+//stats used in landing page
+
+export const STATS = [
+  { value: "₹1500", label: "saved per week" },
+  { value: "30%", label: "less food wasted" },
+  { value: "10k+", label: "happy cooks" },
+];
+
 // used in faqs page
+
 export const FAQS = [
   {
     question: "What is ChefSense?",
@@ -77,25 +129,8 @@ export const FAQS = [
   },
 ];
 
-// used in landing page
-export const WITHOUT_CHEFSENSE = [
-  "Open fridge. Stare. Close fridge.",
-  'Google "recipes with eggs and sad carrots"',
-  "Scroll for 20 mins. Nothing fits.",
-  "Order pizza. Again.",
-  "Throw out ₹800 worth of groceries.",
-];
-
-// used in landing page
-export const WITH_CHEFSENSE = [
-  "Open fridge. Snap photo.",
-  "AI instantly identifies ingredients.",
-  "Get 5+ recipes you can make right now.",
-  "Cook a delicious meal in minutes.",
-  "Save ₹800 worth of groceries.",
-];
-
 // used in how it works page
+
 export const STEPS = [
   {
     id: 1,
@@ -129,35 +164,4 @@ export const STEPS = [
       "Follow step-by-step instructions, save your favorites, and enjoy delicious homemade meals!",
     img: "https://images.unsplash.com/photo-1710091691780-c7eb0dc50cf8",
   },
-];
-
-// used in landing page hero section
-export const recipe = {
-  title: "Paneer Butter Masala",
-  description:
-    "A rich and creamy North Indian curry made with paneer, tomatoes, and a blend of spices. Perfect for a comforting dinner.",
-  cuisine: "indian",
-  category: "dinner",
-  diet: "vegetarian",
-  difficulty: "medium",
-  tags: ["Paneer", "Rich", "Curry", "North Indian"],
-  imageUrl: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7",
-  cookTime: 35,
-  prepTime: 15,
-  servings: 4,
-  rating: 4.8,
-  isVeg: true,
-  matchPercentage: 85,
-  missingIngredients: ["heavy cream", "kasuri methi", "tomatoes"],
-};
-
-
-
-
-//stats 
-
-export const STATS = [
-  { value: "₹1500", label: "saved per week" },
-  { value: "30%", label: "less food wasted" },
-  { value: "10k+", label: "happy cooks" },
 ];

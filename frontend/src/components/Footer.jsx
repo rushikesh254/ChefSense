@@ -90,7 +90,7 @@ function Footer() {
 
           {/* chefsense links */}
           <div className="col-span-1">
-            <h4 className="text-sm font-bold uppercase text-stone-900 mb-4">
+            <h4 className="text-sm font-bold uppercase  mb-4">
               ChefSense
             </h4>
 
@@ -111,7 +111,7 @@ function Footer() {
 
           {/* product links */}
           <div className="col-span-1">
-            <h4 className="text-sm font-bold uppercase text-stone-900 mb-4">
+            <h4 className="text-sm font-bold uppercase  mb-4">
               Product
             </h4>
 
@@ -132,7 +132,7 @@ function Footer() {
 
           {/* resources links */}
           <div className="col-span-1">
-            <h4 className="text-sm font-bold uppercase text-stone-900 mb-4">
+            <h4 className="text-sm font-bold uppercase  mb-4">
               Resources
             </h4>
 

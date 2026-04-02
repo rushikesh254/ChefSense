@@ -1,27 +1,29 @@
 // imports
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import { useUser } from "@/context/AuthContext";
-import LandingPage from "@/pages/LandingPage";
-import AboutPage from "@/pages/about/AboutPage";
-import SignIn from "@/pages/auth/SignIn";
-import SignUp from "@/pages/auth/SignUp";
-import ContactPage from "@/pages/contact/ContactPage";
-import Dashboard from "@/pages/dashboard/Dashboard";
-import FAQPage from "@/pages/faqs/FAQPage";
-import HowItWorksPage from "@/pages/how-it-works/HowItWorksPage";
-import PantryPage from "@/pages/pantry/PantryPage";
-import PantryRecipesPage from "@/pages/pantry/PantryRecipesPage";
-import RecipePage from "@/pages/recipe/RecipePage";
-import FilterResultsPage from "@/pages/recipes/FilterResultsPage";
-import SavedRecipes from "@/pages/recipes/SavedRecipes";
-import { Loader2 } from "lucide-react";
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
-import { Toaster } from "sonner";
+import Footer from '@/components/Footer'
+import Header from '@/components/Header'
+import { useUser } from '@/context/AuthContext'
+import LandingPage from '@/pages/LandingPage'
+import AboutPage from '@/pages/about/AboutPage'
+import SignIn from '@/pages/auth/SignIn'
+import SignUp from '@/pages/auth/SignUp'
+import ContactPage from '@/pages/contact/ContactPage'
+import Dashboard from '@/pages/dashboard/Dashboard'
+import FAQPage from '@/pages/faqs/FAQPage'
+import HowItWorksPage from '@/pages/how-it-works/HowItWorksPage'
+import PantryPage from '@/pages/pantry/PantryPage'
+import PantryRecipesPage from '@/pages/pantry/PantryRecipesPage'
+import RecipePage from '@/pages/recipe/RecipePage'
+import FilterResultsPage from '@/pages/recipes/FilterResultsPage'
+import SavedRecipes from '@/pages/recipes/SavedRecipes'
+import { Loader2 } from 'lucide-react'
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
+import { Toaster } from 'sonner'
+import NotFound from './pages/not-found/NotFound'
+import ProfilePage from './pages/profile/ProfilePage'
 
 // check the user is logged in or not
 function RequireAuth() {
-  const { user, loading } = useUser();
+  const { user, loading } = useUser()
 
   // loading state
   if (loading) {
@@ -32,12 +34,14 @@ function RequireAuth() {
           Loading...
         </div>
       </div>
-    );
+    )
   }
 
   //if user exiast then all private  routes if not then redirect to sign in page
-  return user ? <Outlet /> : <Navigate to="/sign-in" />;
+  return user ? <Outlet /> : <Navigate to="/sign-in" />
 }
+
+// app layout dont show header and footer in auth pages
 
 // main app component
 function App() {
@@ -62,7 +66,7 @@ function App() {
 
             {/* filter routes */}
             <Route
-              path="/recipes/quick/:quick"
+              path="/recipes/quick"
               element={<FilterResultsPage type="quick" />}
             />
             <Route
@@ -86,13 +90,19 @@ function App() {
             <Route path="/pantry" element={<PantryPage />} />
             {/* pantry recipes page (suggestions) */}
             <Route path="/pantry-recipes" element={<PantryRecipesPage />} />
+
+            {/* profile page  */}
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
+
+          {/* 404 Catch-all */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Footer />
       <Toaster richColors position="bottom-right" />
     </>
-  );
+  )
 }
 
-export default App;
+export default App
