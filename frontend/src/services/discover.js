@@ -33,7 +33,7 @@ export function getDiets() {
 }
 // func to return quick meals
 export function getQuickMeals() {
-  return filterRecipes;
+  return filterRecipes.recipes;
 }
 
 // func to return category recipes based on category name

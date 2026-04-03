@@ -5,10 +5,13 @@ import { Link } from "react-router-dom";
 
 function UserDropdown() {
   const { user } = useUser();
+
+  if (!user) return null;
+
   return (
-    <div>
+    <div className="relative">
       <Link to="/profile" className="relative h-10 w-10 rounded-full">
-        <Avatar className="cursor-pointer bg-brand-600 text-white">
+        <Avatar className="cursor-pointer bg-brand-600 text-white hover:opacity-90">
           <AvatarImage src={user.image} />
           <AvatarFallback className="bg-brand-600 text-white">
             {getInitials(user)}
