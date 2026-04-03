@@ -4,6 +4,10 @@ const user = {
   image: ``,
   firstName: "Rushikesh",
   lastName: "Bodke",
+  role: "user",
+  recipesGenerated: 10,
+  savedRecipesCount: 5,
+  pantryItemsCount: 3,
 };
 
 export default user;
