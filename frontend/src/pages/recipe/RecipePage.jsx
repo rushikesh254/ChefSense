@@ -1,9 +1,9 @@
-import RecipeImage from '@/components/RecipeImage'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
-import { getById } from '@/services/recipe'
-import { getdifficultyColor } from '@/lib/utils'
+import RecipeImage from "@/components/RecipeImage";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { getdifficultyColor } from "@/lib/utils";
+import { getById } from "@/services/recipe";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -15,42 +15,54 @@ import {
   Star,
   Users,
   Zap,
-} from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { toast } from 'sonner'
+  Bookmark,
+  Download,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 function RecipePage() {
-  const navigate = useNavigate()
-  const { id } = useParams()
+  const navigate = useNavigate();
+  const { id } = useParams();
 
-  const [recipe, setRecipe] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const [recipe, setRecipe] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     function loadRecipe() {
       try {
-        setLoading(true)
-        const res = getById(id)
+        setLoading(true);
+        const res = getById(id);
         // using simple function now not async .. layter when backend is ready it will be async and then we can use await here
 
         // console.log('recipe res', res)
 
-        setRecipe(res)
+        setRecipe(res);
       } catch {
-        toast.error('Failed to load recipe')
-        navigate('/')
+        toast.error("Failed to load recipe");
+        navigate("/");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
-    loadRecipe()
-  }, [id]) // if id changes load new recipe
+    loadRecipe();
+  }, [id]); // if id changes load new recipe
 
-  const totalTime = (recipe?.prepTime || 0) + (recipe?.cookTime || 0) // total time= prep time + cook time
+  const totalTime = (recipe?.prepTime || 0) + (recipe?.cookTime || 0); // total time= prep time + cook time
 
-  let diffStyle = getdifficultyColor(recipe?.difficulty)
+  let diffStyle = getdifficultyColor(recipe?.difficulty);
 
+
+  function saveHandle(){
+   toast.success("Recipe saved successfully")
+   console.log('recipe saved')  
+  }
+
+  function downloadHandle(){
+    toast.success("Recipe downloaded successfully")
+    console.log('recipe downloaded')
+  }
   // loading state
   if (loading) {
     return (
@@ -60,7 +72,24 @@ function RecipePage() {
           <p className="text-lg font-bold">Loading your recipe...</p>
         </div>
       </div>
-    )
+    );
+  }
+
+  // if not loading and no recipe found then show error message
+  if (!loading && !recipe) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20">
+        <p className="text-lg font-semibold text-black mb-2">
+          Recipe not found
+        </p>
+        <button
+          onClick={() => navigate("/")}
+          className="text-brand-600 underline"
+        >
+          Go back home
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -76,7 +105,7 @@ function RecipePage() {
 
         {/* Hero image */}
         {recipe?.imageUrl && (
-          <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-stone-200">
+          <div className="relative w-full h-56 sm:h-80 lg:h-120 rounded-2xl overflow-hidden bg-stone-200">
             <RecipeImage
               src={recipe.imageUrl}
               alt={recipe.title}
@@ -86,10 +115,10 @@ function RecipePage() {
             {recipe?.isVeg && (
               <div
                 className="absolute top-3 left-3 w-6 h-6 rounded-sm border-2 bg-stone-50 flex items-center justify-center"
-                style={{ borderColor: recipe.isVeg ? 'green' : 'red' }}
+                style={{ borderColor: recipe.isVeg ? "green" : "red" }}
               >
                 <div
-                  className={`w-3 h-3 rounded-full ${recipe.isVeg ? 'bg-green-500' : 'bg-red-500'}`}
+                  className={`w-3 h-3 rounded-full ${recipe.isVeg ? "bg-green-500" : "bg-red-500"}`}
                 />
               </div>
             )}
@@ -98,12 +127,24 @@ function RecipePage() {
               <div className="absolute top-3 right-3 flex items-center gap-1 rounded-full bg-stone-50/90 px-3 py-1.5">
                 <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
                 <span className="text-sm font-bold text-black">
-                  {typeof recipe.rating === 'number'
+                  {typeof recipe.rating === "number"
                     ? recipe.rating.toFixed(1)
                     : recipe.rating}
                 </span>
               </div>
             )}
+
+            <div className="absolute bottom-3 right-3 flex items-center gap-2">
+              <button className="flex items-center gap-1.5 bg-white/90 backdrop-blur px-3 py-1.5 rounded-full hover:bg-white" onClick={saveHandle}>
+                <Bookmark className="w-4 h-4 text-brand-600" />
+                <span className="text-xs font-medium text-black">Save</span>
+              </button>
+
+              <button className="flex items-center gap-1.5 bg-brand-600 px-3 py-1.5 rounded-full hover:bg-brand-700" onClick={downloadHandle}>
+                <Download className="w-4 h-4 text-white" />
+                <span className="text-xs font-medium text-white">PDF</span>
+              </button>
+            </div>
           </div>
         )}
 
@@ -135,7 +176,7 @@ function RecipePage() {
                   {recipe.category}
                 </Badge>
               )}
-              {recipe?.diet && recipe.diet.toLowerCase() !== 'none' && (
+              {recipe?.diet && recipe.diet.toLowerCase() !== "none" && (
                 <Badge
                   variant="outline"
                   className="rounded-full text-[10px] border-emerald-100 bg-emerald-50 text-emerald-600"
@@ -165,13 +206,13 @@ function RecipePage() {
               )}
               {recipe?.servings && (
                 <span className="flex items-center gap-1.5">
-                  <Users className="w-4 h-4 text-stone-300" /> {recipe.servings}{' '}
+                  <Users className="w-4 h-4 text-stone-300" /> {recipe.servings}{" "}
                   serves
                 </span>
               )}
               {recipe?.nutrition?.calories && (
                 <span className="flex items-center gap-1.5">
-                  <Flame className="w-4 h-4 text-stone-300" />{' '}
+                  <Flame className="w-4 h-4 text-stone-300" />{" "}
                   {recipe.nutrition.calories} kcal
                 </span>
               )}
@@ -181,7 +222,7 @@ function RecipePage() {
 
         {/* Main grid */}
 
-        <div className="flex flex-col gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           {/* Sidebar */}
           <aside className="lg:col-span-4 space-y-4 lg:sticky lg:top-24">
             {/* Ingredients */}
@@ -196,7 +237,7 @@ function RecipePage() {
                   {recipe?.ingredients?.map((item, i) => (
                     <li
                       key={i}
-                      className="flex items-center justify-between py-3 first:pt-0 last:pb-0"
+                      className="grid grid-cols-2 py-3 items-center gap-2 "
                     >
                       <div className="flex items-center gap-2.5">
                         <div className="h-2 w-2 rounded-full bg-brand-400 shrink-0" />
@@ -232,21 +273,21 @@ function RecipePage() {
                   <div className="grid grid-cols-2 gap-2">
                     {[
                       {
-                        label: 'Calories',
+                        label: "Calories",
                         value: recipe.nutrition.calories,
-                        unit: 'kcal',
+                        unit: "kcal",
                       },
                       {
-                        label: 'Protein',
+                        label: "Protein",
                         value: recipe.nutrition.protein,
-                        unit: 'g',
+                        unit: "g",
                       },
                       {
-                        label: 'Carbs',
+                        label: "Carbs",
                         value: recipe.nutrition.carbs,
-                        unit: 'g',
+                        unit: "g",
                       },
-                      { label: 'Fat', value: recipe.nutrition.fat, unit: 'g' },
+                      { label: "Fat", value: recipe.nutrition.fat, unit: "g" },
                     ]
                       .filter((n) => n.value)
                       .map((n) => (
@@ -365,7 +406,7 @@ function RecipePage() {
                     {recipe.substitutions.map((entry, i) => (
                       <div key={i}>
                         <p className="text-sm text-stone-600 mb-2">
-                          Instead of{' '}
+                          Instead of{" "}
                           <span className="font-semibold text-brand-500">
                             {entry.original}
                           </span>
@@ -395,9 +436,7 @@ function RecipePage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default RecipePage
-
-
+export default RecipePage;

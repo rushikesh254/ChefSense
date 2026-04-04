@@ -66,12 +66,16 @@ function SignUp() {
             {/* name fields - side by side */}
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase text-stone-500">
+                <label
+                  htmlFor="firstName"
+                  className="text-xs font-bold uppercase text-stone-500"
+                >
                   First Name
                 </label>
                 <div className="relative">
                   <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
                   <Input
+                    id="firstName"
                     placeholder="John"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
@@ -81,12 +85,16 @@ function SignUp() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase text-stone-500">
+                <label
+                  htmlFor="lastName"
+                  className="text-xs font-bold uppercase text-stone-500"
+                >
                   Last Name
                 </label>
                 <div className="relative">
                   <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
                   <Input
+                    id="lastName"
                     placeholder="Doe"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
@@ -98,12 +106,16 @@ function SignUp() {
 
             {/* email field */}
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-stone-500">
+              <label
+                htmlFor="email"
+                className="text-xs font-bold uppercase text-stone-500"
+              >
                 Email Address
               </label>
               <div className="relative">
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
                 <Input
+                  id="email"
                   type="email"
                   placeholder="you@example.com"
                   value={email}
@@ -115,12 +127,16 @@ function SignUp() {
 
             {/* password field */}
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-stone-500">
+              <label
+                htmlFor="password"
+                className="text-xs font-bold uppercase text-stone-500"
+              >
                 Password
               </label>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
                 <Input
+                  id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="At least 6 characters"
                   value={password}

@@ -180,10 +180,14 @@ function ProfilePage() {
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-semibold">
+                      <label
+                        htmlFor="firstName"
+                        className="text-sm font-semibold"
+                      >
                         First Name
                       </label>
                       <Input
+                        id="firstName"
                         defaultValue={user.firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         className="mt-1"
@@ -191,8 +195,14 @@ function ProfilePage() {
                     </div>
 
                     <div>
-                      <label className="text-sm font-semibold">Last Name</label>
+                      <label
+                        htmlFor="lastName"
+                        className="text-sm font-semibold"
+                      >
+                        Last Name
+                      </label>
                       <Input
+                        id="lastName"
                         defaultValue={user.lastName}
                         onChange={(e) => setLastName(e.target.value)}
                         className="mt-1"
@@ -201,10 +211,14 @@ function ProfilePage() {
                   </div>
 
                   <div>
-                    <label className="text-sm font-semibold">
+                    <label
+                      htmlFor="email"
+                      className="text-sm font-semibold"
+                    >
                       Email Address
                     </label>
                     <Input
+                      id="email"
                       value={user.email}
                       readOnly
                       className="mt-1 bg-stone-100 cursor-not-allowed"

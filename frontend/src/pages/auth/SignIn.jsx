@@ -77,12 +77,16 @@ function SignIn() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* email field */}
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-stone-500">
+              <label
+                htmlFor="email"
+                className="text-xs font-bold uppercase text-stone-500"
+              >
                 Email Address
               </label>
               <div className="relative">
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
                 <Input
+                  id="email"
                   type="email"
                   placeholder="you@example.com"
                   value={email}
@@ -94,12 +98,16 @@ function SignIn() {
 
             {/* password field */}
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase text-stone-500">
+              <label
+                htmlFor="password"
+                className="text-xs font-bold uppercase text-stone-500"
+              >
                 Password
               </label>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
                 <Input
+                  id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
                   value={password}

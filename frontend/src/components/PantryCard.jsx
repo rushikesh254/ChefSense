@@ -124,10 +124,14 @@ function PantryCard({ item, updateItem, deleteItem }) {
 
             <div className="grid gap-3">
               <div className="space-y-1">
-                <label className="text-xs font-bold uppercase text-stone-400">
+                <label
+                  htmlFor="name"
+                  className="text-xs font-bold uppercase text-stone-400"
+                >
                   Name
                 </label>
                 <Input
+                  id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="border-stone-200   text-sm  rounded-xl"
@@ -136,10 +140,14 @@ function PantryCard({ item, updateItem, deleteItem }) {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold uppercase text-stone-400 ml-1">
+                <label
+                  htmlFor="quantity"
+                  className="text-xs font-bold uppercase text-stone-400 ml-1"
+                >
                   Quantity
                 </label>
                 <Input
+                  id="quantity"
                   value={quantity}
                   onChange={(e) => setQuantity(e.target.value)}
                   className="border-stone-200   text-sm  rounded-xl"
@@ -149,10 +157,14 @@ function PantryCard({ item, updateItem, deleteItem }) {
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-xs font-bold uppercase text-stone-400 ml-1">
+                  <label
+                    htmlFor="category"
+                    className="text-xs font-bold uppercase text-stone-400 ml-1"
+                  >
                     Category
                   </label>
                   <select
+                    id="category"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                     className="w-full rounded-xl border border-stone-200 bg-white px-3 text-sm h-10 focus:outline-none focus:ring-2 focus:ring-brand-200"
@@ -169,10 +181,14 @@ function PantryCard({ item, updateItem, deleteItem }) {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-bold uppercase text-stone-400 ml-1">
+                  <label
+                    htmlFor="status"
+                    className="text-xs font-bold uppercase text-stone-400 ml-1"
+                  >
                     Status
                   </label>
                   <select
+                    id="status"
                     value={expiryStatus}
                     onChange={(e) => setExpiryStatus(e.target.value)}
                     className="w-full rounded-xl border border-stone-200 bg-white px-3 text-sm h-10 focus:outline-none focus:ring-2 focus:ring-brand-200"
@@ -190,10 +206,14 @@ function PantryCard({ item, updateItem, deleteItem }) {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold uppercase text-stone-400 ml-1">
+                <label
+                  htmlFor="expiryDate"
+                  className="text-xs font-bold uppercase text-stone-400 ml-1"
+                >
                   Expiry Date
                 </label>
                 <Input
+                  id="expiryDate"
                   type="date"
                   value={expiryDate}
                   onChange={(e) => setExpiryDate(e.target.value)}
