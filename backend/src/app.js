@@ -1,13 +1,38 @@
+import cookieParser from "cookie-parser";
+import cors from "cors";
 import express from "express";
+import healthCheckRoutes from "./routes/healthcheck.routes.js";
+
+import authRoutes from "./routes/auth.routes.js";
 
 const app = express();
+
+// middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // allow urlencoded data in the request body
+app.use(express.static("public")); // serve static files from the public directory
+app.use(cookieParser()); // parse cookies in the request headers
+
+app.use(
+  cors({
+    origin: process.env.CROSS_ORIGIN || "http://localhost:3000",
+    credentials: true, // allow cookies and other credentials in the requests
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"], // allow these headers in the requests
+  }),
+);
+
+// routes
 
 app.get("/", (req, res) => {
   res.json({ message: "ChefSense API is running" });
 });
 
-app.get("/health", (req, res) => {
-  res.json({ status: "ok" });
-});
+//healthcheck route
+app.use("/api", healthCheckRoutes);
+
+//auth routes
+
+app.use("/api/auth", authRoutes);
 
 export { app };
