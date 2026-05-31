@@ -1,11 +1,7 @@
 import dotenv from "dotenv";
 import { app } from "./src/app.js";
-import connectDB from "./src/db/index.js";
-
-// dotenv configuration
-dotenv.config({
-  path: ".env",
-});
+import connectDB from "./src/db/db.js";
+dotenv.config();
 
 // port configuration
 const port = process.env.PORT || 1337;
@@ -15,12 +11,12 @@ const port = process.env.PORT || 1337;
 connectDB()
   .then(() => {
     app.listen(port, () => {
-      console.log(`Server is running on port http://localhost:${port}`);
+      console.log(
+        `Chefsense Server is running on port http://localhost:${port}`,
+      );
     });
   })
   .catch((error) => {
-    console.error(
-      "Failed to connect to the database. Server not started. ❌",
-      error.message,
-    );
+    console.error("Failed to connect to the database. Server not started.");
+    console.error(error.message);
   });
