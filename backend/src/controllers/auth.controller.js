@@ -102,6 +102,7 @@ const logout = (req, res) => {
   }
 };
 
+//send user details
 const me = async (req, res) => {
   const user = await UserModel.findById(req.userId).select("-password"); // exclude password
   if (!user) return res.status(404).json({ error: "no user" });

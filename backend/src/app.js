@@ -1,9 +1,9 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
-import healthCheckRoutes from "./routes/healthcheck.routes.js";
-
+import recipeRoutes from "../src/routes/recipe.routes.js";
 import authRoutes from "./routes/auth.routes.js";
+import healthCheckRoutes from "./routes/healthcheck.routes.js";
 
 const app = express();
 
@@ -29,10 +29,12 @@ app.get("/", (req, res) => {
 });
 
 //healthcheck route
-app.use("/api", healthCheckRoutes);
+app.use("/api/health", healthCheckRoutes);
 
 //auth routes
-
 app.use("/api/auth", authRoutes);
+
+// recipe routes
+app.use("/api/recipes", recipeRoutes);
 
 export { app };
