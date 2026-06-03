@@ -4,6 +4,7 @@ import express from "express";
 import recipeRoutes from "../src/routes/recipe.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import healthCheckRoutes from "./routes/healthcheck.routes.js";
+import pantryRoutes from "./routes/pantry.routes.js";
 
 const app = express();
 
@@ -36,5 +37,8 @@ app.use("/api/auth", authRoutes);
 
 // recipe routes
 app.use("/api/recipes", recipeRoutes);
+
+// pantry routes
+app.use("/api/pantry", pantryRoutes);
 
 export { app };

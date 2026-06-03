@@ -1,10 +1,5 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import UserModel from "../models/user.model.js";
-// create jwt token using jwt secret and id, it expires in 7 days
-const makeToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "7d" });
-};
+import generateToken from "../utils/generateToken.js";
 
 //SIGNUP
 const signup = async (req, res) => {
@@ -15,12 +10,10 @@ const signup = async (req, res) => {
       return res.status(400).json({ error: "email and password required" });
     }
     // check email already exist or not
-    const exists = await UserModel.findOne({ email });
+    const exists = await UserModel.findOne({ email: email.tolowerCase() });
     if (exists) return res.status(400).json({ error: "user already exists" });
 
-    // add data to db (hashed pass using bcrypt)
-
-    const hashed = await bcrypt.hash(password, 10);
+    //  add user to db
     const user = await UserModel.create({
       email,
       password: hashed,
@@ -29,7 +22,7 @@ const signup = async (req, res) => {
     });
 
     //create token and add to cookie
-    const token = makeToken(user._id);
+    const token = generateToken(user._id);
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -59,15 +52,17 @@ const login = async (req, res) => {
     const { email, password } = req.body;
 
     // find user by email
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.findOne({
+      email: String(email || "").toLowerCase(),
+    });
     if (!user) return res.status(400).json({ error: "no user found" });
 
     // compare password
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await user.checkPassword(password);
     if (!isMatch) return res.status(400).json({ error: "Wrong Password" });
 
     // create new token and add to cookie
-    const token = makeToken(user._id);
+    const token = generateToken(user._id);
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -79,6 +74,7 @@ const login = async (req, res) => {
     res.status(200).json({
       message: "User logged in successfully",
       user: {
+        _id: user._id,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
@@ -104,12 +100,9 @@ const logout = (req, res) => {
 
 //send user details
 const me = async (req, res) => {
-  const user = await UserModel.findById(req.userId).select("-password"); // exclude password
-  if (!user) return res.status(404).json({ error: "no user" });
-
-  res.json({ user });
+  res.json({ user: req.user });
 };
 
 export { login, logout, me, signup };
 
-// move bcrypt hashing in user model as pre-save hook
+``;

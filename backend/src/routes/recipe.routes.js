@@ -1,5 +1,5 @@
 import Router from "express";
-import authMiddleware from "../middleware/auth.middleware.js"; // this is the auth middleware to protect routes (it checks for a valid JWT token  so user is authenticated or not)
+import protect from "../middleware/auth.middleware.js"; // this is the auth middleware to protect routes (it checks for a valid JWT token  so user is authenticated or not)
 
 import {
   createRecipe,
@@ -10,7 +10,7 @@ import {
 
 const router = Router();
 
-router.use(authMiddleware); // this will protect all routes below it, so only authenticated users can access them
+router.use(protect); // this will protect all routes below it, so only authenticated users can access them
 
 router.get("/", getRecipes);
 router.post("/", createRecipe);
