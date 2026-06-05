@@ -1,5 +1,54 @@
 import mongoose from "mongoose";
 
+// ingredients sub document
+const ingredientSchema = new mongoose.Schema(
+  {
+    item: {
+      type: String,
+      required: true,
+      trim: true,
+      default: "",
+    },
+    amount: {
+      type: String,
+      default: "",
+    },
+    category: {
+      type: String,
+      default: "other",
+    },
+  },
+  {
+    _id: false, // disable _id for subdocuments to avoid unnecessary ObjectIds for each ingredient
+  },
+);
+
+// instructions sub doc
+
+const instructionSchema = new mongoose.Schema(
+  {
+    step: {
+      type: Number,
+      default: 1,
+    },
+    title: {
+      type: String,
+      default: "",
+    },
+    instruction: {
+      type: String,
+      default: "",
+    },
+    tip: {
+      type: String,
+      default: "",
+    },
+  },
+  {
+    _id: false, // disable _id for subdocuments to avoid unnecessary ObjectIds for each instruction
+  },
+);
+
 //  keeping it simple for now
 const recipeSchema = new mongoose.Schema(
   {
@@ -13,13 +62,13 @@ const recipeSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    // array  of strings for ingredients and instructions
+    // array of ingredient subdocuments
     ingredients: {
-      type: [String],
+      type: [ingredientSchema],
       default: [],
     },
     instructions: {
-      type: [String],
+      type: [instructionSchema],
       default: [],
     },
     cuisine: {
@@ -34,6 +83,14 @@ const recipeSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    difficulty: {
+      type: String,
+      default: "medium",
+    },
+    tags: {
+      type: [String],
+      default: [],
+    },
     prepTime: {
       type: Number,
       default: 0, // in minutes
@@ -46,6 +103,10 @@ const recipeSchema = new mongoose.Schema(
       type: Number,
       default: 1,
     },
+    ratings: {
+      type: Number,
+      default: 0,
+    },
     imageUrl: {
       type: String,
       default: "",
@@ -54,10 +115,15 @@ const recipeSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isPublic: {
+      type: Boolean,
+      default: true,
+    },
     // reference to the user who created the recipe(relationship between recipe and user) like foreign key in relational databases (IMP)
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      default: null,
     },
   },
   {

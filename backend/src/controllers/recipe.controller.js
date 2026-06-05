@@ -4,7 +4,14 @@ import RecipeModel from "../models/recipe.model.js";
 //GET /api/recipes
 const getRecipes = async (req, res) => {
   try {
-    const recipes = await RecipeModel.find().sort({ createdAt: -1 }); // Sort by creation date (newest first)
+    const q = String(req.query.q || "").trim(); // search query for recipe
+    const filter = { $or: [{ isPublic: true }, { author: req.userId }] }; // filter to get public recipes or recipes created by the authenticated user
+
+    if (q) {
+      filter.title = { $regex: q, $options: "i" }; // case-insensitive search for recipe title (this will match any recipe whose title contains the search query)
+    }
+
+    const recipes = await RecipeModel.find(filter).sort({ createdAt: -1 }); // get recipes from the database based on the filter and sort them by creation date (newest first)
     res.status(200).json({ recipes });
   } catch (error) {
     console.error("Error fetching recipes:", error);
@@ -16,7 +23,7 @@ const getRecipes = async (req, res) => {
 //POST /api/recipes
 const createRecipe = async (req, res) => {
   try {
-    const data = req.body;
+    const data = req.body?.data || req.body; // support both { data: { ... } } and { ... } formats for request body
 
     if (!data.title) {
       return res.status(400).json({ error: "Title is required" });
@@ -30,11 +37,14 @@ const createRecipe = async (req, res) => {
       cuisine: data.cuisine || "",
       category: data.category || "",
       diet: data.diet || "",
+      difficulty: data.difficulty || "medium",
+      tags: data.tags || [],
       prepTime: data.prepTime || 0,
       cookTime: data.cookTime || 0,
       servings: data.servings || 1,
       imageUrl: data.imageUrl || "",
       isVeg: data.isVeg || false,
+      isPublic: data.isPublic !== false, // default to true if not provided or if it's not explicitly set to false
       author: req.userId, // Set the author to the authenticated user's ID
 
       // req.userId is set by the authMiddleware when it verifies the JWT token and extracts the user ID from it. This way, we can associate the recipe with the user who created it without relying on the client to send the author information (which could be tampered with). The server ensures that the recipe is always linked to the logged-in user, enhancing security and data integrity.
@@ -57,6 +67,16 @@ const getRecipeById = async (req, res) => {
     if (!recipe) {
       return res.status(404).json({ message: "Recipe not found" });
     }
+    // check if the recipe is public or if the authenticated user is the author of the recipe
+    const canView =
+      recipe.isPublic || recipe.author.toString() === req.userId.toString();
+
+    if (!canView) {
+      return res
+        .status(403)
+        .json({ message: "Not allowed to access this recipe" });
+    }
+
     res.status(200).json({ recipe });
   } catch (error) {
     console.error("Error fetching recipe:", error);
