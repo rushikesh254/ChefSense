@@ -104,5 +104,3 @@ const me = async (req, res) => {
 };
 
 export { login, logout, me, signup };
-
-``;

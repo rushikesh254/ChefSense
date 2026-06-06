@@ -1,5 +1,5 @@
 import RecipeModel from "../models/recipe.model.js";
-
+import { generateRecipe as aiGenerate } from "../services/ai.service.js";
 //  get all recipes from the database and return them in the response
 //GET /api/recipes
 const getRecipes = async (req, res) => {
@@ -110,7 +110,38 @@ const deleteRecipe = async (req, res) => {
   }
 };
 
-export { createRecipe, deleteRecipe, getRecipeById, getRecipes };
+const generateRecipe = async (req, res) => {
+  try {
+    const { recipeName } = req.body;
+
+    if (!recipeName) {
+      return res.status(400).json({ message: "Recipe name is required" });
+    }
+
+    // call AI
+
+    const aiData = await aiGenerate(recipeName);
+
+    const recipe = await RecipeModel.create({
+      ...aiData,
+      author: req.userId,
+      isPublic: true,
+    });
+
+    res.status(201).json({ recipe });
+  } catch (error) {
+    console.error("Error generating recipe:", error);
+    res.status(500).json({ message: "Failed to generate recipe , Try Again" });
+  }
+};
+
+export {
+  createRecipe,
+  deleteRecipe,
+  generateRecipe,
+  getRecipeById,
+  getRecipes,
+};
 
 // create 1 recipoe
 // delete 1 recipe
