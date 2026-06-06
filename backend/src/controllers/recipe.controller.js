@@ -1,5 +1,7 @@
 import RecipeModel from "../models/recipe.model.js";
 import { generateRecipe as aiGenerate } from "../services/ai.service.js";
+import { fetchRecipeImage } from "../services/image.service.js";
+
 //  get all recipes from the database and return them in the response
 //GET /api/recipes
 const getRecipes = async (req, res) => {
@@ -118,14 +120,25 @@ const generateRecipe = async (req, res) => {
       return res.status(400).json({ message: "Recipe name is required" });
     }
 
+    // check in db if a recipe with the same name already exists (optional, can be skipped if you want to allow duplicates)
+    const existing = await RecipeModel.findOne({ title: recipeName });
+    if (existing) {
+      return res.status(400).json({ existing });
+    }
+
     // call AI
 
     const aiData = await aiGenerate(recipeName);
+
+    // get image url from unsplash based on the recipe name
+
+    const imageUrl = await fetchRecipeImage(aiData.title);
 
     const recipe = await RecipeModel.create({
       ...aiData,
       author: req.userId,
       isPublic: true,
+      imageUrl: imageUrl,
     });
 
     res.status(201).json({ recipe });

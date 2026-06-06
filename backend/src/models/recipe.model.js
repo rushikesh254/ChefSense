@@ -134,3 +134,5 @@ const recipeSchema = new mongoose.Schema(
 const RecipeModel = mongoose.model("Recipe", recipeSchema); // recipe collection in the database will be named "recipes" (Mongoose pluralizes the model name)
 
 export default RecipeModel;
+
+// TODO: add indexes later for faster search on fields

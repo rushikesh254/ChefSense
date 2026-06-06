@@ -58,7 +58,7 @@ const generateRecipe = async (name) => {
     throw new Error("Invalid JSON structure in AI response.");
   }
 
-  console.log("Parsed Recipe JSON:", json); // Log the parsed JSON for debugging
+  // console.log("Parsed Recipe JSON:", json); // Log the parsed JSON for debugging
 
   return {
     title: name,
