@@ -4,6 +4,7 @@ import protect from "../middleware/auth.middleware.js"; // this is the auth midd
 import {
   createRecipe,
   deleteRecipe,
+  generateRecipe,
   getRecipeById,
   getRecipes,
 } from "../controllers/recipe.controller.js";
@@ -16,5 +17,7 @@ router.get("/", getRecipes);
 router.post("/", createRecipe);
 router.get("/:id", getRecipeById);
 router.delete("/:id", deleteRecipe);
+
+router.post("/generate", generateRecipe); // this route will generate a recipe using AI based on the recipe name provided in the request body
 
 export default router;
