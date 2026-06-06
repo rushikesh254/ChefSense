@@ -1,4 +1,5 @@
 import PantryItemModel from "../models/pantryItem.model.js";
+import { fetchPantryImage } from "../services/image.service.js";
 import calculateExpiryStatus from "../utils/expiry.js";
 
 // get all pantry items for a user
@@ -26,7 +27,12 @@ const addItem = async (req, res) => {
       return res.status(400).json({ error: "Item name is required" });
     }
 
+    // convert expiryDate to Date object if it's provided, otherwise set it to null
     const date = expiryDate ? new Date(expiryDate) : null;
+
+    // get image url from unsplash
+
+    const imageUrl = await fetchPantryImage(name);
 
     const newItem = await PantryItemModel.create({
       name,
@@ -35,6 +41,7 @@ const addItem = async (req, res) => {
       expiryDate: date,
       expiryStatus: calculateExpiryStatus(date),
       owner: req.userId,
+      imageUrl: imageUrl,
     });
 
     res.status(201).json(newItem);
@@ -60,7 +67,11 @@ const updateItem = async (req, res) => {
       return res.status(404).json({ message: "Pantry item not found" });
     }
 
-    if (name) item.name = name;
+    if (name && name !== item.name) {
+      item.name = name;
+      // Fetch new image URL if name changes
+      item.imageUrl = await fetchPantryImage(name);
+    }
     if (quantity !== undefined) item.quantity = quantity; // allow empty string for quantity
     if (category) item.category = category;
     if (expiryDate !== undefined) {

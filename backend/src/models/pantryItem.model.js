@@ -24,6 +24,10 @@ const pantrySchema = new mongoose.Schema(
       type: String,
       default: "no expiry",
     },
+    imageUrl: {
+      type: String,
+      default: "",
+    },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
