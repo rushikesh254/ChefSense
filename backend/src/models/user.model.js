@@ -26,6 +26,11 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
 
+    usage: {
+      scanCount: { type: Number, default: 0 },
+      recipeGenerationCount: { type: Number, default: 0 },
+    },
+
     // TODO: add saved recipes later
   },
   {
@@ -34,10 +39,9 @@ const userSchema = new mongoose.Schema(
 );
 
 // hash password using bcrypt before saving the user (prehook)
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next(); // Only hash the password if it has been modified (or is new)
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return; // Only hash the password if it has been modified (or is new)
   this.password = await bcrypt.hash(this.password, 10); //  10 salt rounds
-  next();
 });
 
 userSchema.methods.checkPassword = async function (pass) {

@@ -1,7 +1,9 @@
 import PantryItemModel from "../models/pantryItem.model.js";
+import { scanPantryImage } from "../services/ai.service.js";
 import { fetchPantryImage } from "../services/image.service.js";
 import calculateExpiryStatus from "../utils/expiry.js";
 
+const SCAN_LIMIT = 100;
 // get all pantry items for a user
 // GET /api/pantry
 const getItems = async (req, res) => {
@@ -59,10 +61,11 @@ const updateItem = async (req, res) => {
     const itemId = req.params.id;
     const { name, quantity, category, expiryDate } = req.body;
 
-    const item = await PantryItemModel.findById({
+    const item = await PantryItemModel.findOne({
       _id: itemId,
       owner: req.userId,
     });
+
     if (!item) {
       return res.status(404).json({ message: "Pantry item not found" });
     }
@@ -112,4 +115,72 @@ const deleteItem = async (req, res) => {
   }
 };
 
-export { addItem, deleteItem, getItems, updateItem };
+// scan an image and return detected ingredients (no save)
+const scanImage = async (req, res) => {
+  try {
+    if (!req.file)
+      return res.status(400).json({ error: "image file is required" });
+
+    console.log(req.file);
+
+    if (req.user.usage.scanCount >= SCAN_LIMIT) {
+      return res.status(429).json({ error: "scan limit reached" });
+    }
+
+    const items = await scanPantryImage(req.file.buffer, req.file.mimetype);
+
+    req.user.usage.scanCount += 1;
+    await req.user.save();
+
+    res.status(200).json({ items, scanCount: req.user.usage.scanCount });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to scan pantry image", error: error.message });
+  }
+};
+
+// add multiple pantry items in bulk
+// POST /api/pantry/bulk
+const addItemsBulk = async (req, res) => {
+  try {
+    const items = req.body.items; // expecting an array of items ({name, quantity, category, expiryDate})
+
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ error: "Items array is required" });
+    }
+
+    const docs = await Promise.all(
+      items.map(async (item) => {
+        if (!item.name) {
+          throw new Error("Item name is required");
+        }
+
+        const date = item.expiryDate ? new Date(item.expiryDate) : null;
+
+        const imageUrl = await fetchPantryImage(item.name);
+
+        return {
+          name: item.name,
+          quantity: item.quantity || "",
+          category: item.category || "pantry",
+          expiryDate: date,
+          expiryStatus: calculateExpiryStatus(date),
+          owner: req.userId,
+          imageUrl,
+        };
+      }),
+    );
+
+    const result = await PantryItemModel.insertMany(docs);
+
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to add pantry items in bulk",
+      error: error.message,
+    });
+  }
+};
+
+export { addItem, addItemsBulk, deleteItem, getItems, scanImage, updateItem };
