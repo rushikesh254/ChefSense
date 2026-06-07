@@ -15,6 +15,7 @@ const protect = async (req, res, next) => {
       return res.status(401).json({ error: "user not found" });
     }
     req.user = user;
+    req.userId = user._id; // attach userId to request object for use in controllers
     next();
   } catch (error) {
     console.log("token bad", error.message);
