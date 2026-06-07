@@ -9,7 +9,7 @@ import pantryRoutes from "./routes/pantry.routes.js";
 const app = express();
 
 // middlewares
-app.use(express.json());
+app.use(express.json({ limit: "10mb" })); // allow json data in the request body with a size limit of 10mb
 app.use(express.urlencoded({ extended: true })); // allow urlencoded data in the request body
 app.use(express.static("public")); // serve static files from the public directory
 app.use(cookieParser()); // parse cookies in the request headers
@@ -40,5 +40,9 @@ app.use("/api/recipes", recipeRoutes);
 
 // pantry routes
 app.use("/api/pantry", pantryRoutes);
+
+//saved recipes routes
+import savedRecipeRoutes from "./routes/savedRecipe.routes.js";
+app.use("/api/saved-recipes", savedRecipeRoutes);
 
 export { app };
