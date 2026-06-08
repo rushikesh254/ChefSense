@@ -15,7 +15,7 @@ const callGemini = async (prompt, parts) => {
 
   // Call the Gemini model to generate content based on the provided prompt
   const result = await client.models.generateContent({
-    model: "gemini-2.5-flash",
+    model: process.env.GEMINI_MODEL || "gemini-2.5-flash",
     contents: input,
   });
 
@@ -48,7 +48,20 @@ const generateRecipe = async (name) => {
   // first version of prompt (need to make more strict later )
   // current one says no markdown still somotimes returns markdown
 
-  const prompt = `Generate a recipe for "${name}". Return only JSON with: title, description, ingredients (array of {item, amount, category}), instructions (array of {step, title, instruction, tip}), cuisine, category, diet, difficulty, prepTime, cookTime, servings, isVeg, tags. No markdown.`;
+  const prompt = `Generate a complete recipe for "${name}". Return ONLY a JSON object with these fields:
+- title (keep it "${name}")
+- description (2-3 sentences)
+- ingredients (array of {item, amount, category})
+- instructions (array of {step, title, instruction, tip}, 8-10 steps)
+- cuisine, category, diet, difficulty
+- prepTime, cookTime, servings
+- rating (number between 3.5 and 5)
+- isVeg (boolean)
+- tags (array of strings)
+- nutrition ({calories, protein, carbs, fat})
+- tips (array of 3-5 strings)
+- substitutions (array of {original, alternatives})
+No markdown.`;
 
   const raw = await callGemini(prompt);
 
@@ -71,12 +84,57 @@ const generateRecipe = async (name) => {
     category: json.category || "",
     diet: json.diet || "",
     difficulty: json.difficulty || "medium",
+
+    rating: Number(json.rating) || 4,
+    nutrition: json.nutrition || {}, // nutrion should be an object with calories, protein, carbs, fat
+    tips: Array.isArray(json.tips) ? json.tips : [],
+    substitutions: Array.isArray(json.substitutions) ? json.substitutions : [],
+
     prepTime: Number(json.prepTime) || 0,
     cookTime: Number(json.cookTime) || 0,
     servings: Number(json.servings) || 1,
     isVeg: Boolean(json.isVeg),
     tags: json.tags || [],
   };
+};
+
+// generate the recipes suggestion based on pantry itmes -- this is used in the suggestion page where user can input their pantry items and get recipe suggestions based on that
+
+const generateSuggestions = async (pantrySummary) => {
+  const prompt = `I have these pantry ingredients:
+${pantrySummary}
+
+Suggest 8-10 recipes I can make. Return ONLY a JSON array, no other text.
+Each item should be:
+{
+  "title": "string",
+  "description": "string",
+  "matchPercentage": 80,
+  "missingIngredients": ["string"],
+  "category": "string",
+  "cuisine": "string",
+  "prepTime": 10,
+  "cookTime": 20,
+  "servings": 2,
+  "isVeg": false,
+  "usedIngredients": ["string"]
+}`;
+
+  const text = await callGemini(prompt);
+  const json = parseJson(text);
+
+  // gemini sometimes wraps the array
+
+  let arr = null;
+
+  // handles all three formats geminin will send ==> {suggestions: [...]} or {recipes: [...]} or [...] (just the array)
+  if (Array.isArray(json)) arr = json;
+  else if (Array.isArray(json?.recipes)) arr = json.recipes;
+  else if (Array.isArray(json?.suggestions)) arr = json.suggestions;
+
+  if (!arr) throw new Error("suggestions parse failed");
+
+  return arr;
 };
 
 // Accepts a raw Buffer from Multer memoryStorage and the file's MIME type.
@@ -116,4 +174,4 @@ const scanPantryImage = async (imageBuffer, mimeType) => {
   return items;
 };
 
-export { generateRecipe, scanPantryImage };
+export { generateRecipe, generateSuggestions, scanPantryImage };
