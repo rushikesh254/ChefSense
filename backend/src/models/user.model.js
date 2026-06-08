@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema(
     usage: {
       scanCount: { type: Number, default: 0 },
       recipeGenerationCount: { type: Number, default: 0 },
+      suggestionCount: { type: Number, default: 0 },
     },
 
     // TODO: add saved recipes later

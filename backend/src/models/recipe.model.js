@@ -49,6 +49,26 @@ const instructionSchema = new mongoose.Schema(
   },
 );
 
+// nutrition sub doc (can be extended later with more fields like vitamins, minerals, etc.)
+const nutritionSchema = new mongoose.Schema(
+  {
+    calories: { type: Number, default: 0 },
+    protein: { type: Number, default: 0 },
+    carbs: { type: Number, default: 0 },
+    fat: { type: Number, default: 0 },
+  },
+  { _id: false },
+);
+
+// substitution sub doc (can be used if some items are present)
+const substitutionSchema = new mongoose.Schema(
+  {
+    original: { type: String, default: "" },
+    alternatives: { type: [String], default: [] },
+  },
+  { _id: false },
+);
+
 //  keeping it simple for now
 const recipeSchema = new mongoose.Schema(
   {
@@ -119,7 +139,23 @@ const recipeSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    // reference to the user who created the recipe(relationship between recipe and user) like foreign key in relational databases (IMP)
+
+    nutrition: {
+      type: nutritionSchema,
+      default: () => ({}), // default to an empty object to avoid null values
+    },
+
+    substitutions: {
+      type: [substitutionSchema],
+      default: [],
+    },
+
+    tips: { type: [String], default: [] },
+
+    source: {
+      type: String,
+      default: "user", // user,ai,seed
+    }, // reference to the user who created the recipe(relationship between recipe and user) like foreign key in relational databases (IMP)
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

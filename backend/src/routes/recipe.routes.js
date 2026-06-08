@@ -7,6 +7,7 @@ import {
   generateRecipe,
   getRecipeById,
   getRecipes,
+  suggestRecipes,
 } from "../controllers/recipe.controller.js";
 
 const router = Router();
@@ -19,5 +20,7 @@ router.get("/:id", getRecipeById);
 router.delete("/:id", deleteRecipe);
 
 router.post("/generate", generateRecipe); // this route will generate a recipe using AI based on the recipe name provided in the request body
+
+router.post("/suggest", suggestRecipes); // this route  will suggest recipes based on users pantry items
 
 export default router;
