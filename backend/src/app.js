@@ -45,4 +45,7 @@ app.use("/api/pantry", pantryRoutes);
 import savedRecipeRoutes from "./routes/savedRecipe.routes.js";
 app.use("/api/saved-recipes", savedRecipeRoutes);
 
+// discover routes
+import discoverRoutes from "./routes/discover.routes.js";
+app.use("/api/discover", discoverRoutes);
 export { app };
