@@ -25,17 +25,15 @@ const userSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
-
-    // array of recipe ids that the user has saved (when user save id of recipe will be added to this array if unsave then it will be removed from this array)
-    savedRecipes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Recipe" }],
-
+    pantryItemsCount: { type: Number, default: 0 }, // Count of pantry items added by the user
     usage: {
       scanCount: { type: Number, default: 0 },
       recipeGenerationCount: { type: Number, default: 0 },
       suggestionCount: { type: Number, default: 0 },
     },
-
-    // TODO: add saved recipes later
+    // saved recipes
+    // array of recipe ids that the user has saved (when user save id of recipe will be added to this array if unsave then it will be removed from this array)
+    savedRecipes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Recipe" }],
   },
   {
     timestamps: true,

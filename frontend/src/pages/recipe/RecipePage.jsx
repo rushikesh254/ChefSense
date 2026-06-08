@@ -366,30 +366,6 @@ function RecipePage() {
               </CardContent>
             </Card>
 
-            {/* Chef's Tips */}
-            {recipe?.tips?.length > 0 && (
-              <Card className="bg-amber-50 border-amber-100">
-                <CardHeader className="px-5 sm:px-6 pt-5 pb-3">
-                  <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                    <Lightbulb className="h-4 w-4 text-brand-400" /> Chef's Tips
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="px-5 sm:px-6 pb-5">
-                  <ul className="space-y-3">
-                    {recipe.tips.map((tip, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-3 text-sm text-stone-600 leading-relaxed"
-                      >
-                        <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-400" />
-                        {tip}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            )}
-
             {/* Substitutions */}
             {recipe?.substitutions?.length > 0 && (
               <Card>
