@@ -93,19 +93,20 @@ const recipeSchema = new mongoose.Schema(
     },
     cuisine: {
       type: String,
-      default: "",
+      default: "other",
     },
     category: {
       type: String,
-      default: "",
+      default: "dinner",
     },
     diet: {
       type: String,
-      default: "",
+      default: "none",
     },
     difficulty: {
       type: String,
       default: "medium",
+      enum: ["easy", "medium", "hard"],
     },
     tags: {
       type: [String],
@@ -150,16 +151,30 @@ const recipeSchema = new mongoose.Schema(
       default: [],
     },
 
-    tips: { type: [String], default: [] },
 
     source: {
       type: String,
       default: "user", // user,ai,seed
+      enum: ["user", "ai", "seed"],
     }, // reference to the user who created the recipe(relationship between recipe and user) like foreign key in relational databases (IMP)
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       default: null,
+    },
+
+    contentStatus: {
+      type: String,
+      default: "complete", // complete or partial (partial means some fields are missing and recipe is not fully generated yet, this can be used to show on discover pages )
+      enum: ["complete", "partial"],
+    },
+    seedId: {
+      type: Number,
+      default: null,
+    },
+    viewCount: {
+      type: Number,
+      default: 0,
     },
   },
   {

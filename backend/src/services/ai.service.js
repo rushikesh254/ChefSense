@@ -59,7 +59,6 @@ const generateRecipe = async (name) => {
 - isVeg (boolean)
 - tags (array of strings)
 - nutrition ({calories, protein, carbs, fat})
-- tips (array of 3-5 strings)
 - substitutions (array of {original, alternatives})
 No markdown.`;
 
@@ -75,6 +74,13 @@ No markdown.`;
 
   // console.log("Parsed Recipe JSON:", json); // Log the parsed JSON for debugging
 
+  // sometimes gemini returnns number or the string for numeric fields, we need to sanitize it before saving to db (which expects number)
+  const sanitizeNum = (val) => {
+    if (typeof val === "number") return val;
+    if (typeof val === "string") return parseFloat(val) || 0;
+    return 0;
+  };
+
   return {
     title: name,
     description: json.description || "",
@@ -85,14 +91,20 @@ No markdown.`;
     diet: json.diet || "",
     difficulty: json.difficulty || "medium",
 
-    rating: Number(json.rating) || 4,
-    nutrition: json.nutrition || {}, // nutrion should be an object with calories, protein, carbs, fat
-    tips: Array.isArray(json.tips) ? json.tips : [],
+    rating: sanitizeNum(json.rating) || 4,
+    nutrition: json.nutrition
+      ? {
+          calories: sanitizeNum(json.nutrition.calories),
+          protein: sanitizeNum(json.nutrition.protein),
+          carbs: sanitizeNum(json.nutrition.carbs),
+          fat: sanitizeNum(json.nutrition.fat),
+        }
+      : {},
     substitutions: Array.isArray(json.substitutions) ? json.substitutions : [],
 
-    prepTime: Number(json.prepTime) || 0,
-    cookTime: Number(json.cookTime) || 0,
-    servings: Number(json.servings) || 1,
+    prepTime: sanitizeNum(json.prepTime) || 0,
+    cookTime: sanitizeNum(json.cookTime) || 0,
+    servings: sanitizeNum(json.servings) || 1,
     isVeg: Boolean(json.isVeg),
     tags: json.tags || [],
   };
