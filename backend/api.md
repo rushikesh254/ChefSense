@@ -46,6 +46,8 @@ Base URL: `/api/recipes`
 | `DELETE` | `/:id`      | Delete a recipe.               | Yes            | -                                | `{ "message": "Recipe deleted" }` |
 | `POST`   | `/generate` | Generate a recipe using AI.    | Yes            | `{ "name": "..." }`              | `{ "recipe": { ... } }`           |
 
+         |
+
 ## Saved Recipes
 
 Base URL: `/api/saved-recipes`
