@@ -35,7 +35,7 @@ const saveRecipe = async (req, res) => {
       return res.status(404).json({ message: "User not found" }); // Send a 404 response if the user is not found
     }
 
-    if (user.savedRecipes.includes(recipeId)) {
+    if (user.savedRecipes.some((id) => id.toString() === recipeId)) {
       return res.status(400).json({ message: "Recipe already saved" }); // Send a 400 response if the recipe is already saved
     }
 
@@ -59,7 +59,7 @@ const unsaveRecipe = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" }); // Send a 404 response if the user is not found
     }
-    if (!user.savedRecipes.includes(recipeId)) {
+    if (!user.savedRecipes.some((id) => id.toString() === recipeId)) {
       return res.status(400).json({ message: "Recipe not saved" }); // Send a 400 response if the recipe is not in the user's savedRecipes array
     }
 
