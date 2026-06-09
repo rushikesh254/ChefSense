@@ -32,7 +32,7 @@ const getRecipeofTheDay = async (req, res) => {
 const getTrendingRecipes = async (req, res) => {
   try {
     const recipes = await RecipeModel.find({ isPublic: true })
-      .sort({ viewCount: -1, rating: -1 })
+      .sort({ viewCount: -1, averageRating: -1 })
       .limit(8);
     res.status(200).json({ recipes });
   } catch (error) {
@@ -51,11 +51,15 @@ const getQuickRecipes = async (req, res) => {
 
     const recipes = await RecipeModel.find({
       isPublic: true,
-      cookingTime: { $lt: 20 },
+      cookTime: { $lt: 20 },
     })
       .skip(skip)
       .limit(limit);
-    res.status(200).json({ recipes, hasMore: recipes.length === limit });
+    const total = await RecipeModel.countDocuments({
+      isPublic: true,
+      cookTime: { $lt: 20 },
+    });
+    res.status(200).json({ recipes, hasMore: skip + recipes.length < total });
   } catch (error) {
     console.error("Quick recipes err", error);
     res.status(500).json({ message: "Quick recipes failed to get" });
@@ -88,7 +92,11 @@ const getByCategory = async (req, res) => {
     })
       .skip(skip)
       .limit(limit);
-    res.status(200).json({ recipes, hasMore: recipes.length === limit });
+    const total = await RecipeModel.countDocuments({
+      isPublic: true,
+      category: { $regex: new RegExp(category, "i") },
+    });
+    res.status(200).json({ recipes, hasMore: skip + recipes.length < total });
   } catch (error) {
     console.error("Get by category err", error);
     res.status(500).json({ message: "Failed to get recipes by category" });
@@ -110,7 +118,11 @@ const getByCuisine = async (req, res) => {
     })
       .skip(skip)
       .limit(limit);
-    res.status(200).json({ recipes, hasMore: recipes.length === limit });
+    const total = await RecipeModel.countDocuments({
+      isPublic: true,
+      cuisine: { $regex: new RegExp(cuisine, "i") },
+    });
+    res.status(200).json({ recipes, hasMore: skip + recipes.length < total });
   } catch (error) {
     console.error("Get by cuisine err", error);
     res.status(500).json({ message: "Failed to get recipes by cuisine" });
@@ -130,7 +142,11 @@ const getByDiet = async (req, res) => {
     })
       .skip(skip)
       .limit(limit);
-    res.status(200).json({ recipes, hasMore: recipes.length === limit });
+    const total = await RecipeModel.countDocuments({
+      isPublic: true,
+      diet: { $regex: new RegExp(diet, "i") },
+    });
+    res.status(200).json({ recipes, hasMore: skip + recipes.length < total });
   } catch (error) {
     console.error("Get by diet err", error);
     res.status(500).json({ message: "Failed to get recipes by diet" });

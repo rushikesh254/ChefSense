@@ -1,4 +1,4 @@
-import Router from "express";
+import { Router } from "express";
 import protect from "../middleware/auth.middleware.js"; // this is the auth middleware to protect routes (it checks for a valid JWT token  so user is authenticated or not)
 
 import {
@@ -7,6 +7,7 @@ import {
   generateRecipe,
   getRecipeById,
   getRecipes,
+  rateRecipe,
   suggestRecipes,
 } from "../controllers/recipe.controller.js";
 
@@ -18,9 +19,10 @@ router.get("/", getRecipes);
 router.post("/", createRecipe);
 router.get("/:id", getRecipeById);
 router.delete("/:id", deleteRecipe);
+router.put("/:id/rate", rateRecipe);
 
-router.post("/generate", generateRecipe); // this route will generate a recipe using AI based on the recipe name provided in the request body
+router.post("/generate", generateRecipe);
 
-router.post("/suggest", suggestRecipes); // this route  will suggest recipes based on users pantry items
+router.post("/suggest", suggestRecipes);
 
 export default router;

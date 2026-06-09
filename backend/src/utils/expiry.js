@@ -1,12 +1,12 @@
 const calculateExpiryStatus = (expiryDate) => {
   if (!expiryDate) {
-    return "No Expiry";
+    return "no expiry";
   }
 
   const expiry = new Date(expiryDate); // Convert to Date object
 
   if (isNaN(expiry.getTime())) {
-    return "No Expiry"; // If the date is invalid, treat it as no expiry
+    return "no expiry"; // If the date is invalid, treat it as no expiry
   }
 
   const today = new Date();
