@@ -1,25 +1,31 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
+import helmet from "helmet";
 import recipeRoutes from "../src/routes/recipe.routes.js";
+import { errorHandler, notFound } from "./middleware/error.middleware.js";
 import authRoutes from "./routes/auth.routes.js";
 import healthCheckRoutes from "./routes/healthcheck.routes.js";
 import pantryRoutes from "./routes/pantry.routes.js";
+import savedRecipeRoutes from "./routes/savedRecipe.routes.js";
+import discoverRoutes from "./routes/discover.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 const app = express();
 
 // middlewares
-app.use(express.json({ limit: "10mb" })); // allow json data in the request body with a size limit of 10mb
-app.use(express.urlencoded({ extended: true })); // allow urlencoded data in the request body
-app.use(express.static("public")); // serve static files from the public directory
-app.use(cookieParser()); // parse cookies in the request headers
+app.use(helmet());
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+app.use(cookieParser());
 
 app.use(
   cors({
     origin: process.env.CROSS_ORIGIN || "http://localhost:3000",
-    credentials: true, // allow cookies and other credentials in the requests
+    credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"], // allow these headers in the requests
+    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 
@@ -42,10 +48,16 @@ app.use("/api/recipes", recipeRoutes);
 app.use("/api/pantry", pantryRoutes);
 
 //saved recipes routes
-import savedRecipeRoutes from "./routes/savedRecipe.routes.js";
 app.use("/api/saved-recipes", savedRecipeRoutes);
 
 // discover routes
-import discoverRoutes from "./routes/discover.routes.js";
 app.use("/api/discover", discoverRoutes);
+
+// user routes
+app.use("/api/user", userRoutes);
+
+// error handling middlewares (should be last)
+app.use(notFound);
+app.use(errorHandler);
+
 export { app };
