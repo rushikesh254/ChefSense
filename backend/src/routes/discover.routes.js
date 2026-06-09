@@ -1,4 +1,4 @@
-import Router from "express";
+import { Router } from "express";
 import {
   getByCategory,
   getByCuisine,
@@ -22,9 +22,9 @@ router.get("/quick-meals", getQuickRecipes);
 router.get("/categories", getCategories);
 router.get("/cuisines", getCuisines);
 router.get("/diets", getDiets);
-router.get("/category/:name", getByCategory);
-router.get("/cuisine/:name", getByCuisine);
-router.get("/diet/:name", getByDiet);
+router.get("/category/:category", getByCategory);
+router.get("/cuisine/:cuisine", getByCuisine);
+router.get("/diet/:diet", getByDiet);
 router.get("/search", searchRecipes);
 
 export default router;
