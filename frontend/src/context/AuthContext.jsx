@@ -1,4 +1,9 @@
-import dummyuser from "@/data/user";
+import {
+  getCurrentUser,
+  loginUser,
+  logoutUser,
+  signupUser,
+} from "@/services/auth";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const UserContext = createContext();
@@ -7,23 +12,35 @@ export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // this useEffect is just for dummy data , later we will use it for real api call
-
   useEffect(() => {
-    setUser(dummyuser);
-    setLoading(false);
+    getCurrentUser()
+      .then((data) => setUser(data.user))
+      .catch(() => setUser(null))
+      .finally(() => setLoading(false));
   }, []);
 
-  // return the user context
+  const login = async (credentials) => {
+    const data = await loginUser(credentials);
+    setUser(data.user);
+  };
+
+  const signup = async (details) => {
+    const data = await signupUser(details);
+    setUser(data.user);
+  };
+
+  const logout = async () => {
+    await logoutUser();
+    setUser(null);
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser, loading, setLoading }}>
+    <UserContext.Provider value={{ user, loading, login, signup, logout }}>
       {children}
     </UserContext.Provider>
   );
 }
 
-// custom hook to use the user context
 export function useUser() {
-  // return the user context
   return useContext(UserContext);
 }

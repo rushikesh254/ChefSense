@@ -1,58 +1,81 @@
-import featuredRecipe from "@/data/featured";
-import filterRecipes from "@/data/filterrecipes";
-import recentlyviewed from "@/data/recentlyviewed";
-import {
-  DISCOVER_CATEGORIES,
-  DISCOVER_CUISINES,
-  DISCOVER_DIETS,
-} from "@/lib/constants";
+import api from "@/lib/api";
 
-// todo: replace with real backend api later
-
-// now just exporting dummy data
-
-// func to return featured recipe
-export function getFeatured() {
-  return featuredRecipe;
+function normalizeRecipe(r) {
+  return { ...r, id: r._id, rating: r.averageRating ?? r.ratings };
 }
 
-// func to return categories options
-export function getCategories() {
-  return DISCOVER_CATEGORIES;
+// get recipe of the day
+export async function getFeatured() {
+  const { data } = await api.get("/discover/featured");
+  return { recipe: normalizeRecipe(data.recipe) };
 }
 
-// func to return cuisines options
-
-export function getCuisines() {
-  return DISCOVER_CUISINES;
-}
-// func to return diets options
-
-export function getDiets() {
-  return DISCOVER_DIETS;
-}
-// func to return quick meals
-export function getQuickMeals() {
-  return filterRecipes.recipes;
+// get quick meals (page parameter for pagination)
+export async function getQuickMeals(page = 1) {
+  const { data } = await api.get(`/discover/quick-meals?page=${page}`);
+  return {
+    recipes: (data.recipes || []).map(normalizeRecipe),
+    hasMore: data.hasMore,
+  };
 }
 
-// func to return category recipes based on category name
-
-export function getByCategory(name) {
-  return filterRecipes;
+// get trending recipes (page parameter for pagination)
+export async function getTrending(page = 1) {
+  const { data } = await api.get(`/discover/trending?page=${page}`);
+  return {
+    recipes: (data.recipes || []).map(normalizeRecipe),
+    hasMore: data.hasMore,
+  };
 }
 
-// func to return  cusine recipes  based on cuisine name
-export function getByCuisine(name) {
-  return filterRecipes;
+// get recipes categories
+export async function getCategories() {
+  const { data } = await api.get("/discover/categories");
+  return { categories: data.categories || [] };
 }
 
-// func to return diet recipes  options based on diet name
-export function getByDiet(name) {
-  return filterRecipes;
+// get recipes cuisines
+export async function getCuisines() {
+  const { data } = await api.get("/discover/cuisines");
+  return { cuisines: data.cuisines || [] };
 }
 
-// func to return recently viewed recipes
-export function getRecentlyViewed() {
-  return recentlyviewed.recipes;
+// get diets names
+export async function getDiets() {
+  const { data } = await api.get("/discover/diets");
+  return { diets: data.diets || [] };
 }
+
+// get recipes by category name (page parameter for pagination)
+export async function getByCategory(name, page = 1) {
+  const { data } = await api.get(
+    `/discover/category/${encodeURIComponent(name)}?page=${page}`,
+  );
+  return {
+    recipes: (data.recipes || []).map(normalizeRecipe),
+    hasMore: data.hasMore,
+  };
+}
+
+//  get recipes by cuisine name (page parameter for pagination)
+export async function getByCuisine(name, page = 1) {
+  const { data } = await api.get(
+    `/discover/cuisine/${encodeURIComponent(name)}?page=${page}`,
+  );
+  return {
+    recipes: (data.recipes || []).map(normalizeRecipe),
+    hasMore: data.hasMore,
+  };
+}
+
+// get recipes by diet name (page parameter for pagination)
+export async function getByDiet(name, page = 1) {
+  const { data } = await api.get(
+    `/discover/diet/${encodeURIComponent(name)}?page=${page}`,
+  );
+  return {
+    recipes: (data.recipes || []).map(normalizeRecipe),
+    hasMore: data.hasMore,
+  };
+}
+
