@@ -1,16 +1,11 @@
-// imports
 import RecipeCard from "@/components/RecipeCard";
 import RecipeImage from "@/components/RecipeImage";
 import SearchBar from "@/components/SearchBar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import cookingTips from "@/data/cookingTips";
-import {
-  DISCOVER_CATEGORIES,
-  DISCOVER_CUISINES,
-  DISCOVER_DIETS,
-} from "@/lib/constants";
+
+import { useUser } from "@/context/AuthContext";
 import {
   dietColors,
   getCategoryEmoji,
@@ -23,7 +18,7 @@ import {
   getDiets,
   getFeatured,
   getQuickMeals,
-  getRecentlyViewed,
+  getTrending,
 } from "@/services/discover";
 import {
   ArrowRight,
@@ -34,37 +29,73 @@ import {
   Leaf,
   Lightbulb,
   Star,
+  TrendingUp,
   UtensilsCrossed,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
-// main component
+const COOKING_TIPS = [
+  "Let meat rest for 5 minutes after cooking to lock in juices.",
+  "Season pasta water generously — it should taste like the sea.",
+  "Use room-temperature eggs for fluffier baking results.",
+  "A sharp knife is safer than a dull one — it requires less force.",
+  "Taste as you go and adjust seasoning gradually.",
+  "Rest dough in the fridge for easier handling.",
+  "Deglaze your pan with wine or broth for instant flavor.",
+  "Toast spices in a dry pan to deepen their aroma.",
+  "Pat proteins dry with paper towels for a better sear.",
+  "Let your pan get hot before adding oil to prevent sticking.",
+  "Add acid (lemon, vinegar) at the end to brighten any dish.",
+];
+
 function Dashboard() {
-  // states
+  const { user } = useUser();
+
   const [featuredRecipe, setFeaturedRecipe] = useState(null);
   const [quickMeals, setQuickMeals] = useState([]);
-  const [categories, setCategories] = useState(DISCOVER_CATEGORIES);
-  const [cuisines, setCuisines] = useState(DISCOVER_CUISINES);
-  const [diets, setDiets] = useState(DISCOVER_DIETS);
+  const [trendingMeals, setTrendingMeals] = useState([]);
   const [recentlyViewed, setRecentlyViewed] = useState([]);
-
-  // loading state
+  const [categories, setCategories] = useState([]);
+  const [cuisines, setCuisines] = useState([]);
+  const [diets, setDiets] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // load all dashboard data on mount
+  const [tipIndex, setTipIndex] = useState(
+    Math.floor(Math.random() * COOKING_TIPS.length),
+  );
+
   useEffect(() => {
-    function loadDashboardData() {
+    if (user?._id) {
       try {
-        setFeaturedRecipe(getFeatured());
-        setQuickMeals(getQuickMeals());
-        setCategories(getCategories());
-        setCuisines(getCuisines());
-        setDiets(getDiets());
-        setRecentlyViewed(getRecentlyViewed());
+        const key = `recentlyViewed_${user._id}`;
+        const stored = JSON.parse(localStorage.getItem(key) || "[]");
+        setRecentlyViewed(stored);
+      } catch {}
+    }
+  }, [user]);
+
+  useEffect(() => {
+    async function loadDashboardData() {
+      try {
+        const [featuredRes, quickRes, catRes, cuiRes, dietRes, trendingRes] =
+          await Promise.all([
+            getFeatured(),
+            getQuickMeals(),
+            getCategories(),
+            getCuisines(),
+            getDiets(),
+            getTrending(),
+          ]);
+        setFeaturedRecipe(featuredRes.recipe);
+        setTrendingMeals(trendingRes.recipes || []);
+        setQuickMeals(quickRes.recipes || []);
+        setCategories(catRes.categories || []);
+        setCuisines(cuiRes.cuisines || []);
+        setDiets(dietRes.diets || []);
       } catch {
-        toast.error("Failed to load dashboard data.");
+        toast.error("Unable to load your dashboard. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -72,12 +103,6 @@ function Dashboard() {
     loadDashboardData();
   }, []);
 
-  // random tip index
-  const [tipIndex, setTipIndex] = useState(
-    Math.floor(Math.random() * cookingTips.length),
-  );
-
-  // loading state
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -89,10 +114,8 @@ function Dashboard() {
     );
   }
 
-  // return dashboard ui
   return (
     <div className="min-h-screen pb-20">
-      {/* Hero / Featured Recipe */}
       {featuredRecipe && (
         <section className="relative h-[65vh] overflow-hidden">
           <RecipeImage
@@ -100,7 +123,6 @@ function Dashboard() {
             alt={featuredRecipe.title}
             className="absolute inset-0 w-full h-full object-cover"
           />
-          {/* black overlay */}
           <div className="absolute inset-0 bg-black/20" />
 
           <div className="relative z-10 h-full flex items-end justify-start w-full px-5">
@@ -169,17 +191,13 @@ function Dashboard() {
         </section>
       )}
 
-      {/* Search Bar */}
       <div className="px-4 sm:px-6 -mt-6 relative z-20">
         <SearchBar />
       </div>
 
-      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-12">
-        {/* Categories */}
         {categories.length > 0 && (
           <section>
-            {/* section header  */}
             <div className="mb-5">
               <div className="flex items-center gap-2 mb-1">
                 <UtensilsCrossed className="w-4 h-4 text-brand-600" />
@@ -194,7 +212,6 @@ function Dashboard() {
                 Browse recipes by your favorite style.
               </p>
             </div>
-            {/* main content */}
             <div className="flex flex-wrap gap-4">
               {categories.map((cat) => (
                 <Link
@@ -214,10 +231,8 @@ function Dashboard() {
           </section>
         )}
 
-        {/* Quick Meals */}
         {quickMeals.length > 0 && (
           <section>
-            {/* scetion header  */}
             <div className="flex items-center justify-between">
               <div className="mb-5">
                 <div className="flex items-center gap-2 mb-1">
@@ -245,7 +260,6 @@ function Dashboard() {
                 </Link>
               </div>
             </div>
-            {/* main content */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5">
               {quickMeals.slice(0, 4).map((meal) => (
                 <RecipeCard key={meal.id} recipe={meal} />
@@ -254,10 +268,8 @@ function Dashboard() {
           </section>
         )}
 
-        {/* Cuisines */}
         {cuisines.length > 0 && (
           <section>
-            {/* scetion header  */}
             <div className="mb-5">
               <div className="flex items-center gap-2 mb-1">
                 <UtensilsCrossed className="w-4 h-4 text-brand-600" />
@@ -272,7 +284,6 @@ function Dashboard() {
                 Discover flavors from around the world.
               </p>
             </div>
-            {/* main content */}
             <div className="flex flex-wrap justify-center gap-5 sm:gap-8">
               {cuisines.map((cuisine) => (
                 <Link
@@ -291,11 +302,45 @@ function Dashboard() {
             </div>
           </section>
         )}
+        {trendingMeals.length > 0 && (
+          <section>
+            <div className="flex items-center justify-between">
+              <div className="mb-5">
+                <div className="flex items-center gap-2 mb-1">
+                  <TrendingUp className="w-4 h-4 text-brand-600" />
+                  <p className="text-xs text-brand-600 font-bold uppercase ">
+                    Trending Recipes
+                  </p>
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold text-stone-900">
+                  What's Hot Right Now
+                </h2>
+                <p className="text-stone-500 text-sm mt-1">
+                  See what's popular among our community.
+                </p>
+              </div>
 
-        {/* Dietary Preferences */}
+              <div>
+                <Link to="/recipes/trending">
+                  <Button
+                    variant="secondary"
+                    className="w-fit bg-white/70 border-0 hover:bg-white/80 text-stone-700 font-bold gap-2"
+                  >
+                    View All <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5">
+              {trendingMeals.slice(0, 4).map((meal) => (
+                <RecipeCard key={meal.id} recipe={meal} />
+              ))}
+            </div>
+          </section>
+        )}
+
         {diets.length > 0 && (
           <section>
-            {/* section header  */}
             <div className="mb-5">
               <div className="flex items-center gap-2 mb-1">
                 <Leaf className="w-4 h-4 text-brand-600" />
@@ -310,7 +355,6 @@ function Dashboard() {
                 Choose a lifestyle that fits your taste.
               </p>
             </div>
-            {/* main content */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
               {diets.map((diet) => (
                 <Link key={diet.name} to={`/recipes/diet/${diet.name}`}>
@@ -328,81 +372,70 @@ function Dashboard() {
           </section>
         )}
 
-        {/* Recently Viewed */}
         {recentlyViewed.length > 0 && (
           <section>
-            {/* section header  */}
-            <div className="mb-5">
-              <div className="flex items-center gap-2 mb-1">
-                <History className="w-4 h-4 text-brand-600" />
-                <p className="text-xs text-brand-600 font-bold uppercase ">
-                  Recently Viewed
+            <div className="flex items-center justify-between">
+              <div className="mb-5">
+                <div className="flex items-center gap-2 mb-1">
+                  <History className="w-4 h-4 text-brand-600" />
+                  <p className="text-xs text-brand-600 font-bold uppercase ">
+                    Recently Viewed
+                  </p>
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold text-stone-900">
+                  Pick Up Where You Left Off
+                </h2>
+                <p className="text-stone-500 text-sm mt-1">
+                  Recipes you have checked out recently.
                 </p>
               </div>
-              <h2 className="text-xl sm:text-2xl font-bold text-stone-900">
-                Recently Viewed
-              </h2>
-              <p className="text-stone-500 text-sm mt-1">
-                Here's what you've cooked recently.
-              </p>
             </div>
-            {/* main content */}
-            <div className="flex gap-2 overflow-x-auto">
-              {recentlyViewed.map((recipe) => (
-                <div key={recipe.id} className="shrink-0 w-64">
-                  <RecipeCard recipe={recipe} />
-                </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5">
+              {recentlyViewed.slice(0, 4).map((recipe) => (
+                <RecipeCard key={recipe.id} recipe={recipe} />
               ))}
             </div>
           </section>
         )}
-
-        {/* Cooking Tip */}
-        {cookingTips.length > 0 && (
-          <section>
-            {/* section header  */}
-            <div className="mb-5">
-              <div className="flex items-center gap-2 mb-1">
-                <Lightbulb className="w-4 h-4 text-brand-600" />
-                <p className="text-xs text-brand-600 font-bold uppercase ">
-                  Cooking Tip
-                </p>
-              </div>
-              <h2 className="text-xl sm:text-2xl font-bold text-stone-900">
+        <section>
+          <div className="mb-5">
+            <div className="flex items-center gap-2 mb-1">
+              <Lightbulb className="w-4 h-4 text-brand-600" />
+              <p className="text-xs text-brand-600 font-bold uppercase ">
                 Cooking Tip
-              </h2>
-              <p className="text-stone-500 text-sm mt-1">
-                Here's a tip to help you cook better.
               </p>
             </div>
-            {/* main content */}
-            <div className="bg-brand-50/80 border border-brand-200 rounded-2xl p-5 sm:p-8 flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-brand-100 flex items-center justify-center shrink-0">
-                <Lightbulb className="w-5 h-5 text-brand-600" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs sm:text-sm font-bold uppercase text-brand-600">
-                    💡 Cooking Tip
-                  </p>
-                  <button
-                    onClick={() =>
-                      setTipIndex(
-                        Math.floor(Math.random() * cookingTips.length),
-                      )
-                    }
-                    className="text-xs font-bold text-brand-600 px-3 py-1 rounded-full bg-brand-100/50 border border-brand-200 hover:bg-brand-100"
-                  >
-                    ↻ New Tip
-                  </button>
-                </div>
-                <p className="text-sm sm:text-base text-brand-800 font-semibold">
-                  {cookingTips[tipIndex]}
-                </p>
-              </div>
+            <h2 className="text-xl sm:text-2xl font-bold text-stone-900">
+              Cooking Tip
+            </h2>
+            <p className="text-stone-500 text-sm mt-1">
+              Here's a tip to help you cook better.
+            </p>
+          </div>
+          <div className="bg-brand-50/80 border border-brand-200 rounded-2xl p-5 sm:p-8 flex items-start gap-4">
+            <div className="w-10 h-10 rounded-xl bg-brand-100 flex items-center justify-center shrink-0">
+              <Lightbulb className="w-5 h-5 text-brand-600" />
             </div>
-          </section>
-        )}
+            <div className="flex-1">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-xs sm:text-sm font-bold uppercase text-brand-600">
+                  💡 Cooking Tip
+                </p>
+                <button
+                  onClick={() =>
+                    setTipIndex(Math.floor(Math.random() * COOKING_TIPS.length))
+                  }
+                  className="text-xs font-bold text-brand-600 px-3 py-1 rounded-full bg-brand-100/50 border border-brand-200 hover:bg-brand-100"
+                >
+                  ↻ New Tip
+                </button>
+              </div>
+              <p className="text-sm sm:text-base text-brand-800 font-semibold">
+                {COOKING_TIPS[tipIndex]}
+              </p>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );

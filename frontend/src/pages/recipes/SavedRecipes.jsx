@@ -3,7 +3,7 @@ import RecipeFilterBar from "@/components/RecipeFilterBar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useRecipeFilters } from "@/hooks/useRecipeFilters";
-import { loadsavedrecipes } from "@/services/savedrecipe";
+import { loadSavedRecipes, unsaveRecipe } from "@/services/savedrecipe";
 import {
   ArrowLeft,
   ArrowRight,
@@ -13,15 +13,14 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 function SavedRecipes() {
   const navigate = useNavigate();
 
-  // for storing recipes
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // setup filtering logic
   const {
     difficulty,
     setDifficulty,
@@ -37,10 +36,10 @@ function SavedRecipes() {
   useEffect(() => {
     async function loadSaved() {
       try {
-        const savedRecipes = await loadsavedrecipes();
+        const { savedRecipes } = await loadSavedRecipes();
         setRecipes(savedRecipes);
-      } catch (err) {
-        console.log("recipes not loaded");
+      } catch {
+        toast.error("Unable to load your saved recipes. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -48,12 +47,16 @@ function SavedRecipes() {
     loadSaved();
   }, []);
 
-  // delete recipe from saved recipes .``
-  function removeRecipe(recipeId) {
-    setRecipes(recipes.filter((item) => item.id !== recipeId));
+  async function removeRecipe(recipeId) {
+    try {
+      await unsaveRecipe(recipeId);
+      setRecipes(recipes.filter((item) => item.id !== recipeId));
+      toast.success("Recipe removed from your collection.");
+    } catch {
+      toast.error("Unable to remove this recipe. Please try again.");
+    }
   }
 
-  // loading state
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -67,7 +70,6 @@ function SavedRecipes() {
 
   return (
     <div className="min-h-screen pt-24 pb-16 px-4">
-      {/* hero section */}
       <div className="mx-auto max-w-7xl">
         <Button
           onClick={() => navigate(-1)}
@@ -109,7 +111,6 @@ function SavedRecipes() {
           </div>
         </div>
 
-        {/* banner section */}
         {recipes.length > 0 && (
           <div className="rounded-2xl p-6 bg-emerald-500 text-white mb-8">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -137,7 +138,6 @@ function SavedRecipes() {
           </div>
         )}
 
-        {/* FILTER BAR */}
         {recipes.length > 0 && (
           <RecipeFilterBar
             difficulty={difficulty}
@@ -151,7 +151,6 @@ function SavedRecipes() {
           />
         )}
 
-        {/* Empty state when filters don't match any saved recipes */}
         {recipes.length > 0 && filteredRecipes.length === 0 && (
           <div className="rounded-2xl border border-stone-200 bg-white p-10 text-center">
             <h3 className="text-lg font-bold text-stone-800 mb-1">
@@ -166,7 +165,6 @@ function SavedRecipes() {
           </div>
         )}
 
-        {/* no recipes found section */}
         {recipes.length === 0 && (
           <div className="rounded-2xl border border-stone-200 bg-white p-10 sm:p-20 text-center">
             <div className="w-20 h-20 bg-stone-50 rounded-full flex items-center justify-center mx-auto mb-5">
@@ -200,7 +198,6 @@ function SavedRecipes() {
           </div>
         )}
 
-        {/* recipes grid section */}
         {filteredRecipes.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
             {filteredRecipes.map((recipe) => {

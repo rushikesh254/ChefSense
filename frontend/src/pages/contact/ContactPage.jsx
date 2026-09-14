@@ -1,28 +1,35 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, MapPin, MessageSquare } from "lucide-react";
+import api from "@/lib/api";
+import { Loader2, Mail, MapPin, MessageSquare } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 function ContactPage() {
-  // state for form data
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [sending, setSending] = useState(false);
 
-  // handle form submission
-  function handleSend(e) {
-    // check if all fields are filled
-
+  async function handleSend(e) {
     e.preventDefault();
     if (!name || !email || !message) {
-      toast.error("Please fill all the fields");
+      toast.error("Please fill in all required fields.");
       return;
     }
-    toast.success("Message sent successfully!");
-    // console.log(name, email, message);
-    //todo: later send the form data to backend
+    setSending(true);
+    try {
+      await api.post("/contact", { name, email, message });
+      toast.success("Your message has been sent. We'll get back to you within 24 hours.");
+      setName("");
+      setEmail("");
+      setMessage("");
+    } catch {
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -61,9 +68,17 @@ function ContactPage() {
           <Button
             variant="primary"
             type="submit"
+            disabled={sending}
             className="w-full h-11 mt-2 rounded-full font-bold"
           >
-            Send Message
+            {sending ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Sending...
+              </>
+            ) : (
+              "Send Message"
+            )}
           </Button>
         </form>
 

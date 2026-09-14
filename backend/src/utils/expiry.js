@@ -14,12 +14,11 @@ const calculateExpiryStatus = (expiryDate) => {
   today.setHours(0, 0, 0, 0); // Set time to the start of the day for accurate comparison
   expiry.setHours(0, 0, 0, 0); // Set time to the start of the day for accurate comparison
 
-  const diff = expiry - today;
-  const days = Math.ceil(diff / (1000 * 60 * 60 * 24)); // Calculate the number of days until expiry
+  const daysLeft = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24)); // Calculate the number of days until expiry
 
-  // console.log("days left", days)
-  if (days < 0) return "expired";
-  if (days <= 3) return "expiring soon";
+  // console.log("days left", daysLeft)
+  if (daysLeft < 0) return "expired";
+  if (daysLeft <= 3) return "expiring soon";
   return "fresh";
 };
 

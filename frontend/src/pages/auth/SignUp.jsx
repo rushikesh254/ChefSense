@@ -1,12 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useUser } from "@/context/AuthContext";
 import { Eye, EyeOff, Loader2, Lock, Mail, User } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 function SignUp() {
-  // form states
+  const { signup } = useUser();
+  const navigate = useNavigate();
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -14,27 +17,31 @@ function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // handle form submit
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    // simple validations
-    if (!firstName.trim()) return toast.error("First name is required");
-    if (!email.trim()) return toast.error("Email is required");
-    if (!password.trim()) return toast.error("Password is required");
+    if (!firstName.trim()) return toast.error("Please enter your first name.");
+    if (!email.trim()) return toast.error("Please enter your email address.");
+    if (!password.trim()) return toast.error("Please enter a password.");
     if (password.length < 6)
-      return toast.error("Password must be at least 6 characters");
+      return toast.error("Password must be at least 6 characters long.");
 
     setLoading(true);
 
-    console.log(firstName, lastName, email, password);
+    try {
+      await signup({ firstName, lastName, email, password });
+      toast.success("Welcome! Your account has been created.");
+      navigate("/dashboard");
+    } catch (err) {
+      const message = err.response?.data?.error || err.response?.data?.message || err.message || "Something went wrong";
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
   }
 
-  // handle google signup
   function handleGoogleSignup() {
-    setLoading(true);
-
-    console.log("Google signup");
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   }
 
   return (

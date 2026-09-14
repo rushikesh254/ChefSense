@@ -186,8 +186,11 @@ const recipeSchema = new mongoose.Schema(
   },
 );
 
+// simple indexes for faster queries
+recipeSchema.index({ title: 1 });
+recipeSchema.index({ author: 1 });
+recipeSchema.index({ cuisine: 1, category: 1 });
+
 const RecipeModel = mongoose.model("Recipe", recipeSchema); // recipe collection in the database will be named "recipes" (Mongoose pluralizes the model name)
 
 export default RecipeModel;
-
-// TODO: add indexes later for faster search on fields

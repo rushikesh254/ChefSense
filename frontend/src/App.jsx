@@ -78,6 +78,10 @@ function App() {
               element={<FilterResultsPage type="quick" />}
             />
             <Route
+              path="/recipes/trending"
+              element={<FilterResultsPage type="trending" />}
+            />
+            <Route
               path="/recipes/cuisine/:cuisine"
               element={<FilterResultsPage type="cuisine" />}
             />
@@ -88,6 +92,10 @@ function App() {
             <Route
               path="/recipes/diet/:diet"
               element={<FilterResultsPage type="diet" />}
+            />
+            <Route
+              path="/recipes/search"
+              element={<FilterResultsPage type="search" />}
             />
             {/* main recipe page */}
             <Route path="/recipe/:id" element={<RecipePage />} />

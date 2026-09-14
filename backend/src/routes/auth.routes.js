@@ -1,4 +1,5 @@
 import { Router } from "express";
+import rateLimit from "express-rate-limit";
 import {
   googleCallback,
   googleRedirect,
@@ -8,11 +9,19 @@ import {
   signup,
 } from "../controllers/auth.controller.js";
 import protect from "../middleware/auth.middleware.js";
+
 const router = Router();
 
-router.post("/signup", signup);
-router.post("/login", login);
-router.post("/logout", logout);
+// Stricter rate limit for auth endpoints to prevent brute-force attacks
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: "Too many attempts. Please try again later." },
+});
+
+router.post("/signup", authLimiter, signup);
+router.post("/login", authLimiter, login);
+router.post("/logout", authLimiter, logout);
 
 router.get("/me", protect, me);
 

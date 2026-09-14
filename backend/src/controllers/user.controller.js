@@ -1,42 +1,18 @@
 import UserModel from "../models/user.model.js";
 
-// GET PROFILE (send user data from req.user which is set by auth middleware)
-const getProfile = async (req, res) => {
-  try {
-    if (!req.user) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    const { email, firstName, lastName, avtarUrl, pantryItemsCount, usage } =
-      req.user;
-
-    res.json({
-      email,
-      firstName,
-      lastName,
-      avtarUrl,
-      pantryItemsCount,
-      usage,
-    });
-  } catch (error) {
-    console.error("Error fetching profile:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
-
-// UPDATE PROFILE (allow user to update firstName, lastName and avtarUrl)
+// UPDATE PROFILE (allow user to update firstName, lastName and avatarUrl)
 const updateProfile = async (req, res) => {
   try {
     if (!req.user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const { firstName, lastName, avtarUrl } = req.body;
+    const { firstName, lastName, avatarUrl } = req.body;
 
     // Update user profile
     req.user.firstName = firstName || req.user.firstName;
     req.user.lastName = lastName || req.user.lastName;
-    req.user.avtarUrl = avtarUrl || req.user.avtarUrl;
+    req.user.avatarUrl = avatarUrl || req.user.avatarUrl;
 
     await req.user.save();
     res.json({
@@ -45,8 +21,8 @@ const updateProfile = async (req, res) => {
         email: req.user.email,
         firstName: req.user.firstName,
         lastName: req.user.lastName,
-        avtarUrl: req.user.avtarUrl,
-        pantryItemsCount: req.user.pantryItemsCount,
+        avatarUrl: req.user.avatarUrl,
+        pantryItemCount: req.user.usage.pantryItemCount,
         usage: req.user.usage,
       },
     });
@@ -77,10 +53,25 @@ const updatePassword = async (req, res) => {
 
     const { currentPassword, newPassword } = req.body;
 
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: "Current password and new password are required" });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ message: "New password must be at least 6 characters" });
+    }
+
     const user = await UserModel.findById(req.user._id).select("+password");
 
     if (!user) {
       return res.status(401).json({ message: "User not found" });
+    }
+
+    // Google-only users must verify via current password after setting one
+    if (!user.password) {
+      return res.status(400).json({
+        message: "Your account uses Google sign-in. Please set a password through profile settings first.",
+      });
     }
 
     const isMatch = await user.checkPassword(currentPassword);
@@ -98,4 +89,4 @@ const updatePassword = async (req, res) => {
   }
 };
 
-export { getProfile, getUsage, updatePassword, updateProfile };
+export { getUsage, updatePassword, updateProfile };

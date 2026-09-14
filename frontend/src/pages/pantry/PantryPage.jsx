@@ -2,27 +2,29 @@ import AddToPantryModal from "@/components/AddToPantryModal";
 import PantryCard from "@/components/PantryCard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import dummyitems from "@/data/pantryitems";
+import {
+  getItems,
+  deleteItem as deleteItemApi,
+  addItem as addItemApi,
+  updateItem as updateItemApi,
+} from "@/services/pantry";
 import { AlertCircle, Loader2, PlusCircle, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 function PantryPage() {
-  // console.log(dummyitems);
-
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
-  // laod the items when page loaded
   useEffect(() => {
     async function loaditems() {
       try {
-        setItems(dummyitems); //set items
+        const data = await getItems();
+        setItems(data);
       } catch (error) {
-        console.log(error);
-        toast.error("Failed to load items");
+        toast.error("Unable to load your pantry items. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -30,34 +32,53 @@ function PantryPage() {
     loaditems();
   }, []);
 
-  // upadte the item
-  function updateItem(id, updatedItem) {
-    console.log(id, updatedItem);
+  async function updateItem(id, updatedItem) {
+    try {
+      const result = await updateItemApi(id, updatedItem);
+      setItems((prev) =>
+        prev.map((item) => (item.id === id ? { ...result } : item)),
+      );
+      toast.success("Pantry item has been updated.");
+    } catch {
+      toast.error("Unable to update this item. Please try again.");
+    }
+  }
 
-    setItems((prevItems) => {
-      return prevItems.map((item) => {
-        if (item.id === id) {
-          return { ...updatedItem, id };
+  async function deleteItem(id) {
+    try {
+      await deleteItemApi(id);
+      setItems(items.filter((item) => item.id !== id));
+      toast.success("Pantry item has been removed.");
+    } catch {
+      toast.error("Unable to remove this item. Please try again.");
+    }
+  }
+
+  async function handleAdd(newItems) {
+    try {
+      const created = [];
+      for (const item of newItems) {
+        if (item._id) {
+          created.push({ ...item, id: item._id });
+        } else {
+          const result = await addItemApi({
+            name: item.name,
+            quantity: item.quantity || "",
+            category: item.category || "pantry",
+          });
+          created.push(result);
         }
-        return item;
-      });
-    });
-  }
-
-  // delete the item
-  function deleteItem(id) {
-    setItems(items.filter((item) => item.id !== id));
-  }
-
-  // add the item
-  function handleAdd(newItems) {
-    setItems((prev) => [...prev, ...newItems]);
+      }
+      setItems((prev) => [...prev, ...created]);
+      toast.success("Items have been added to your pantry.");
+    } catch {
+      toast.error("Unable to add items. Please try again.");
+    }
   }
 
   return (
     <div className="min-h-screen pt-24 pb-16 px-4">
       <div className="mx-auto max-w-7xl">
-        {/* header */}
         <div className="flex flex-col gap-4 mb-6 justify-between md:flex-row md:items-end">
           <div className="space-y-2">
             <p className="text-xs font-bold uppercase tracking-widest text-brand-500">
@@ -94,7 +115,6 @@ function PantryPage() {
           </div>
         </div>
 
-        {/* AI recipe banner */}
         {items.length > 0 && (
           <div className="rounded-2xl p-6 bg-blue-400 text-white mb-12">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -127,8 +147,6 @@ function PantryPage() {
           </div>
         )}
 
-        {/* <div>hello</div> */}
-        {/* loading state  */}
         {loading ? (
           <div className="flex items-center justify-center">
             <div className="border border-stone-200 rounded-full flex justify-center items-center bg-stone-50 sm:px-8 px-4 sm:py-4 py-3 text-lg font-bold shadow-xl">
@@ -136,8 +154,7 @@ function PantryPage() {
               Loading your pantry...
             </div>
           </div>
-        ) : // no items state
-        items.length === 0 ? (
+        ) : items.length === 0 ? (
           <div className="rounded-2xl border border-stone-200 bg-white p-10 sm:p-20 text-center">
             <div className="w-20 h-20 bg-stone-50 rounded-full flex items-center justify-center mx-auto mb-5">
               <AlertCircle className="w-9 h-9 text-brand-600" />
@@ -151,14 +168,13 @@ function PantryPage() {
             <Button
               onClick={() => setShowModal(true)}
               variant="primary"
-              className="rounded-full font-bold gap-2"
+              className="rounded-full font-bold gap-2 border-brand-600 text-white bg-brand-600 hover:bg-brand-700 px-6 py-3 w-full sm:w-auto"
             >
               <PlusCircle className="w-4 h-4" />
               Add Ingredient
             </Button>
           </div>
         ) : (
-          // items found state
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {items.map((item) => (
               <PantryCard

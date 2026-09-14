@@ -1,6 +1,5 @@
 import { Router } from "express";
 import {
-  getProfile,
   getUsage,
   updatePassword,
   updateProfile,
@@ -11,8 +10,6 @@ const router = Router();
 
 router.use(protect); // Protect all routes after this middleware
 
-// GET PROFILE
-router.get("/profile", getProfile);
 // UPDATE PROFILE
 router.put("/profile", updateProfile);
 

@@ -1,35 +1,42 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useUser } from "@/context/AuthContext";
 import { Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 function SignIn() {
-  // form states
+  const { login } = useUser();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // handle form submit
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    // simple validation
-    if (!email.trim()) return toast.error("Email is required");
-    if (!password.trim()) return toast.error("Password is required");
+    if (!email.trim()) return toast.error("Please enter your email address.");
+    if (!password.trim()) return toast.error("Please enter your password.");
 
     setLoading(true);
 
-    console.log(email, password);
+    try {
+      await login({ email, password });
+      toast.success("Welcome back! You're signed in.");
+      navigate("/dashboard");
+    } catch (err) {
+      const message = err.response?.data?.error || err.response?.data?.message || err.message || "Something went wrong";
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
   }
 
-  // handle google login
   function handleGoogleLogin() {
-    setLoading(true);
-
-    console.log("Google login");
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   }
 
   return (

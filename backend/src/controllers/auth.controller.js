@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import UserModel from "../models/user.model.js";
 import generateToken from "../utils/generateToken.js";
+import { loginSchema, signupSchema } from "../validation/auth.js";
 
 // Helper function to set auth cookie
 const setAuthCookie = (res, user) => {
@@ -8,7 +9,7 @@ const setAuthCookie = (res, user) => {
   res.cookie("token", token, {
     httpOnly: true,
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    // secure: true  // turn this on in prod
+    secure: process.env.NODE_ENV === "production" ? true : false,
     sameSite: "lax", // Add sameSite attribute for better security (prevents CSRF and browser compatible)
   });
 };
@@ -16,17 +17,13 @@ const setAuthCookie = (res, user) => {
 //SIGNUP
 const signup = async (req, res) => {
   try {
-    const { email, password, firstName, lastName } = req.body;
+    const result = signupSchema.safeParse(req.body);
 
-    if (!email || !password) {
-      return res.status(400).json({ error: "email and password required" });
+    if (!result.success) {
+      return res.status(400).json({ error: result.error.issues[0].message });
     }
 
-    if (password.length < 6) {
-      return res
-        .status(400)
-        .json({ error: "password must be at least 6 characters" });
-    }
+    const { email, password, firstName, lastName } = result.data;
 
     // check email already exist or not
     const exists = await UserModel.findOne({ email: email.toLowerCase() });
@@ -43,7 +40,6 @@ const signup = async (req, res) => {
     // set auth cookie with token
     setAuthCookie(res, user);
 
-    console.log("new user:", user.email);
     // send res
     res.status(201).json({
       message: "User created successfully",
@@ -55,7 +51,7 @@ const signup = async (req, res) => {
     });
   } catch (error) {
     console.error("Error registering user: ", error.message);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -63,33 +59,31 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const result = loginSchema.safeParse(req.body);
 
-    if (!email || !password) {
-      return res.status(400).json({ error: "email and password required" });
+    if (!result.success) {
+      return res.status(400).json({ error: result.error.issues[0].message });
     }
+
+    const { email, password } = result.data;
 
     // find user by email
     const user = await UserModel.findOne({
       email: String(email || "").toLowerCase(),
-    }).select("+password"); // explicitly select password since it's excluded by default in the schema
+    }).select("+password");
 
-    if (!user) return res.status(400).json({ error: "no user found" });
+    if (!user || !(await user.checkPassword(password))) {
+      return res.status(400).json({ error: "Invalid email or password" });
+    }
 
     if (user.provider !== "local") {
       return res.status(400).json({
-        error: `This account uses ${user.provider}. Please sign in with ${user.provider}.`,
+        error: `This account uses ${user.provider} sign-in. Please sign in with ${user.provider}.`,
       });
     }
 
-    // compare password
-    const isMatch = await user.checkPassword(password);
-    if (!isMatch) return res.status(400).json({ error: "Wrong Password" });
-
     // create new token and add to cookie
     setAuthCookie(res, user);
-
-    console.log("user logged in:", user.email);
 
     res.status(200).json({
       message: "User logged in successfully",
@@ -101,7 +95,7 @@ const login = async (req, res) => {
     });
   } catch (error) {
     console.error("Error logging in user: ", error.message);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -109,17 +103,29 @@ const login = async (req, res) => {
 
 const logout = (req, res) => {
   try {
-    res.clearCookie("token", { httpOnly: true, sameSite: "lax" }); // Clear the token cookie
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    });
     res.status(200).json({ message: "User logged out successfully" });
   } catch (error) {
     console.error("Error logging out user: ", error.message);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
 //send user details
 const me = async (req, res) => {
-  res.json({ user: req.user });
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: "Not authenticated" });
+    }
+    res.json({ user: req.user });
+  } catch (error) {
+    console.error("Error fetching user:", error.message);
+    res.status(500).json({ error: "Something went wrong" });
+  }
 };
 
 const googleRedirect = (req, res) => {

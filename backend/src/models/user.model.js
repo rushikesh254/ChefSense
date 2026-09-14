@@ -13,7 +13,6 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      minlength: 6,
       select: false, // Exclude password from query results by default
     },
     firstName: {
@@ -26,19 +25,19 @@ const userSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
-    pantryItemsCount: { type: Number, default: 0 }, // Count of pantry items added by the user
     usage: {
       scanCount: { type: Number, default: 0 },
       recipeGenerationCount: { type: Number, default: 0 },
       suggestionCount: { type: Number, default: 0 },
+      savedRecipesCount: { type: Number, default: 0 },
+      pantryItemCount: { type: Number, default: 0 },
     },
     // saved recipes
     // array of recipe ids that the user has saved (when user save id of recipe will be added to this array if unsave then it will be removed from this array)
     savedRecipes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Recipe" }],
-    avtarUrl: {
+    avatarUrl: {
       type: String,
-      default:
-        "https://res.cloudinary.com/dzcmadjlq/image/upload/v1701904418/default-avatar_ajl7nq.png",
+      default: "",
     },
     provider: {
       type: String,

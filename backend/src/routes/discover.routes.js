@@ -9,7 +9,6 @@ import {
   getQuickRecipes,
   getRecipeofTheDay,
   getTrendingRecipes,
-  searchRecipes,
 } from "../controllers/discover.controller.js";
 import protect from "../middleware/auth.middleware.js";
 const router = Router();
@@ -25,6 +24,5 @@ router.get("/diets", getDiets);
 router.get("/category/:category", getByCategory);
 router.get("/cuisine/:cuisine", getByCuisine);
 router.get("/diet/:diet", getByDiet);
-router.get("/search", searchRecipes);
 
 export default router;

@@ -25,7 +25,6 @@ function HowItWorksPage() {
             you can focus on eating.
           </p>
         </div>
-
         {/* Steps */}
         <div className="space-y-5">
           {STEPS.map((step) => {
@@ -63,7 +62,6 @@ function HowItWorksPage() {
             );
           })}
         </div>
-
         {/* CTA */}
         <div className="mt-12 sm:mt-16 bg-stone-50 rounded-2xl sm:rounded-3xl px-6 py-10 sm:p-12 text-center border border-stone-100 shadow-sm">
           <p className="text-xs font-semibold uppercase mb-3">Ready to try?</p>
@@ -71,7 +69,7 @@ function HowItWorksPage() {
             Your next great meal is
             <br className="hidden sm:block" /> already in your fridge.
           </h2>
-          <Link to="dashboard">
+          <Link to="/dashboard">
             <Button
               variant="primary"
               className="h-11 px-8 text-sm font-bold gap-2 rounded-full w-full sm:w-auto"

@@ -3,7 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { getdifficultyColor } from "@/lib/utils";
-import { getById } from "@/services/recipe";
+import { getById, rateRecipe } from "@/services/recipe";
+import { loadSavedRecipes, saveRecipe, unsaveRecipe } from "@/services/savedrecipe";
+import { useUser } from "@/context/AuthContext";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -21,49 +23,98 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { pdf } from "@react-pdf/renderer";
+import RecipePDF from "./RecipePDF";
 
 function RecipePage() {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const { user } = useUser();
+
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [userRating, setUserRating] = useState(0);
+  const [averageRating, setAverageRating] = useState(0);
+  const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
-    function loadRecipe() {
+    async function loadRecipe() {
       try {
         setLoading(true);
-        const res = getById(id);
-        // using simple function now not async .. layter when backend is ready it will be async and then we can use await here
+        const { recipe } = await getById(id);
+        setRecipe(recipe);
+        setAverageRating(recipe.rating || 0);
+        if (user?._id && recipe.ratings) {
+          const myRating = recipe.ratings.find(
+            (r) => r.user?.toString() === user._id,
+          );
+          setUserRating(myRating?.value || 0);
+        }
+        const { savedRecipes } = await loadSavedRecipes();
+        setIsSaved(savedRecipes.some((r) => r._id === id));
 
-        // console.log('recipe res', res)
-
-        setRecipe(res);
+        if (user?._id) {
+          try {
+            const key = `recentlyViewed_${user._id}`;
+            const stored = JSON.parse(localStorage.getItem(key) || "[]");
+            const filtered = stored.filter((r) => r.id !== recipe.id);
+            const updated = [recipe, ...filtered].slice(0, 10);
+            localStorage.setItem(key, JSON.stringify(updated));
+          } catch {}
+        }
       } catch {
-        toast.error("Failed to load recipe");
+        toast.error("Unable to load this recipe. Please try again.");
         navigate("/");
       } finally {
         setLoading(false);
       }
     }
-    loadRecipe();
-  }, [id]); // if id changes load new recipe
+    if (id) loadRecipe();
+  }, [id, user]);
 
-  const totalTime = (recipe?.prepTime || 0) + (recipe?.cookTime || 0); // total time= prep time + cook time
+  const totalTime = (recipe?.prepTime || 0) + (recipe?.cookTime || 0);
 
   let diffStyle = getdifficultyColor(recipe?.difficulty);
 
-
-  function saveHandle(){
-   toast.success("Recipe saved successfully")
-   console.log('recipe saved')  
+  async function saveHandle() {
+    try {
+      if (isSaved) {
+        await unsaveRecipe(id);
+        setIsSaved(false);
+        toast.success("Recipe removed from your collection.");
+      } else {
+        await saveRecipe(id);
+        setIsSaved(true);
+        toast.success("Recipe saved to your collection.");
+      }
+    } catch {
+      toast.error("Unable to save this recipe. Please try again.");
+    }
   }
 
-  function downloadHandle(){
-    toast.success("Recipe downloaded successfully")
-    console.log('recipe downloaded')
+  async function downloadHandle() {
+    try {
+      toast.success("Generating PDF...");
+
+      const blob = await pdf(<RecipePDF recipe={recipe} />).toBlob();
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = (recipe?.title || "recipe").replace(/[^a-z0-9]/gi, "_").toLowerCase() + ".pdf";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      toast.success("Recipe downloaded!");
+    } catch (err) {
+      console.error("PDF generation error:", err);
+      toast.error("Failed to generate PDF. Please try again.");
+    }
   }
-  // loading state
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen ">
@@ -75,7 +126,6 @@ function RecipePage() {
     );
   }
 
-  // if not loading and no recipe found then show error message
   if (!loading && !recipe) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
@@ -95,7 +145,6 @@ function RecipePage() {
   return (
     <div className="min-h-screen">
       <div className="mx-auto max-w-6xl px-4 pt-10 space-y-4">
-        {/* Back button */}
         <button
           onClick={() => navigate(-1)}
           className="flex items-center gap-1.5 text-sm text-black hover:text-brand-600 transition-colors border rounded-full py-2 px-4"
@@ -103,7 +152,6 @@ function RecipePage() {
           <ArrowLeft className="h-4 w-4" /> Back
         </button>
 
-        {/* Hero image */}
         {recipe?.imageUrl && (
           <div className="relative w-full h-56 sm:h-80 lg:h-120 rounded-2xl overflow-hidden bg-stone-200">
             <RecipeImage
@@ -135,9 +183,18 @@ function RecipePage() {
             )}
 
             <div className="absolute bottom-3 right-3 flex items-center gap-2">
-              <button className="flex items-center gap-1.5 bg-white/90 backdrop-blur px-3 py-1.5 rounded-full hover:bg-white" onClick={saveHandle}>
-                <Bookmark className="w-4 h-4 text-brand-600" />
-                <span className="text-xs font-medium text-black">Save</span>
+              <button
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-colors ${
+                  isSaved
+                    ? "bg-brand-600 hover:bg-brand-700"
+                    : "bg-white/90 backdrop-blur hover:bg-white"
+                }`}
+                onClick={saveHandle}
+              >
+                <Bookmark className={`w-4 h-4 ${isSaved ? "text-white" : "text-brand-600"}`} />
+                <span className={`text-xs font-medium ${isSaved ? "text-white" : "text-black"}`}>
+                  {isSaved ? "Saved" : "Save"}
+                </span>
               </button>
 
               <button className="flex items-center gap-1.5 bg-brand-600 px-3 py-1.5 rounded-full hover:bg-brand-700" onClick={downloadHandle}>
@@ -148,7 +205,6 @@ function RecipePage() {
           </div>
         )}
 
-        {/* Title card */}
         <Card>
           <CardContent className="p-5 sm:p-6">
             <div className="flex flex-wrap gap-1.5 mb-3">
@@ -196,6 +252,44 @@ function RecipePage() {
               </p>
             )}
 
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center gap-0.5">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    onClick={async () => {
+                      try {
+                        await rateRecipe(id, star);
+                        setUserRating(star);
+                        toast.success("Your rating has been saved.");
+                      } catch {
+                        toast.error("Unable to save your rating. Please try again.");
+                      }
+                    }}
+                    className="p-0.5 transition-transform hover:scale-110"
+                  >
+                    <Star
+                      className={`w-5 h-5 ${
+                        star <= (userRating || averageRating)
+                          ? "fill-amber-400 text-amber-400"
+                          : "text-stone-200"
+                      }`}
+                    />
+                  </button>
+                ))}
+              </div>
+              {averageRating > 0 && (
+                <span className="text-sm font-bold text-stone-500">
+                  {averageRating.toFixed(1)}
+                </span>
+              )}
+              {userRating > 0 && (
+                <span className="text-xs text-brand-600 font-medium">
+                  (your rating: {userRating})
+                </span>
+              )}
+            </div>
+
             <Separator className="mb-4" />
 
             <div className="flex flex-wrap gap-5 text-sm text-stone-500">
@@ -220,12 +314,8 @@ function RecipePage() {
           </CardContent>
         </Card>
 
-        {/* Main grid */}
-
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          {/* Sidebar */}
           <aside className="lg:col-span-4 space-y-4 lg:sticky lg:top-24">
-            {/* Ingredients */}
             <Card>
               <CardHeader className="px-5 pt-5 pb-3">
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
@@ -261,7 +351,6 @@ function RecipePage() {
               </CardContent>
             </Card>
 
-            {/* Nutrition */}
             {recipe?.nutrition && (
               <Card>
                 <CardHeader className="px-5 pt-5 pb-3">
@@ -309,9 +398,7 @@ function RecipePage() {
             )}
           </aside>
 
-          {/* Right column */}
           <div className="lg:col-span-8 space-y-4">
-            {/* Instructions */}
             <Card>
               <CardHeader className="px-5 sm:px-6 pt-5 pb-3">
                 <CardTitle className="text-lg font-semibold">
@@ -366,7 +453,6 @@ function RecipePage() {
               </CardContent>
             </Card>
 
-            {/* Substitutions */}
             {recipe?.substitutions?.length > 0 && (
               <Card>
                 <CardHeader className="px-5 sm:px-6 pt-5 pb-1">

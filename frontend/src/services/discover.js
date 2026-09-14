@@ -1,7 +1,7 @@
 import api from "@/lib/api";
 
 function normalizeRecipe(r) {
-  return { ...r, id: r._id, rating: r.averageRating ?? r.ratings };
+  return { ...r, id: r._id, rating: r.averageRating ?? r.rating };
 }
 
 // get recipe of the day

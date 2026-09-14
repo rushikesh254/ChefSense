@@ -41,10 +41,6 @@ export function useRecipeFilters(recipes = []) {
     return result;
   }, [recipes, difficulty, diet, sortBy]);
 
-
-
-
-  
   // simple helper functions
   function clearAll() {
     setDifficulty(null);

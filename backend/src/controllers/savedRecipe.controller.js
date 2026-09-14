@@ -1,10 +1,10 @@
 import recipeModel from "../models/recipe.model.js";
 import UserModel from "../models/user.model.js";
+import { recipeIdParamSchema } from "../validation/savedRecipe.js";
 
 const getSavedRecipes = async (req, res) => {
   try {
-    const userId = req.user._id; // Get the user ID from the authenticated request
-    const user = await UserModel.findById(userId).populate("savedRecipes"); // Fetch the user and populate the savedRecipes field with recipe details
+    const user = await UserModel.findById(req.userId).populate("savedRecipes"); // Fetch the user and populate the savedRecipes field with recipe details
     if (!user) {
       return res.status(404).json({ message: "User not found" }); // Send a 404 response if the user is not found
     }
@@ -17,11 +17,15 @@ const getSavedRecipes = async (req, res) => {
 
 const saveRecipe = async (req, res) => {
   try {
-    const recipeId = req.params.recipeId; // Get the recipe ID from the request parameters
+    const paramResult = recipeIdParamSchema.safeParse(req.params);
 
-    if (!recipeId) {
-      return res.status(400).json({ message: "Recipe ID is required" }); // Send a 400 response if the recipe ID is not provided
+    if (!paramResult.success) {
+      return res
+        .status(400)
+        .json({ message: paramResult.error.issues[0].message });
     }
+
+    const recipeId = paramResult.data.recipeId;
 
     const exists = await recipeModel.findById(recipeId);
 
@@ -29,8 +33,7 @@ const saveRecipe = async (req, res) => {
       return res.status(404).json({ message: "Recipe not found" }); // Send a 404 response if the recipe is not found
     }
 
-    const userId = req.user._id; // Get the user ID from the authenticated request
-    const user = await UserModel.findById(userId); // Fetch the user from the database
+    const user = await UserModel.findById(req.userId); // Fetch the user from the database
     if (!user) {
       return res.status(404).json({ message: "User not found" }); // Send a 404 response if the user is not found
     }
@@ -40,6 +43,7 @@ const saveRecipe = async (req, res) => {
     }
 
     user.savedRecipes.push(recipeId); // Add the recipe ID to the user's savedRecipes array
+    user.usage.savedRecipesCount = user.savedRecipes.length; // Update the savedRecipesCount in the user's usage statistics
     await user.save(); // Save the updated user document
     res.json({ message: "Recipe saved successfully" }); // Send a success response
   } catch (error) {
@@ -50,12 +54,16 @@ const saveRecipe = async (req, res) => {
 
 const unsaveRecipe = async (req, res) => {
   try {
-    const recipeId = req.params.recipeId; // Get the recipe ID from the request parameters
-    if (!recipeId) {
-      return res.status(400).json({ message: "Recipe ID is required" }); // Send a 400 response if the recipe ID is not provided
+    const paramResult = recipeIdParamSchema.safeParse(req.params);
+
+    if (!paramResult.success) {
+      return res
+        .status(400)
+        .json({ message: paramResult.error.issues[0].message });
     }
-    const userId = req.user._id; // Get the user ID from the authenticated request
-    const user = await UserModel.findById(userId); // Fetch the user from the database
+
+    const recipeId = paramResult.data.recipeId;
+    const user = await UserModel.findById(req.userId); // Fetch the user from the database
     if (!user) {
       return res.status(404).json({ message: "User not found" }); // Send a 404 response if the user is not found
     }
@@ -66,6 +74,7 @@ const unsaveRecipe = async (req, res) => {
     user.savedRecipes = user.savedRecipes.filter(
       (id) => id.toString() !== recipeId,
     ); // Remove the recipe ID from the user's savedRecipes array
+    user.usage.savedRecipesCount = user.savedRecipes.length; // Update the savedRecipesCount in the user's usage statistics
     await user.save(); // Save the updated user document
     res.json({ message: "Recipe unsaved successfully" }); // Send a success response
   } catch (error) {

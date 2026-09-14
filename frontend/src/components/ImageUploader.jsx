@@ -25,7 +25,7 @@ export default function ImageUploader({ value, onImageUpload }) {
       const imageData = e.target.result;
       setImage(imageData);
       setIsUploading(false);
-      if (onImageUpload) onImageUpload(imageData);
+      if (onImageUpload) onImageUpload({ file, preview: imageData });
     };
     reader.readAsDataURL(file);
   };

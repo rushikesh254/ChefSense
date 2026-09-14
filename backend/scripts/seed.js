@@ -41,6 +41,7 @@ const seedRecipes = async () => {
     source: "seed",
     contentStatus: "partial",
     seedId: recipe.id || null,
+    ratings: [],
     author: user._id,
   }));
 

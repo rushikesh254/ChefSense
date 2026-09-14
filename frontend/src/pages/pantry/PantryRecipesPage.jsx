@@ -3,7 +3,7 @@ import RecipeFilterBar from "@/components/RecipeFilterBar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useRecipeFilters } from "@/hooks/useRecipeFilters";
-import { getPantryRecipes } from "@/services/pantry";
+import { getPantryRecipes } from "@/services/recipe";
 import {
   ArrowLeft,
   ArrowRight,
@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 function PantryRecipesPage() {
   const navigate = useNavigate();
@@ -21,7 +22,6 @@ function PantryRecipesPage() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // setup filtering logic
   const {
     difficulty,
     setDifficulty,
@@ -34,16 +34,14 @@ function PantryRecipesPage() {
     hasActiveFilters,
   } = useRecipeFilters(recipes);
 
-
-  // useeffect for fetching recipes from backend
   useEffect(() => {
     async function fetchRecipes() {
       try {
-        const data = await getPantryRecipes();
-        // console.log(data);
-        setRecipes(data);
+        const { recipes } = await getPantryRecipes();
+        setRecipes(recipes);
       } catch (error) {
         console.error("Error fetching recipes:", error);
+        toast.error("Unable to load pantry recipes. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -51,9 +49,6 @@ function PantryRecipesPage() {
     fetchRecipes();
   }, []);
 
-  // console.log(recipes);
-
-  // loading state
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -68,7 +63,6 @@ function PantryRecipesPage() {
   return (
     <div className="min-h-screen pt-24 pb-16 px-4">
       <div className="mx-auto max-w-7xl">
-        {/* back btn */}
         <Button
           onClick={() => navigate(-1)}
           variant="outline"
@@ -78,7 +72,6 @@ function PantryRecipesPage() {
           Back
         </Button>
 
-        {/* header */}
         <div className="flex flex-col gap-4 mb-6 justify-between md:flex-row md:items-end">
           <div className="space-y-2">
             <p className="text-xs font-bold uppercase tracking-widest text-brand-500">
@@ -104,7 +97,6 @@ function PantryRecipesPage() {
           )}
         </div>
 
-        {/* ai banner */}
         <div className="rounded-2xl p-6 bg-cyan-400 text-white mb-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -131,7 +123,6 @@ function PantryRecipesPage() {
           </div>
         </div>
 
-        {/*  FILTER BAR */}
         {recipes.length > 0 && (
           <RecipeFilterBar
             difficulty={difficulty}
@@ -145,7 +136,6 @@ function PantryRecipesPage() {
           />
         )}
 
-        {/* empty state */}
         {recipes.length === 0 && (
           <div className="rounded-2xl border border-stone-200 bg-white p-10 sm:p-20 text-center">
             <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-5">
@@ -161,7 +151,7 @@ function PantryRecipesPage() {
             <Link to="/pantry">
               <Button
                 variant="primary"
-                className="rounded-2xl font-bold px-8 py-2.5"
+                className="rounded-2xl font-bold px-8 py-2.5  flex items-center justify-center mx-auto w-max sm:w-auto"
               >
                 <ChefHat className="w-4 h-4 mr-2" /> Go to Pantry
               </Button>
@@ -169,7 +159,6 @@ function PantryRecipesPage() {
           </div>
         )}
 
-        {/* Empty state when filters don't match */}
         {recipes.length > 0 && filteredRecipes.length === 0 && (
           <div className="rounded-2xl border border-stone-200 bg-white p-10 text-center">
             <h3 className="text-lg font-bold text-stone-800 mb-1">
@@ -184,7 +173,6 @@ function PantryRecipesPage() {
           </div>
         )}
 
-        {/* recipe grid */}
         {filteredRecipes.length > 0 && (
           <section>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">

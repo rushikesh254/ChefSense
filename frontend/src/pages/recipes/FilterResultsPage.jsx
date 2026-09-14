@@ -8,48 +8,111 @@ import {
   getByCuisine,
   getByDiet,
   getQuickMeals,
+  getTrending,
 } from "@/services/discover";
-import { ArrowLeft, ArrowRight, Loader2, UtensilsCrossed } from "lucide-react";
+import { generateRecipe } from "@/services/recipe";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ChevronDown,
+  Loader2,
+  Sparkles,
+  UtensilsCrossed,
+} from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { toast } from "sonner";
 
 function FilterResultsPage({ type }) {
-  // use params for finding which cuisine, category, diet
   const params = useParams();
-
-  // console.log(params);
-
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  // for storing recipes
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [generatingRecipe, setGeneratingRecipe] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
 
-  // for loading recipes
+  const isPaginationType =
+    type === "quick" ||
+    type === "trending" ||
+    type === "cuisine" ||
+    type === "category" ||
+    type === "diet";
+
+  async function fetchRecipes(pageNum = 1) {
+    if (type === "quick") return getQuickMeals(pageNum);
+    if (type === "trending") return getTrending(pageNum);
+    if (type === "cuisine") return getByCuisine(params.cuisine, pageNum);
+    if (type === "category") return getByCategory(params.category, pageNum);
+    if (type === "diet") return getByDiet(params.diet, pageNum);
+    if (type === "search") {
+      const query = searchParams.get("q") || "";
+      if (!query) return { recipes: [] };
+      setGeneratingRecipe(true);
+      try {
+        const genResult = await generateRecipe(query);
+        const recipe = genResult.recipe || genResult.existing;
+        if (recipe) {
+          navigate(`/recipe/${recipe._id}`);
+          return null;
+        }
+      } catch (genError) {
+        const existing = genError?.response?.data?.existing;
+        if (existing) {
+          navigate(`/recipe/${existing._id}`);
+          return null;
+        }
+        toast.error("No recipe found for your search.");
+      } finally {
+        setGeneratingRecipe(false);
+      }
+      return { recipes: [] };
+    }
+  }
+
   useEffect(() => {
-    function run() {
+    async function run() {
       try {
         setLoading(true);
-        let data;
-
-        if (type === "quick") data = getQuickMeals();
-        else if (type === "cuisine") data = getByCuisine(params.cuisine);
-        else if (type === "category") data = getByCategory(params.category);
-        else if (type === "diet") data = getByDiet(params.diet);
-        // console.log(data);
-        setRecipes(data.recipes || []);
+        setPage(1);
+        setHasMore(false);
+        const result = await fetchRecipes(1);
+        if (result === null) return;
+        setRecipes(result?.recipes || []);
+        setHasMore(result?.hasMore || false);
       } catch (error) {
-        // console.log(error);
-        toast.error("Failed to load recipes. Please try again later.");
+        toast.error("Unable to load recipes. Please try again.");
       } finally {
         setLoading(false);
       }
     }
     run();
-  }, [type, params.cuisine, params.category, params.diet]);
+  }, [type, params.cuisine, params.category, params.diet, searchParams]);
 
-  // Use simplified filter hook
+  async function handleLoadMore() {
+    const nextPage = page + 1;
+    setLoadingMore(true);
+    try {
+      const result = await fetchRecipes(nextPage);
+      if (result === null) return;
+      setRecipes((prev) => [...prev, ...(result?.recipes || [])]);
+      setHasMore(result?.hasMore || false);
+      setPage(nextPage);
+    } catch (error) {
+      toast.error("Unable to load more recipes. Please try again.");
+    } finally {
+      setLoadingMore(false);
+    }
+  }
+
   const {
     difficulty,
     setDifficulty,
@@ -62,29 +125,37 @@ function FilterResultsPage({ type }) {
     hasActiveFilters,
   } = useRecipeFilters(recipes);
 
-  // for label
   function getLabel() {
     if (type === "quick") return "Quick Meals";
+    if (type === "trending") return "Trending Recipes";
     if (type === "cuisine") return params.cuisine;
     if (type === "category") return params.category;
     if (type === "diet") return params.diet;
+    if (type === "search") return `Search: ${searchParams.get("q") || ""}`;
   }
 
-  // for description
   function getDescription() {
     if (type === "quick") return "Ready in 15 minutes or less.";
+    if (type === "trending") return "The most popular recipes right now.";
     if (type === "cuisine") return "Explore recipes from this cuisine.";
     if (type === "category") return "Recipes grouped under this category.";
     if (type === "diet") return "Recipes matching this dietary preference.";
+    if (type === "search")
+      return `Results for "${searchParams.get("q") || ""}"`;
   }
 
-  // loading state
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="border border-stone-200 rounded-full flex justify-center items-center bg-stone-50 sm:px-8 px-4 sm:py-4 py-3 text-lg font-bold shadow-xl">
-          <Loader2 className="animate-spin text-brand-600 mr-3 h-6 w-6" />
-          Recipes are loading...
+          {generatingRecipe ? (
+            <Sparkles className="animate-pulse text-brand-600 mr-3 h-6 w-6" />
+          ) : (
+            <Loader2 className="animate-spin text-brand-600 mr-3 h-6 w-6" />
+          )}
+          {generatingRecipe
+            ? "Cooking up this recipe with AI..."
+            : "Recipes are loading..."}
         </div>
       </div>
     );
@@ -92,7 +163,6 @@ function FilterResultsPage({ type }) {
 
   return (
     <div className="min-h-screen pt-24 pb-16 px-4">
-      {/* Hero Section */}
       <div className="mx-auto max-w-7xl">
         <Button
           onClick={() => navigate(-1)}
@@ -106,7 +176,11 @@ function FilterResultsPage({ type }) {
         <div className="flex flex-col gap-4 mb-6 justify-between md:flex-row md:items-end">
           <div className="space-y-2">
             <p className="text-xs font-bold uppercase tracking-widest text-brand-500">
-              {type === "quick" ? "Quick Meals" : type}
+              {type === "quick"
+                ? "Quick Meals"
+                : type === "trending"
+                  ? "Trending"
+                  : type}
             </p>
             <h1 className="text-4xl sm:text-6xl font-extrabold text-black">
               {getLabel()}
@@ -128,7 +202,6 @@ function FilterResultsPage({ type }) {
           )}
         </div>
 
-        {/* Banner Section */}
         <div className="rounded-2xl p-6 bg-purple-400 text-white mb-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -154,7 +227,6 @@ function FilterResultsPage({ type }) {
           </div>
         </div>
 
-        {/* FILTER BAR */}
         <RecipeFilterBar
           difficulty={difficulty}
           setDifficulty={setDifficulty}
@@ -166,7 +238,6 @@ function FilterResultsPage({ type }) {
           hasActiveFilters={hasActiveFilters}
         />
 
-        {/* No Recipes Found Section */}
         {filteredRecipes.length === 0 && (
           <div className="rounded-2xl border border-stone-200 bg-white p-10 sm:p-20 text-center">
             <div className="w-20 h-20 bg-stone-50 rounded-full flex items-center justify-center mx-auto mb-5">
@@ -188,18 +259,31 @@ function FilterResultsPage({ type }) {
           </div>
         )}
 
-        {/* Recipes Grid Section */}
         {filteredRecipes.length > 0 && (
           <section>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
               {filteredRecipes.map((recipe) => (
-                <RecipeCard
-                  key={recipe.id || recipe.title}
-                  recipe={recipe}
-                  forceRegenerate={type === "category"}
-                />
+                <RecipeCard key={recipe.id || recipe.title} recipe={recipe} />
               ))}
             </div>
+
+            {isPaginationType && hasMore && (
+              <div className="flex justify-center mt-10">
+                <Button
+                  onClick={handleLoadMore}
+                  disabled={loadingMore}
+                  variant="outline"
+                  className="rounded-2xl font-bold px-10 py-6 text-base gap-2"
+                >
+                  {loadingMore ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <ChevronDown className="w-5 h-5" />
+                  )}
+                  {loadingMore ? "Loading..." : "Load More"}
+                </Button>
+              </div>
+            )}
           </section>
         )}
       </div>

@@ -5,21 +5,33 @@ import {
 } from "../constants/discoverOptions.js";
 import RecipeModel from "../models/recipe.model.js";
 
-// Get recipe of the day  (from all the recipes select one skip random number of recipes and return the next one)
+const featuredCache = { recipe: null, timestamp: null };
+const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
+
 const getRecipeofTheDay = async (req, res) => {
   try {
-    const count = await RecipeModel.countDocuments({ isPublic: true });
+    const now = Date.now();
+    if (featuredCache.recipe && featuredCache.timestamp && (now - featuredCache.timestamp < TWENTY_FOUR_HOURS)) {
+      return res.status(200).json({ recipe: featuredCache.recipe });
+    }
+
+    const queryFilter = { isPublic: true };
+    const count = await RecipeModel.countDocuments(queryFilter);
+
     if (count === 0) {
       return res.status(404).json({ message: "No recipes found" });
     }
 
     const skip = Math.floor(Math.random() * count);
 
-    const recipe = await RecipeModel.findOne({ isPublic: true }).skip(skip);
+    const recipe = await RecipeModel.findOne(queryFilter).skip(skip);
 
     if (!recipe) {
       return res.status(404).json({ message: "No recipe found" });
     }
+
+    featuredCache.recipe = recipe;
+    featuredCache.timestamp = now;
 
     res.status(200).json({ recipe });
   } catch (error) {
@@ -28,13 +40,20 @@ const getRecipeofTheDay = async (req, res) => {
   }
 };
 
-// Get trending recipes (from all the recipes sort by view count and rating and return the top 8)
+// Get trending recipes (from all the recipes sort by view count and rating, paginated like quick meals)
 const getTrendingRecipes = async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 12;
+
+    const skip = (page - 1) * limit;
+
     const recipes = await RecipeModel.find({ isPublic: true })
       .sort({ viewCount: -1, averageRating: -1 })
-      .limit(8);
-    res.status(200).json({ recipes });
+      .skip(skip)
+      .limit(limit);
+    const total = await RecipeModel.countDocuments({ isPublic: true });
+    res.status(200).json({ recipes, hasMore: skip + recipes.length < total });
   } catch (error) {
     console.error("Trending err", error);
     res.status(500).json({ message: "Trending recipes failed to get" });
@@ -77,7 +96,6 @@ const getCuisines = async (req, res) => {
 const getDiets = async (req, res) => {
   res.status(200).json({ diets: DIET_OPTIONS });
 };
-
 const getByCategory = async (req, res) => {
   try {
     const category = req.params.category;
@@ -86,15 +104,17 @@ const getByCategory = async (req, res) => {
     const limit = 12;
     const skip = (page - 1) * limit;
 
+    const safeCategory = category.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
     const recipes = await RecipeModel.find({
       isPublic: true,
-      category: { $regex: new RegExp(category, "i") },
+      category: { $regex: safeCategory, $options: "i" },
     })
       .skip(skip)
       .limit(limit);
     const total = await RecipeModel.countDocuments({
       isPublic: true,
-      category: { $regex: new RegExp(category, "i") },
+      category: { $regex: safeCategory, $options: "i" },
     });
     res.status(200).json({ recipes, hasMore: skip + recipes.length < total });
   } catch (error) {
@@ -112,15 +132,17 @@ const getByCuisine = async (req, res) => {
     const limit = 12;
     const skip = (page - 1) * limit;
 
+    const safeCuisine = cuisine.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
     const recipes = await RecipeModel.find({
       isPublic: true,
-      cuisine: { $regex: new RegExp(cuisine, "i") },
+      cuisine: { $regex: safeCuisine, $options: "i" },
     })
       .skip(skip)
       .limit(limit);
     const total = await RecipeModel.countDocuments({
       isPublic: true,
-      cuisine: { $regex: new RegExp(cuisine, "i") },
+      cuisine: { $regex: safeCuisine, $options: "i" },
     });
     res.status(200).json({ recipes, hasMore: skip + recipes.length < total });
   } catch (error) {
@@ -136,15 +158,18 @@ const getByDiet = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = 12;
     const skip = (page - 1) * limit;
+
+    const safeDiet = diet.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
     const recipes = await RecipeModel.find({
       isPublic: true,
-      diet: { $regex: new RegExp(diet, "i") },
+      diet: { $regex: safeDiet, $options: "i" },
     })
       .skip(skip)
       .limit(limit);
     const total = await RecipeModel.countDocuments({
       isPublic: true,
-      diet: { $regex: new RegExp(diet, "i") },
+      diet: { $regex: safeDiet, $options: "i" },
     });
     res.status(200).json({ recipes, hasMore: skip + recipes.length < total });
   } catch (error) {
@@ -152,26 +177,6 @@ const getByDiet = async (req, res) => {
     res.status(500).json({ message: "Failed to get recipes by diet" });
   }
 };
-
-const searchRecipes = async (req, res) => {
-  try {
-    const query = String(req.query.q || "").trim();
-    if (!query) {
-      return res.status(400).json({ message: "Search query is required" });
-    }
-
-    const recipes = await RecipeModel.find({
-      isPublic: true,
-      title: { $regex: query, $options: "i" },
-    }).limit(20);
-
-    res.status(200).json({ recipes, total: recipes.length });
-  } catch (error) {
-    console.error("Search recipes err", error);
-    res.status(500).json({ message: "Failed to search recipes" });
-  }
-};
-
 export {
   getByCategory,
   getByCuisine,
@@ -182,5 +187,4 @@ export {
   getQuickRecipes,
   getRecipeofTheDay,
   getTrendingRecipes,
-  searchRecipes,
 };

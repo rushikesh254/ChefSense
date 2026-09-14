@@ -18,7 +18,7 @@ const protect = async (req, res, next) => {
     req.userId = user._id; // attach userId to request object for use in controllers
     next();
   } catch (error) {
-    console.log("token bad", error.message);
+    console.error("token bad", error.message);
     return res.status(401).json({ error: "bad token" });
   }
 };

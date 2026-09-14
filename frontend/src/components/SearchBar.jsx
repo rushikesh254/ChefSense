@@ -2,8 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// vvarient deafult for dashboard
-// variant compact , smaller for header
+
 export default function SearchBar({ variant = "default" }) {
   const navigate = useNavigate();
 
@@ -13,10 +12,7 @@ export default function SearchBar({ variant = "default" }) {
     e.preventDefault();
     const query = search?.trim();
     if (!query) return;
-    // console.log(query);
-
-    //TODO: HERE ADD THE RECIPE GENERATION LOGIC USING QUERY
-    navigate(`/recipe/${encodeURIComponent(query)}`);
+    navigate(`/recipes/search?q=${encodeURIComponent(query)}`);
     setSearch("");
   }
 

@@ -7,6 +7,12 @@ import {
 import { fetchRecipeImage } from "../services/image.service.js";
 import calculateExpiryStatus from "../utils/expiry.js";
 
+import {
+  createRecipeSchema,
+  generateRecipeSchema,
+  rateRecipeSchema,
+} from "../validation/recipe.js";
+
 const GENERATION_LIMIT = 100; // number of recipes can generate
 const SUGGESTION_LIMIT = 100; // number of times suggestion from pantry itmes
 
@@ -19,7 +25,8 @@ const getRecipes = async (req, res) => {
     const filter = { $or: [{ isPublic: true }, { author: req.userId }] }; // filter to get public recipes or recipes created by the authenticated user
 
     if (q) {
-      filter.title = { $regex: q, $options: "i" }; // case-insensitive search for recipe title (this will match any recipe whose title contains the search query)
+      const safeQ = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      filter.title = { $regex: safeQ, $options: "i" };
     }
 
     const recipes = await RecipeModel.find(filter).sort({ createdAt: -1 }); // get recipes from the database based on the filter and sort them by creation date (newest first)
@@ -34,31 +41,49 @@ const getRecipes = async (req, res) => {
 //POST /api/recipes
 const createRecipe = async (req, res) => {
   try {
-    const data = req.body?.data || req.body; // support both { data: { ... } } and { ... } formats for request body
+    const data = req.body?.data || req.body;
 
-    if (!data.title) {
-      return res.status(400).json({ error: "Title is required" });
+    const result = createRecipeSchema.safeParse(data);
+
+    if (!result.success) {
+      return res.status(400).json({ error: result.error.issues[0].message });
     }
 
-    const recipe = await RecipeModel.create({
-      title: data.title,
-      description: data.description || "",
-      ingredients: data.ingredients || [],
-      instructions: data.instructions || [],
-      cuisine: data.cuisine || "",
-      category: data.category || "",
-      diet: data.diet || "",
-      difficulty: data.difficulty || "medium",
-      tags: data.tags || [],
-      prepTime: data.prepTime || 0,
-      cookTime: data.cookTime || 0,
-      servings: data.servings || 1,
-      imageUrl: data.imageUrl || "",
-      isVeg: data.isVeg || false,
-      isPublic: data.isPublic !== false, // default to true if not provided or if it's not explicitly set to false
-      author: req.userId, // Set the author to the authenticated user's ID
+    const {
+      title,
+      description,
+      ingredients,
+      instructions,
+      cuisine,
+      category,
+      diet,
+      difficulty,
+      tags,
+      prepTime,
+      cookTime,
+      servings,
+      imageUrl,
+      isVeg,
+      isPublic,
+    } = result.data;
 
-      // req.userId is set by the authMiddleware when it verifies the JWT token and extracts the user ID from it. This way, we can associate the recipe with the user who created it without relying on the client to send the author information (which could be tampered with). The server ensures that the recipe is always linked to the logged-in user, enhancing security and data integrity.
+    const recipe = await RecipeModel.create({
+      title,
+      description,
+      ingredients,
+      instructions,
+      cuisine,
+      category,
+      diet,
+      difficulty,
+      tags,
+      prepTime,
+      cookTime,
+      servings,
+      imageUrl,
+      isVeg,
+      isPublic,
+      author: req.userId,
     });
 
     res.status(201).json({ recipe });
@@ -87,6 +112,21 @@ const getRecipeById = async (req, res) => {
         .status(403)
         .json({ message: "Not allowed to access this recipe" });
     }
+
+    if (recipe.contentStatus === "partial") {
+      const aiData = await aiGenerate(recipe.title);
+      const imageUrl = await fetchRecipeImage(aiData.title);
+      recipe.ingredients = aiData.ingredients;
+      recipe.instructions = aiData.instructions;
+      recipe.imageUrl = imageUrl;
+      recipe.contentStatus = "complete";
+      recipe.source = "ai";
+      recipe.nutrition = aiData.nutrition;
+      recipe.substitutions = aiData.substitutions;
+    }
+
+    recipe.viewCount += 1;
+    await recipe.save();
 
     res.status(200).json({ recipe });
   } catch (error) {
@@ -187,11 +227,19 @@ const generateRecipe = async (req, res) => {
   try {
     const { recipeName } = req.body;
 
-    if (!recipeName) {
-      return res.status(400).json({ message: "Recipe name is required" });
+    // validate the recipe name using zod schema and return error if validation fails
+
+    // here we are using safeParse method of zod which will return an object with success property and if success is false then it will return error property with the validation errors
+
+    const result = generateRecipeSchema.safeParse({ recipeName });
+
+    if (!result.success) {
+      return res.status(400).json({
+        message: result.error.issues[0].message,
+      });
     }
 
-    // check generationm limit
+    // check generation limit
 
     if (req.user.usage.recipeGenerationCount >= GENERATION_LIMIT) {
       return res.status(429).json({
@@ -200,6 +248,7 @@ const generateRecipe = async (req, res) => {
     }
 
     // check in db if a recipe with the same name already exists (optional, can be skipped if you want to allow duplicates)
+    
     const existing = await RecipeModel.findOne({ title: recipeName });
     if (existing && existing.contentStatus === "complete") {
       return res.status(400).json({ existing });
@@ -259,10 +308,12 @@ const rateRecipe = async (req, res) => {
     const recipeId = req.params.id;
     const { rating } = req.body;
 
-    if (!rating || rating < 1 || rating > 5) {
-      return res
-        .status(400)
-        .json({ message: "Rating must be between 1 and 5" });
+    // validate the rating using zod schema and return error if validation fails
+    const result = rateRecipeSchema.safeParse({ rating });
+    if (!result.success) {
+      return res.status(400).json({
+        message: result.error.issues[0].message,
+      });
     }
 
     const recipe = await RecipeModel.findById(recipeId);
@@ -300,16 +351,4 @@ export {
   suggestRecipes,
 };
 
-// create 1 recipoe
-// delete 1 recipe
-// get 1 recipe
-// get all recipes
 
-// for generating recipe
-
-// 1. user give title
-// 2. check if user has reached the generation limit if yes then return error
-// 3. check exact title in db
-// 4. found=> if (status is complete ) then return if (status is partial then call gemini)
-// 5. not found => call gemini to generate recipe
-// 6. save the recipe in db with status complete

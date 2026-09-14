@@ -1,11 +1,14 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { EXPIRY_STATUSES, PANTRY_CATEGORIES } from "@/lib/constants";
 import { STATUS_CONFIG } from "@/lib/utils";
-import { Calendar, Edit2, Trash2 } from "lucide-react";
+import { Calendar, Edit2, ImageIcon, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+
+const PLACEHOLDER =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' fill='%23e7e5e4'%3E%3Crect width='400' height='300'/%3E%3C/svg%3E";
 
 function PantryCard({ item, updateItem, deleteItem }) {
   // toggle state for edit mode
@@ -46,71 +49,93 @@ function PantryCard({ item, updateItem, deleteItem }) {
   const status = STATUS_CONFIG[item.expiryStatus] || STATUS_CONFIG["no expiry"];
 
   return (
-    <Card className="rounded-2xl h-full flex flex-col">
+    <Card className="rounded-2xl h-full flex flex-col overflow-hidden p-0 gap-0">
       {!isEditing ? (
-        // not editing state
-        <CardContent className="p-4 flex flex-col justify-between h-full">
-          {/* Top Section */}
-          <div className="flex flex-col gap-3">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex-1 min-w-0 pr-2">
-                <h3 className="text-lg font-bold text-black " title={item.name}>
-                  {item.name}
-                </h3>
-                <div className="flex items-center gap-1.5 text-stone-500 mt-1">
-                  <span className="text-xs px-2 py-0.5 bg-stone-50 rounded-md border border-stone-100">
-                    {item.quantity || "Qty not set"}
-                  </span>
+        <>
+          {/* Image - edge to edge */}
+          <div className="aspect-video overflow-hidden bg-stone-100">
+            {item.imageUrl ? (
+              <img
+                src={item.imageUrl}
+                alt={item.name}
+                className="h-full w-full object-cover"
+                onError={(e) => {
+                  e.target.src = PLACEHOLDER;
+                }}
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center">
+                <ImageIcon className="h-10 w-10 text-stone-300" />
+              </div>
+            )}
+          </div>
+
+          {/* Content */}
+          <div className="flex flex-col justify-between flex-1 p-4">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0 pr-2">
+                  <h3 className="text-lg font-bold text-black" title={item.name}>
+                    {item.name}
+                  </h3>
+                  <div className="flex items-center gap-1.5 text-stone-500 mt-1">
+                    <span className="text-xs px-2 py-0.5 bg-stone-50 rounded-md border border-stone-100">
+                      {item.quantity || "Qty not set"}
+                    </span>
+                  </div>
                 </div>
+
+                <Badge
+                  variant="outline"
+                  className="text-xs py-1 px-2 font-bold uppercase border rounded-full shrink-0"
+                >
+                  {item.category}
+                </Badge>
               </div>
 
-              <Badge
+              <div className="flex items-center justify-between gap-2 pt-1">
+                <Badge
+                  className={`text-xs px-2 py-1 rounded-full font-black uppercase border ${status.color}`}
+                >
+                  {status.label}
+                </Badge>
+
+                {item.expiryDate && (
+                  <div className="flex items-center gap-1.5 text-xs text-stone-400 font-bold uppercase">
+                    <Calendar className="w-3.5 h-3.5" />
+                    {new Date(item.expiryDate).toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 pt-3 mt-3 border-t border-stone-50">
+              <Button
                 variant="outline"
-                className="text-xs py-1 px-2 font-bold uppercase border rounded-full"
+                onClick={() => setIsEditing(true)}
+                className="flex-1 h-9 rounded-full text-xs font-bold flex items-center justify-center gap-1.5"
               >
-                {item.category}
-              </Badge>
-            </div>
+                <Edit2 className="h-3.5 w-3.5" />
+                Edit
+              </Button>
 
-            <div className="flex items-center justify-between gap-2 pt-1">
-              <Badge
-                className={`text-xs px-2 py-1 rounded-full font-black uppercase border ${status.color}`}
+              <Button
+                variant="outline"
+                onClick={() => deleteItem(item.id)}
+                className="px-3 h-9 rounded-full text-red-500"
               >
-                {status.label}
-              </Badge>
-
-              {item.expiryDate && (
-                <div className="flex items-center gap-1.5 text-xs text-stone-400 font-bold uppercase ">
-                  <Calendar className="w-3.5 h-3.5" />
-                  {item.expiryDate}
-                </div>
-              )}
+                <Trash2 className="h-4 w-4" />
+              </Button>
             </div>
           </div>
-
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2 pt-3 border-t border-stone-50">
-            <Button
-              variant="outline"
-              onClick={() => setIsEditing(true)}
-              className="flex-1 h-9 rounded-full text-xs font-bold flex items-center justify-center gap-1.5 "
-            >
-              <Edit2 className="h-3.5 w-3.5" />
-              Edit
-            </Button>
-
-            <Button
-              variant="outline"
-              onClick={() => deleteItem(item.id)}
-              className="px-3 h-9 rounded-full text-red-500 "
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </div>
-        </CardContent>
+        </>
       ) : (
         // editing state
-        <CardContent className="p-5 h-full">
+        <div className="flex flex-col h-full p-5">
           <form
             onSubmit={handleFormSubmit}
             className="flex flex-col h-full gap-4"
@@ -119,7 +144,7 @@ function PantryCard({ item, updateItem, deleteItem }) {
               <div className="w-8 h-8 rounded-lg bg-brand-50 flex items-center justify-center">
                 <Edit2 className="w-4 h-4 text-brand-500" />
               </div>
-              <h3 className="font-black text-sm ">Edit Ingredient</h3>
+              <h3 className="font-black text-sm">Edit Ingredient</h3>
             </div>
 
             <div className="grid gap-3">
@@ -134,7 +159,7 @@ function PantryCard({ item, updateItem, deleteItem }) {
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="border-stone-200   text-sm  rounded-xl"
+                  className="border-stone-200 text-sm rounded-xl"
                   placeholder="Ingredient name"
                 />
               </div>
@@ -150,7 +175,7 @@ function PantryCard({ item, updateItem, deleteItem }) {
                   id="quantity"
                   value={quantity}
                   onChange={(e) => setQuantity(e.target.value)}
-                  className="border-stone-200   text-sm  rounded-xl"
+                  className="border-stone-200 text-sm rounded-xl"
                   placeholder="e.g. 500g, 2 units"
                 />
               </div>
@@ -217,7 +242,7 @@ function PantryCard({ item, updateItem, deleteItem }) {
                   type="date"
                   value={expiryDate}
                   onChange={(e) => setExpiryDate(e.target.value)}
-                  className="border-stone-200   text-sm  rounded-xl"
+                  className="border-stone-200 text-sm rounded-xl"
                 />
               </div>
             </div>
@@ -241,7 +266,7 @@ function PantryCard({ item, updateItem, deleteItem }) {
               </Button>
             </div>
           </form>
-        </CardContent>
+        </div>
       )}
     </Card>
   );

@@ -1,7 +1,12 @@
 import PantryItemModel from "../models/pantryItem.model.js";
+import UserModel from "../models/user.model.js";
 import { scanPantryImage } from "../services/ai.service.js";
 import { fetchPantryImage } from "../services/image.service.js";
 import calculateExpiryStatus from "../utils/expiry.js";
+import {
+  bulkAddSchema,
+  pantryItemSchema as pantryItemCreateSchema,
+} from "../validation/pantry.js";
 
 const SCAN_LIMIT = 100;
 // get all pantry items for a user
@@ -23,11 +28,15 @@ const getItems = async (req, res) => {
 // POST /api/pantry
 const addItem = async (req, res) => {
   try {
-    const { name, quantity, category, expiryDate } = req.body;
+    const result = pantryItemCreateSchema.safeParse(req.body);
 
-    if (!name) {
-      return res.status(400).json({ error: "Item name is required" });
+    if (!result.success) {
+      return res.status(400).json({
+        message: result.error.issues[0].message,
+      });
     }
+
+    const { name, quantity, category, expiryDate } = result.data;
 
     // convert expiryDate to Date object if it's provided, otherwise set it to null
     const date = expiryDate ? new Date(expiryDate) : null;
@@ -44,6 +53,12 @@ const addItem = async (req, res) => {
       expiryStatus: calculateExpiryStatus(date),
       owner: req.userId,
       imageUrl: imageUrl,
+    });
+
+    // increment pantry items count for the user
+
+    await UserModel.findByIdAndUpdate(req.userId, {
+      $inc: { "usage.pantryItemCount": 1 },
     });
 
     res.status(201).json(newItem);
@@ -107,6 +122,10 @@ const deleteItem = async (req, res) => {
       return res.status(404).json({ message: "Pantry item not found" });
     }
 
+    await UserModel.findByIdAndUpdate(req.userId, {
+      $inc: { "usage.pantryItemCount": -1 },
+    });
+
     res.status(200).json({ message: "Pantry item deleted successfully" });
   } catch (error) {
     res
@@ -120,8 +139,6 @@ const scanImage = async (req, res) => {
   try {
     if (!req.file)
       return res.status(400).json({ error: "image file is required" });
-
-    console.log(req.file);
 
     if (req.user.usage.scanCount >= SCAN_LIMIT) {
       return res.status(429).json({ error: "scan limit reached" });
@@ -144,11 +161,15 @@ const scanImage = async (req, res) => {
 // POST /api/pantry/bulk
 const addItemsBulk = async (req, res) => {
   try {
-    const items = req.body.items; // expecting an array of items ({name, quantity, category, expiryDate})
+    const result = bulkAddSchema.safeParse(req.body);
 
-    if (!Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ error: "Items array is required" });
+    if (!result.success) {
+      return res.status(400).json({
+        message: result.error.issues[0].message,
+      });
     }
+
+    const { items } = result.data;
 
     const docs = await Promise.all(
       items.map(async (item) => {
@@ -172,9 +193,13 @@ const addItemsBulk = async (req, res) => {
       }),
     );
 
-    const result = await PantryItemModel.insertMany(docs);
+    const created = await PantryItemModel.insertMany(docs);
 
-    res.status(201).json(result);
+    await UserModel.findByIdAndUpdate(req.userId, {
+      $inc: { "usage.pantryItemCount": items.length },
+    });
+
+    res.status(201).json(created);
   } catch (error) {
     res.status(500).json({
       message: "Failed to add pantry items in bulk",
