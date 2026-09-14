@@ -6,11 +6,12 @@ import { loginSchema, signupSchema } from "../validation/auth.js";
 // Helper function to set auth cookie
 const setAuthCookie = (res, user) => {
   const token = generateToken(user._id);
+  const isProd = process.env.NODE_ENV === "production";
   res.cookie("token", token, {
     httpOnly: true,
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    secure: process.env.NODE_ENV === "production" ? true : false,
-    sameSite: "lax", // Add sameSite attribute for better security (prevents CSRF and browser compatible)
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax",
   });
 };
 
@@ -103,10 +104,11 @@ const login = async (req, res) => {
 
 const logout = (req, res) => {
   try {
+    const isProd = process.env.NODE_ENV === "production";
     res.clearCookie("token", {
       httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+      sameSite: isProd ? "none" : "lax",
+      secure: isProd,
     });
     res.status(200).json({ message: "User logged out successfully" });
   } catch (error) {
